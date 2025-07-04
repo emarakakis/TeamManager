@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Game Studio CEO
+
+JobCategories :
+
+- Development   :   Gameplay    |   Backend |   GameEngine  |   Network
+- Creative      :      3D       |     2D    |    Character  |   Environment      
+- Production    :   Producer    |   Manager |     Tester    |   QualityAssurance
+
+Profession      :   Intern      |   Intermediate    |   Senior  |    Lead   |   Director
