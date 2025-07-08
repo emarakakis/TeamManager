@@ -1,8 +1,7 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client"
+
+import EmployeeTable from "@/modules/EmployeeTable/EmployeeTable"
 
 export default function Home() {
-  return(
-    <h1>Its a start</h1>
-  )
+  return <EmployeeTable/>
 }

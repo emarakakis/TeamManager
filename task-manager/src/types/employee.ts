@@ -1,20 +1,15 @@
 export type Employee = {
-    id          : number
     name        : string
     surname     : string
+    phoneNumber : string
+    sex         : "male" | "female" | undefined
     email       : string
-    job         : Job
 }
 
-type JobFields = {
-    field:"development" |"creative" | "production"
-}
-type JobTitle  = {
-    title: "intern" | "junior" | "intermediate" | "senior" | "lead" | "director"
-}
-
-type Job = {
-    field : JobFields
-    title : JobTitle
-    team : string
+export const employeeDefault = {
+    name: "",
+    surname: "",
+    phoneNumber: "",
+    sex: undefined,
+    email: ""
 }
