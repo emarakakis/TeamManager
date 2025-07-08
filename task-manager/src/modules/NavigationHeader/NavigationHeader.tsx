@@ -1,5 +1,12 @@
 import * as React from 'react'
-import { AppBar, Link, Button, Toolbar, Typography, Container } from '@mui/material'
+import { 
+  AppBar,
+  Link,
+  Box,
+  Button,
+  Toolbar,
+  Typography,
+  Container } from '@mui/material'
 
 export default function NavigationHeader({ children }: { children: React.ReactNode }) {
   return (
@@ -13,11 +20,18 @@ export default function NavigationHeader({ children }: { children: React.ReactNo
               </Button>
             </Link>
           </Typography>
-          <Link href="/employees/create" underline="none">
+          <Box>
+          <Link href="/pages/fields/create" underline="none">
+            <Button variant="outlined" sx={{color:"white"}}>
+              Create Field
+            </Button>
+          </Link>
+          <Link href="/pages/employees/create">
             <Button variant="outlined" sx={{color:"white"}}>
               Create Employee
             </Button>
           </Link>
+          </Box>
         </Toolbar>
       </AppBar>
 

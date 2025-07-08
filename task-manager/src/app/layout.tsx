@@ -4,7 +4,7 @@ import { ThemeProvider } from "@emotion/react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { theme } from "./theme";
 import { Box } from "@mui/material";
-import NavigationHeader from "@/modules/Navigation/NavigationHeader";
+import NavigationHeader from "@/modules/NavigationHeader/NavigationHeader";
 
 export default function RootLayout({
   children,

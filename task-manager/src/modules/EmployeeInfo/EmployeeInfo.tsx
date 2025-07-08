@@ -14,7 +14,6 @@ import {
 import { useFormContext } from "react-hook-form";
 import { Employee } from "@/types/employee";
 import { useState } from "react";
-import { blue } from "@mui/material/colors";
 
 export default function CreateInfo() {
   const {

@@ -1,4 +1,5 @@
 import {Employee} from './src/types/employee'
+import { FieldData } from './src/types/FieldData';
 
 export const employees: Employee[] = [
   {
@@ -37,3 +38,46 @@ export const employees: Employee[] = [
     email: "alex.smith@example.com",
   },
 ];
+
+export const fields: FieldData[] = [
+  {
+    name: "Gameplay Programming",
+    area: "development",
+  },
+  {
+    name: "3D Animation",
+    area: "creative",
+  },
+  {
+    name: "Level Design",
+    area: "creative",
+  },
+  {
+    name: "Audio Engineering",
+    area: "production",
+  },
+  {
+    name: "Technical Art",
+    area: "development",
+  },
+  {
+    name: "Narrative Design",
+    area: "creative",
+  },
+  {
+    name: "QA Testing",
+    area: "production",
+  },
+  {
+    name: "VFX Design",
+    area: "creative",
+  },
+  {
+    name: "Network Engineering",
+    area: "development",
+  },
+  {
+    name: "Project Management",
+    area: "production",
+  }
+]

@@ -41,28 +41,45 @@ var db_1 = require("./db");
 var dataset_1 = require("./dataset");
 function createDb() {
     return __awaiter(this, void 0, void 0, function () {
-        var _i, employees_1, e, allEmployees;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var _i, employees_1, e, _a, fields_1, f, allEmployees, allFields;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0: return [4 /*yield*/, (0, db_1.initializeDB)()];
                 case 1:
-                    _a.sent();
+                    _b.sent();
                     _i = 0, employees_1 = dataset_1.employees;
-                    _a.label = 2;
+                    _b.label = 2;
                 case 2:
                     if (!(_i < employees_1.length)) return [3 /*break*/, 5];
                     e = employees_1[_i];
                     return [4 /*yield*/, db_1.db.insert(db_1.employeeTable).values(e)];
                 case 3:
-                    _a.sent();
-                    _a.label = 4;
+                    _b.sent();
+                    _b.label = 4;
                 case 4:
                     _i++;
                     return [3 /*break*/, 2];
-                case 5: return [4 /*yield*/, db_1.db.select().from(db_1.employeeTable).all()];
+                case 5:
+                    _a = 0, fields_1 = dataset_1.fields;
+                    _b.label = 6;
                 case 6:
-                    allEmployees = _a.sent();
+                    if (!(_a < fields_1.length)) return [3 /*break*/, 9];
+                    f = fields_1[_a];
+                    return [4 /*yield*/, db_1.db.insert(db_1.fieldTable).values(f)];
+                case 7:
+                    _b.sent();
+                    _b.label = 8;
+                case 8:
+                    _a++;
+                    return [3 /*break*/, 6];
+                case 9: return [4 /*yield*/, db_1.db.select().from(db_1.employeeTable).all()];
+                case 10:
+                    allEmployees = _b.sent();
                     console.log(allEmployees);
+                    return [4 /*yield*/, db_1.db.select().from(db_1.fieldTable).all()];
+                case 11:
+                    allFields = _b.sent();
+                    console.log(allFields);
                     return [2 /*return*/];
             }
         });

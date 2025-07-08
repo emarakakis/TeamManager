@@ -29,13 +29,11 @@ export default function Page(){
 
     return(
         <FormProvider {...methods}>
-            
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <Container sx={{justifyContent:"center"}}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Container sx={{justifyContent:"center"}}>
                     <EmployeeInfo/>
-                    </Container>
-                </form>
-            
+                </Container>
+            </form>
         </FormProvider>
     )
 }

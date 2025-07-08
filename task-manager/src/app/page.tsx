@@ -1,8 +1,9 @@
 "use client"
 
 import EmployeeTable from "@/modules/EmployeeTable/EmployeeTable"
-import { Grid, TextField } from "@mui/material"
+import { Grid } from "@mui/material"
 import Input from "@/modules/Input/Input"
+import FieldTable from "@/modules/FieldTable/FieldTable"
 
 export default function Home() {
   
@@ -12,7 +13,8 @@ export default function Home() {
           <Input/>
         </Grid>
         <Grid>
-          <EmployeeTable/>
+          <EmployeeTable sx={{border:"1px solid darkgray", justifyContent:"center", borderRadius: '16px', backgroundColor:'#f5f5f5',  color:'black', width:1, padding:3}}/>
+          <FieldTable sx={{border:"1px solid darkgray", justifyContent:"center", borderRadius: '16px', backgroundColor:'#f5f5f5',  color:'black', width:1, padding:3}} />
         </Grid>
     </Grid>)
 }

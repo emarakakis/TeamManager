@@ -1,9 +1,9 @@
 import { Employee } from "./employee"
-import { Field } from "./Field"
+import { FieldData } from "./FieldData"
 
 export type Job = {
     name: string
-    field: Field
+    field: FieldData
     profession: Profession
     employee: Employee
 }

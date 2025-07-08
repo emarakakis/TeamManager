@@ -6,14 +6,14 @@ import { Grid } from "@mui/material";
 import TableHeader from "./TableHeader";
 import { useQueryState } from "@/app/hooks/query-state-hook";
 
-export default function EmployeeTable(){
+export default function EmployeeTable({...props}){
     const [searchEmployee, setSearchEmployee] = useQueryState('employee')
     const {data} = useQuery<Employee[]>({
         queryKey: ['employees', searchEmployee],
         queryFn: () => getEmployees(searchEmployee)
   })
   return(
-    <Grid sx={{border:"1px solid darkgray", justifyContent:"center", borderRadius: '16px', backgroundColor:'#f5f5f5',  color:'black', width:1, padding:3}}>
+    <Grid {...props}>
         <TableHeader/>
         {data && data.map((employee, index) => {
         return (
