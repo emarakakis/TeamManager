@@ -1,10 +1,9 @@
 "use client";
 
-import {Box, Button, Typography} from '@mui/material'
+import {Container, Button, Typography} from '@mui/material'
 import {useForm, FormProvider} from 'react-hook-form'
 import { Employee, employeeDefault } from '@/types/employee'
-import EmployeeInfo from '@/modules/Employee/EmployeeInfo'
-import { FieldValues } from 'react-hook-form';
+import EmployeeInfo from '@/modules/EmployeeInfo/EmployeeInfo'
 import { useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import postEmployee from '@/serverFunctions/postEmployee';
@@ -30,10 +29,13 @@ export default function Page(){
 
     return(
         <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <EmployeeInfo/>
-                <Button type="submit">Submit</Button>
-            </form>
+            
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <Container sx={{justifyContent:"center"}}>
+                    <EmployeeInfo/>
+                    </Container>
+                </form>
+            
         </FormProvider>
     )
 }

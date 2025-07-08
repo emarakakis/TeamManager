@@ -1,10 +1,20 @@
 "use client"
 
-import { Box, TextField, Select, Grid, Container, MenuItem, SelectChangeEvent } from "@mui/material";
+import { 
+    Box,
+    Button,
+    TextField,
+    Select, 
+    Grid, 
+    Container, 
+    MenuItem, 
+    SelectChangeEvent, 
+    Typography} from "@mui/material";
 
 import { useFormContext } from "react-hook-form";
 import { Employee } from "@/types/employee";
 import { useState } from "react";
+import { blue } from "@mui/material/colors";
 
 export default function CreateInfo() {
   const {
@@ -32,13 +42,16 @@ export default function CreateInfo() {
   }
 
   return (
-      <Container sx={{border:'2px solid gray', borderRadius:"15px", width:0.25, padding:5, justifyContent:"center"}}>
+      <Container sx={{border:'2px solid gray', borderRadius:"15px", width:"0.5", justifyContent:"center"}}>
+        <Grid container sx={{justifyContent:"center", marginTop:2, marginBottom:2}} spacing={1}>
+          <Typography variant="h2">Add Employee</Typography>
+        </Grid>
         <Grid direction={"column"} spacing={2}>
-            <Grid container sx={{justifyContent:"center", margin:1}} spacing={1}>
+            <Grid container sx={{justifyContent:"center", marginTop:2, marginBottom:2}} spacing={1}>
                 <TextField label="Name" {...register("name")} />
                 <TextField label="Surname" {...register("surname")} />
             </Grid>
-            <Grid container sx={{justifyContent:"center", margin:1}} spacing={1}>
+            <Grid container sx={{justifyContent:"center", marginTop:2, marginBottom:2}} spacing={1}>
                 <TextField label="Phone-Number" {...register("phoneNumber")} />
                 {/* <Select 
                   multiple
@@ -52,11 +65,15 @@ export default function CreateInfo() {
                     ))}
                   </Select> */}
             </Grid>
-            <Grid container sx={{justifyContent:"center", margin:1}} spacing={1}>
+            <Grid container sx={{justifyContent:"center", marginTop:2, marginBottom:2}} spacing={1}>
                 <TextField label="City" {...register("city")} />
                 <TextField label="email" {...register("email")}/>
             </Grid>
+            <Grid container sx={{justifyContent:"center", marginTop:2, marginBottom:2}}>
+              <Button variant="contained" type="submit">Submit</Button>
+            </Grid>
         </Grid>
+        
       </Container>
     
   );

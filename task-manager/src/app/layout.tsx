@@ -3,6 +3,8 @@
 import { ThemeProvider } from "@emotion/react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { theme } from "./theme";
+import { Box } from "@mui/material";
+import NavigationHeader from "@/modules/Navigation/NavigationHeader";
 
 export default function RootLayout({
   children,
@@ -15,9 +17,13 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <QueryClientProvider client={client}>
+          <NavigationHeader >
           <ThemeProvider theme = {theme}>
-            {children}
+            <Box sx={{width:1}}>
+              {children}
+            </Box>
           </ThemeProvider>
+          </NavigationHeader>
         </QueryClientProvider>
       </body>
     </html>

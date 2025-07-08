@@ -13,6 +13,11 @@ export const theme = createTheme({
         h1 : {
             fontFamily: "sans-serif",
             fontSize: 10
+        },
+        h2 : {
+            fontFamily: "sans-serif",
+            fontSize: 40,
+            fontStyle: "italic"
         }
     }
 })
