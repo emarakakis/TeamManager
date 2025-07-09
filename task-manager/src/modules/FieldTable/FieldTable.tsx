@@ -12,8 +12,6 @@ export default function FieldTable({...props}){
         queryFn: getFields
     })
 
-    console.log(data)
-
     return (
         <Grid {...props}>
             <Typography variant="h2" sx={{justifyContent:"center"}}>Fields</Typography>

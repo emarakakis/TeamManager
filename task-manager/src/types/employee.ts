@@ -6,6 +6,10 @@ export type Employee = {
     email       : string
 }
 
+export type EmployeeReturn = {
+    id: number
+} & Employee
+
 export const employeeDefault = {
     name: "",
     surname: "",
