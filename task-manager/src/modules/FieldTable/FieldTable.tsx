@@ -1,7 +1,9 @@
-import { Box, Grid } from "@mui/material"
+import { Box, Grid, Typography } from "@mui/material"
 import { useQuery } from "@tanstack/react-query"
 import getFields from '../../serverFunctions/getFields'
 import { FieldData } from "@/types/FieldData"
+import FieldItem from "../FieldItem/FieldItem"
+import TableHeader from "./TableHeader"
 
 export default function FieldTable({...props}){
 
@@ -14,10 +16,12 @@ export default function FieldTable({...props}){
 
     return (
         <Grid {...props}>
+            <Typography variant="h2" sx={{justifyContent:"center"}}>Fields</Typography>
+            <hr/>
+            <TableHeader/>
+            <hr/>
             {data?.map((f, i) => {
-                return <Box key={i}>
-                    <span>{f.name}</span> <span>{f.area}</span>
-                </Box>
+                return <FieldItem key={i} data={f} index={i}/>
             })}
         </Grid>
     )

@@ -4,41 +4,22 @@ import {
     Box,
     Button,
     TextField,
-    Select, 
     Grid, 
     Container, 
-    MenuItem, 
     SelectChangeEvent, 
     Typography} from "@mui/material";
 
+import SelectControl from "./SelectControl";
 import { useFormContext } from "react-hook-form";
 import { Employee } from "@/types/employee";
 import { useState } from "react";
 
-export default function CreateInfo() {
+export default function EmployeeForm() {
   const {
     register,
+    control,
     formState: { errors },
   } = useFormContext();
-
-  const [sex, setSex] = useState<Employee['sex']>(undefined)
-
-  function handleChange(event: SelectChangeEvent<string>){
-    const s = event.target.value
-
-    if (!s || typeof s !== 'string' || s === undefined){
-      return
-    }
-    
-    setSex(() => {
-      if (s === "Male"){
-        return "male"
-      } else {
-        return "female"
-      }
-    })
-
-  }
 
   return (
       <Container sx={{border:'2px solid gray', borderRadius:"15px", width:"0.5", justifyContent:"center"}}>
@@ -52,17 +33,10 @@ export default function CreateInfo() {
             </Grid>
             <Grid container sx={{justifyContent:"center", marginTop:2, marginBottom:2}} spacing={1}>
                 <TextField label="Phone-Number" {...register("phoneNumber")} />
-                {/* <Select 
-                  multiple
-                  name="sex"
-                  label="Sex"
-                  value={["Male", "Female"]}
-                  onChange={handleChange}
-                  >
-                     { sexes.map((sex) => (
-                      <MenuItem key={sex} value={sex}>{sex}</MenuItem>
-                    ))}
-                  </Select> */}
+                <SelectControl 
+                  control={control}
+                  options={[{key:"male", value:"Male"}, {key: "female", value:"Female"}, {key:"undefined", value:"Undefined"}]}
+                  name="sex"/>
             </Grid>
             <Grid container sx={{justifyContent:"center", marginTop:2, marginBottom:2}} spacing={1}>
                 <TextField label="City" {...register("city")} />

@@ -7,10 +7,10 @@ export default function Input(){
     const [inputValue, setInputValue] = useState<string>(searchEmployee ?? "")
     function handleChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
         const value = event.target.value;
-        setInputValue(inputValue)
+
         if (timeoutTime.current)
             clearTimeout(timeoutTime.current)
-
+        setInputValue(value)
         timeoutTime.current = window.setTimeout(() => {
             if (value){
                 return setSearchEmployee(value)
