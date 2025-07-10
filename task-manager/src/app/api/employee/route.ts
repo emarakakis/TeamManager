@@ -31,3 +31,22 @@ export async function GET(req:Request){
         throw error
     }
 }
+
+export async function PUT(req:Request){
+    try{
+        const employee = await req.json()
+        const {id, name, surname, phoneNumber, email, sex} = employee
+        console.log(typeof id)
+        const result = await db.update(employeeTable).set({
+            name: name,
+            surname: surname,
+            phoneNumber: phoneNumber,
+            email: email,
+            sex:sex
+        }).where(eq(employeeTable.id,Number(id)))
+
+        return NextResponse.json({success: true})
+    } catch(error) {
+        throw error
+    }
+}

@@ -5,7 +5,7 @@ import {
   FormControl,
   FormLabel
 } from "@mui/material";
-import { Control, Controller } from "react-hook-form";
+import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import { forwardRef, useState, ChangeEvent } from "react"
 
 type RadioOption = {
@@ -14,12 +14,13 @@ type RadioOption = {
   label: string;
 };
 
-type RadioProps = {
-  name: string;
-  control: Control<any>;
-  defaultValue?: string;
+type RadioProps<T extends FieldValues> = {
+  name: Path<T>;
+  control: Control<T>;
   radios: RadioOption[];
-  row : boolean
+  row : boolean;
+  defaultValue: string
+
 };
 
 type RadioPureProps = {
@@ -27,13 +28,13 @@ type RadioPureProps = {
     onChange : (event: ChangeEvent<HTMLInputElement>, value: string) => void
     value : string
     radios: RadioOption[]
-    defaultValue?: string
+    defaultValue: string
     row   : boolean
 }
 
 const RadioPure = forwardRef<HTMLDivElement, RadioPureProps>((
-    {radios, onChange, row, ...props}, ref) => {
-        const [selected, setSelected] = useState<string>("")
+    {radios, onChange, row, value, defaultValue,  ...props}, ref) => {
+        const [selected, setSelected] = useState<string>(defaultValue)
 
         function handleChange(event: ChangeEvent<HTMLInputElement>){
             const value = event.target.value
@@ -44,7 +45,7 @@ const RadioPure = forwardRef<HTMLDivElement, RadioPureProps>((
         return (
             <FormControl>
               <FormLabel sx={{display:"flex", justifyContent:'center', fontSize:20}}>Select Field's Area</FormLabel>
-              <RadioGroup row = {row} {...props} onChange={handleChange} >
+              <RadioGroup row = {row} {...props} value={selected} onChange={handleChange} >
                   {radios.map((r, i) => {
                       console.log(r)
                       return <FormControlLabel key = {i} label={r.label} value={r.value} control={<Radio/>}/>
@@ -54,24 +55,24 @@ const RadioPure = forwardRef<HTMLDivElement, RadioPureProps>((
         )
 })
 
-export default function RadioSelect({
+export default function RadioSelect<T extends FieldValues>({
   name,
   control,
-  defaultValue = "",
   radios,
+  defaultValue,
   row
-}: RadioProps) {
+}: RadioProps<T>) {
   return (
     <Controller
       name={name}
       control={control}
-      defaultValue={defaultValue}
       render={({ field }) => (
           <RadioPure
             {...field}
             row = {row}
-            onChange={field.onChange}            
+            onChange={field.onChange}           
             radios={radios}
+            defaultValue={defaultValue}
           />
       )}
     />

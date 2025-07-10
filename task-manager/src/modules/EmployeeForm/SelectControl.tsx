@@ -1,5 +1,5 @@
 import { forwardRef, useState, ChangeEvent } from "react"
-import { Control, Controller } from "react-hook-form"
+import { Control, Controller, FieldValues, Path } from "react-hook-form"
 import { Select, SelectChangeEvent, MenuItem } from "@mui/material"
 
 type Option = {
@@ -7,10 +7,10 @@ type Option = {
     value: string
 }
 
-type SelectProps = {
-    name: string
+type SelectProps<T extends FieldValues> = {
+    name: Path<T>
     options: Option[]
-    control: Control
+    control: Control<T>
 }
 
 type SelectPureProps = {
@@ -52,11 +52,11 @@ const SelectPure = forwardRef<HTMLDivElement, SelectPureProps>(({options, onChan
 })
 
 
-export default function SelectControl({
+export default function SelectControl<T extends FieldValues>({
     name,
     options,
     control
-}: SelectProps
+}: SelectProps<T>
 ){
     return (
         <Controller 

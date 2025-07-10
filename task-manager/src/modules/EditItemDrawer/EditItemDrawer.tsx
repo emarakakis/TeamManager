@@ -1,22 +1,36 @@
 import { useQueryState } from "@/app/hooks/query-state-hook";
-import { Employee, EmployeeReturn } from "@/types/employee";
+import { EmployeeReturn } from "@/types/employee";
 import { Drawer, TextField, Box, Grid, Typography, Button } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { useQueryClient } from "@tanstack/react-query";
 import getEmployee from "@/serverFunctions/getEmployee";
+import putEmployee from "@/serverFunctions/putEmployee";
 import { useEffect } from "react";
+import SelectControl from "../EmployeeForm/SelectControl";
+import { slotProps } from "./styling";
 
 
 export default function EditItemDrawer(){
-    const {register, handleSubmit, reset} = useForm<EmployeeReturn>()
+    const {register, control, handleSubmit, reset} = useForm<EmployeeReturn>()
     const [editUser, setEditUser] = useQueryState('editUser')
+    const queryClient = useQueryClient()
 
     const open = !!editUser
 
-        const {data, isLoading} = useQuery<EmployeeReturn>({
+    const {data, isLoading} = useQuery<EmployeeReturn>({
         queryKey: ['employee', editUser],
         queryFn: () => getEmployee(editUser ?? ""),
         enabled: !!editUser
+    })
+
+    const {mutate} = useMutation({
+        mutationKey: ['employee', 'update'],
+        mutationFn: putEmployee,
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ['employees']})
+            handleClose()
+        }
     })
 
     useEffect(() => {
@@ -27,8 +41,7 @@ export default function EditItemDrawer(){
 
 
     function onSubmit(data: EmployeeReturn){
-        console.log(data)
-        // mutate etc
+        mutate(data)
     }
 
     function handleClose(){
@@ -36,16 +49,7 @@ export default function EditItemDrawer(){
     }
 
     return (
-        <Drawer anchor="right" onClose={handleClose} open={open} slotProps={{
-            paper: {
-            sx: {
-                height: "30%",
-                padding: 2,
-                borderRadius: '16px 0 0 16px', 
-                overflow: 'visible',           
-                mt: 4,                       
-                top:'25%'
-            }}}}>
+        <Drawer anchor="right" onClose={handleClose} open={open} slotProps={slotProps}>
             {isLoading && <Box>Loading...</Box>}
             {!isLoading &&
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -60,13 +64,20 @@ export default function EditItemDrawer(){
                     </Grid>
                     <Grid container spacing={2} sx={{mt:2}}>
                         <TextField label="Phone Number" {...register('phoneNumber')}/>
-                        <TextField label="Sex" {...register('sex')}/>
+                        <SelectControl<EmployeeReturn>
+                            control={control}
+                            options={[
+                                {key:"male", value:"Male"},
+                                {key: "female", value:"Female"},
+                                {key:"undefined", value:"Undefined"}]}
+                            name="sex"/>
                     </Grid>
                     <Grid container spacing={5} sx={{mt:2, justifyContent:"center"}}>
                         <TextField label="Email" {...register('email')}/>
                     </Grid>
                     <Grid container spacing={5} sx={{mt:2, justifyContent:"center"}}>
-                        <Button>Submit</Button>
+                        <Button type="submit">Submit</Button>
+                        <Button sx={{color:'red'}} onClick={handleClose}>Cancel</Button>
                     </Grid>
                 </Grid>
             </form>}
