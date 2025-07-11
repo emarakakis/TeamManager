@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Employee } from "@/types/employee";
+import { Employee, EmployeeReturn } from "@/types/employee";
 import EmployeeItem from "@/modules/EmployeeItem/EmployeeItem";
 import getEmployees from "@/serverFunctions/getEmployees";
 import { Grid, Typography } from "@mui/material";
@@ -8,7 +8,7 @@ import { useQueryState } from "@/app/hooks/query-state-hook";
 
 export default function EmployeeTable({...props}){
     const [searchEmployee, setSearchEmployee] = useQueryState('employee')
-    const {data} = useQuery<Employee[]>({
+    const {data} = useQuery<EmployeeReturn[]>({
         queryKey: ['employees', searchEmployee],
         queryFn: () => getEmployees(searchEmployee)
   })

@@ -35,3 +35,7 @@ export type FieldData = {
     name: string
     area: FieldArea
 }
+
+export type FieldDataReturn = {
+    id: number
+} & FieldData

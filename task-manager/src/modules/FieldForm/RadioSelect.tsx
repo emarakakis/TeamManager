@@ -47,7 +47,6 @@ const RadioPure = forwardRef<HTMLDivElement, RadioPureProps>((
               <FormLabel sx={{display:"flex", justifyContent:'center', fontSize:20}}>Select Field's Area</FormLabel>
               <RadioGroup row = {row} {...props} value={selected} onChange={handleChange} >
                   {radios.map((r, i) => {
-                      console.log(r)
                       return <FormControlLabel key = {i} label={r.label} value={r.value} control={<Radio/>}/>
                   })}
               </RadioGroup>

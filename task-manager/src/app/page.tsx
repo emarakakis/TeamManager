@@ -5,6 +5,7 @@ import { Grid } from "@mui/material"
 import Input from "@/modules/Input/Input"
 import FieldTable from "@/modules/FieldTable/FieldTable"
 import EditItemDrawer from "@/modules/EditItemDrawer/EditItemDrawer"
+import RemoveItemModal from "@/modules/RemoveItemModal/RemoveItemModal"
 
 let tableSx = {border:"1px solid darkgray", justifyContent:"center", borderRadius: '16px', backgroundColor:'#f5f5f5',  color:'black', width:1, padding:3}
 let gridSx = {justifyContent:"center", margin:2}
@@ -24,5 +25,6 @@ export default function Home() {
         <EditItemDrawer/>
       </Grid>
       <EditItemDrawer/>
+      <RemoveItemModal />
     </Grid>)
 }

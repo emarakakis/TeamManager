@@ -50,3 +50,16 @@ export async function PUT(req:Request){
         throw error
     }
 }
+
+export async function DELETE(req:Request){
+    try{
+        const url = new URL(req.url)
+        const id = url.searchParams.get('id')
+
+        const res = await db.delete(employeeTable).where(eq(employeeTable.id, Number(id)))
+        return NextResponse.json({success: true, status: 200})
+
+    } catch (error) {
+        throw error
+    }
+}

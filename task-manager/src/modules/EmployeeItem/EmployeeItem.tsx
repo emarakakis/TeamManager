@@ -23,7 +23,7 @@ export default function EmployeeItem({data, colorIndex}: {data: EmployeeReturn, 
                 <Typography>{email}</Typography>
             </Grid>
             <Grid size={6/5} container sx={{justifyContent:"center"}}>
-                <ItemModal id={id}/>
+                <ItemModal id={id} type={"employee"}/>
             </Grid>
         </Grid>
 
