@@ -35,6 +35,8 @@ export async function DELETE(request: Request){
         const url = new URL(request.url)
         const id = url.searchParams.get("id")
 
+        console.log(id)
+
         const result = await db.delete(fieldTable).where(eq(fieldTable.id, Number(id)))
         return NextResponse.json({success: true})
     } catch (error) {

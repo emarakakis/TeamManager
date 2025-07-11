@@ -12,7 +12,7 @@ const paperProps = {
             height: 150, 
             padding: 3,
             borderRadius: 3,
-            overflow: 'hidden'
+            // overflow: 'hidden'
         }
     }
 }
@@ -59,8 +59,7 @@ export default function RemoveItemModal(){
     let content = dataType === "employee" ? "Employee" : "Field"
 
     return (
-        <Box sx={{width:"100px"}}>
-        <Dialog aria-modal={true} scroll="paper" open={open} sx={{width:1}} slotProps={paperProps} onClose={handleClose}>
+        <Dialog scroll="paper" open={open} sx={{width:1}} slotProps={paperProps} onClose={handleClose}>
             <Grid>
                 <Grid container sx={{justifyContent:"center"}}>
                     <DialogTitle>Delete Item</DialogTitle>
@@ -76,6 +75,5 @@ export default function RemoveItemModal(){
                 </Grid>
             </Grid>
         </Dialog>
-        </Box>
     )
 }
