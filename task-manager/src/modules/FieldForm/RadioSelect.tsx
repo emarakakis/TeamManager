@@ -59,7 +59,8 @@ export default function RadioSelect<T extends FieldValues>({
   control,
   radios,
   defaultValue,
-  row
+  row,
+  ...props
 }: RadioProps<T>) {
   return (
     <Controller
@@ -67,6 +68,7 @@ export default function RadioSelect<T extends FieldValues>({
       control={control}
       render={({ field }) => (
           <RadioPure
+            {...props}
             {...field}
             row = {row}
             onChange={field.onChange}           
