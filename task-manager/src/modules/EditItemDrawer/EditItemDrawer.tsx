@@ -23,7 +23,7 @@ export default function EditItemDrawer(){
     const {editItem, dataType} = editDataBatch
 
 
-    const open = !!editItem
+    const open = !!editItem && !!dataType
 
     const {data, isLoading} = useQuery<EmployeeReturn | Exclude<FieldDataReturn,"success">>({
         queryKey: ['employee', dataType, editItem],
@@ -81,10 +81,11 @@ export default function EditItemDrawer(){
             {!isLoading &&
             <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
-                {dataType === "employee" ? 
+                {dataType === "employee" && data &&
                     <EditEmployee/>
-                
-                :   
+                }
+
+                {dataType === "field" && data &&
                     <EditField data={data as FieldDataReturn}/>
                 }
 

@@ -19,7 +19,7 @@ type RadioProps<T extends FieldValues> = {
   control: Control<T>;
   radios: RadioOption[];
   row : boolean;
-  defaultValue: string
+  defaultValue: string | undefined
 
 };
 
@@ -28,13 +28,13 @@ type RadioPureProps = {
     onChange : (event: ChangeEvent<HTMLInputElement>, value: string) => void
     value : string
     radios: RadioOption[]
-    defaultValue: string
+    defaultValue: string | undefined
     row   : boolean
 }
 
 const RadioPure = forwardRef<HTMLDivElement, RadioPureProps>((
     {radios, onChange, row, value, defaultValue,  ...props}, ref) => {
-        const [selected, setSelected] = useState<string>(defaultValue)
+        const [selected, setSelected] = useState<string | undefined>(defaultValue)
 
         function handleChange(event: ChangeEvent<HTMLInputElement>){
             const value = event.target.value
