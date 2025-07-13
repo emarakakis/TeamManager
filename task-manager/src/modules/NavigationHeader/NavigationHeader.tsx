@@ -21,6 +21,11 @@ export default function NavigationHeader({ children }: { children: React.ReactNo
             </Link>
           </Typography>
           <Box>
+          <Link href="/pages/jobs/create">
+            <Button variant="text" sx={{color: "white"}}>
+              Create Job
+            </Button>
+          </Link>
           <Link href="/pages/fields/create" underline="none">
             <Button variant="outlined" sx={{color:"white"}}>
               Create Field
@@ -38,9 +43,9 @@ export default function NavigationHeader({ children }: { children: React.ReactNo
       {/* Κενό για να μην καλύπτεται το περιεχόμενο */}
       <Toolbar />
 
-      <Container sx={{ mt: 4}}>
+      <Box>
         {children}
-      </Container>
+      </Box>
     </>
   )
 }

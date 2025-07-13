@@ -1,7 +1,7 @@
 import { useRef,ChangeEvent, useState } from "react"
 import { TextField } from "@mui/material"
 import { useQueryState } from "@/app/hooks/query-state-hook"
-export default function Input(){
+export default function Input({...props}){
     const timeoutTime = useRef<number | null>(null)
     const [searchEmployee, setSearchEmployee] = useQueryState('employee')
     const [inputValue, setInputValue] = useState<string>(searchEmployee ?? "")
@@ -20,5 +20,5 @@ export default function Input(){
         }, 500)
     }
 
-    return <TextField type="text" value={inputValue} onChange={handleChange}/>
+    return <TextField type="text" value={inputValue} {...props} onChange={handleChange}/>
 }

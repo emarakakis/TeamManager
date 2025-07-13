@@ -21,12 +21,21 @@ export const fieldTable = sqliteTable('fields', {
   area: text('area').notNull(),
 })
 
+export const jobTable = sqliteTable('jobs', {
+  id: integer('id').primaryKey({autoIncrement: true}),
+  name: text('name').notNull(),
+  profession: text('profession').notNull(),
+  fieldId: integer('fieldId')
+
+})
+
 
 
 export const db = drizzle(sqlite, {
   schema: {
     employeeTable,
-    fieldTable
+    fieldTable,
+    jobTable
   },
 });
 
@@ -46,6 +55,13 @@ export async function initializeDB() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       area TEXT NOT NULL
+    );
+    DROP TABLE IF EXISTS jobs;
+    CREATE TABLE IF NOT EXISTS jobs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      profession TEXT NOT NULL,
+      fieldId ID  
     )
   `);
 }
