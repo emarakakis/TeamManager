@@ -43,9 +43,9 @@ export default function NavigationHeader({ children }: { children: React.ReactNo
       {/* Κενό για να μην καλύπτεται το περιεχόμενο */}
       <Toolbar />
 
-      <Container sx={{ mt: 4}}>
+      <Box>
         {children}
-      </Container>
+      </Box>
     </>
   )
 }

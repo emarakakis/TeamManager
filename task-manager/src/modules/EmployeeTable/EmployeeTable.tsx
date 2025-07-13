@@ -3,6 +3,7 @@ import { Employee, EmployeeReturn } from "@/types/employee";
 import EmployeeItem from "@/modules/EmployeeItem/EmployeeItem";
 import getEmployees from "@/serverFunctions/getEmployees";
 import { Grid, Typography } from "@mui/material";
+import Input from "@/modules/Input/Input"
 import TableHeader from "./TableHeader";
 import { useQueryState } from "@/app/hooks/query-state-hook";
 
@@ -14,9 +15,12 @@ export default function EmployeeTable({...props}){
   })
   return(
     <Grid {...props}>
-      <Typography variant="h2" sx={{justifyContent:"center"}}>Employees</Typography>
-        <hr/>
-        <TableHeader/>
+      <Grid container>
+          <Typography variant="h2" sx={{justifyContent:"center"}}>Employees</Typography>
+          <Input  label="Search"/>
+      </Grid>
+      <hr/>
+      <TableHeader/>
         <hr/>
         {data && data.map((employee, index) => {
         return (

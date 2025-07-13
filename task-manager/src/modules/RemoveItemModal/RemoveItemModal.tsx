@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import deleteEmployee from '@/serverFunctions/deleteEmployee';
 import deleteField from "@/serverFunctions/deleteField";
 import { useQueryClient } from '@tanstack/react-query';
+import deleteJob from "@/serverFunctions/deleteJob";
 
 const paperProps = {
     paper:{
@@ -45,6 +46,16 @@ export default function RemoveItemModal(){
         },
     })
 
+    const {mutate: mutateJob} = useMutation({
+        mutationKey: ["delete", "job"],
+        mutationFn: deleteJob,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['jobs']})
+            setEditDataBatch([{key:"deleteItem", value:null}, {key:"dataType", value:null}])
+            handleClose()
+        },
+    })
+
     function handleClose(){
         setEditDataBatch([{key:"deleteItem", value:null}, {key:"dataType", value:null}])
     }
@@ -52,11 +63,13 @@ export default function RemoveItemModal(){
     function handleClick(){
         if (dataType === "employee")
             mutateEmployee(Number(deleteItem))
-        else
+        else if (dataType === "field")
             mutateField(Number(deleteItem))
+        else if (dataType === "job")
+            mutateJob(Number(deleteItem))
     }
 
-    let content = dataType === "employee" ? "Employee" : "Field"
+    let content = dataType === "employee" ? "Employee" : dataType === "Field" ? "Field" : "Job"
 
     return (
         <Dialog scroll="paper" open={open} sx={{width:1}} slotProps={paperProps} onClose={handleClose}>

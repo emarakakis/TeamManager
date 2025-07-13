@@ -6,14 +6,18 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useQueryClient } from "@tanstack/react-query";
 import getEmployee from "@/serverFunctions/getEmployee";
 import getField from "@/serverFunctions/getField";
+import putJob from "@/serverFunctions/putJob";
+import getJob from "@/serverFunctions/getJob";
 import putEmployee from "@/serverFunctions/putEmployee";
 import { useEffect } from "react";
+import EditJob from "./EditJob";
 
 import { slotProps } from "./styling";
 import { FieldDataReturn } from "@/types/FieldData";
 import EditEmployee from "./EditEmployee";
 import EditField from "./EditField";
 import putField from "@/serverFunctions/putField";
+import { JobReturn } from "@/types/Job";
 
 
 export default function EditItemDrawer(){
@@ -25,14 +29,15 @@ export default function EditItemDrawer(){
 
     const open = !!editItem && !!dataType
 
-    const {data, isLoading} = useQuery<EmployeeReturn | Exclude<FieldDataReturn,"success">>({
+    const {data, isLoading} = useQuery<EmployeeReturn | JobReturn | Exclude<FieldDataReturn,"success">>({
         queryKey: ['employee', dataType, editItem],
         queryFn: () => {
             if(dataType==="employee")
                 return getEmployee(editItem ?? "")
             else if (dataType==="field")
-                console.log("Piou")
                 return getField(editItem ?? "")
+            else (dataType==="job")
+                return getJob(editItem ?? "")
         },
         enabled: !!editItem
     })
@@ -64,11 +69,24 @@ export default function EditItemDrawer(){
         }
     })
 
-    function onSubmit(data: EmployeeReturn | FieldDataReturn){
+    const {mutate: mutateJob} = useMutation({
+        mutationKey: ['jobs', 'update'],
+        mutationFn: putJob,
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ['jobs']})
+            handleClose()
+            setEditDataBatch([{key:"editItem", value:null}, {key:"dataType", value:null}])
+        }
+    })
+
+    function onSubmit(data: EmployeeReturn | FieldDataReturn | JobReturn){
         if (dataType === "employee")
             mutateEmployee(data as EmployeeReturn)
-        else
+        else if (dataType === 'job')
+            mutateJob(data as JobReturn)
+        else if (dataType === "field")
             mutateField(data as FieldDataReturn)
+
     }
 
     function handleClose(){
@@ -87,6 +105,10 @@ export default function EditItemDrawer(){
 
                 {dataType === "field" && data &&
                     <EditField data={data as FieldDataReturn}/>
+                }
+
+                {dataType === "job" && data &&
+                    <EditJob data={data as JobReturn}/>
                 }
 
                 <Grid container spacing={5} sx={{mt:2, justifyContent:"center"}}>
