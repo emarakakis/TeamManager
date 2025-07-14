@@ -1,8 +1,7 @@
-import { JobReturn } from "@/types/Job";
 import axios from "axios";
 
-export default async function getJobs(){
-    const result = await axios.get('/api/jobs')
+export default async function getJobs(query: string){
+    const result = await axios.get(`/api/jobs?query=${query}`)
     const data = await result.data
 
     if(!data.success || !Array.isArray(data.data)){

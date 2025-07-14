@@ -55,7 +55,8 @@ const SelectPure = forwardRef<HTMLDivElement, SelectPureProps>(({options, onChan
 export default function SelectControl<T extends FieldValues>({
     name,
     options,
-    control
+    control,
+    ...props
 }: SelectProps<T>
 ){
     return (
@@ -65,6 +66,7 @@ export default function SelectControl<T extends FieldValues>({
             render={({field}) => {
                 return (<SelectPure
                     {...field}
+                    {...props}
                     options={options}
                     onChange={field.onChange}
                     value={field.value}

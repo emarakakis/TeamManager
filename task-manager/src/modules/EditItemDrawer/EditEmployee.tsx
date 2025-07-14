@@ -1,5 +1,5 @@
 import { Grid, Typography, TextField } from "@mui/material"
-import SelectControl from "../EmployeeForm/SelectControl"
+import SelectControl from "../SelectControl/SelectControl"
 import { EmployeeReturn } from "@/types/employee"
 import { useFormContext } from "react-hook-form"
 import { useQuery } from "@tanstack/react-query"

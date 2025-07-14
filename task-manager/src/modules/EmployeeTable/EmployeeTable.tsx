@@ -3,7 +3,7 @@ import { Employee, EmployeeReturn } from "@/types/employee";
 import EmployeeItem from "@/modules/EmployeeItem/EmployeeItem";
 import getEmployees from "@/serverFunctions/getEmployees";
 import { Grid, Typography } from "@mui/material";
-import Input from "@/modules/Input/Input"
+import Search from "../Search/Search";
 import TableHeader from "./TableHeader";
 import { useQueryState } from "@/app/hooks/query-state-hook";
 
@@ -17,7 +17,7 @@ export default function EmployeeTable({...props}){
     <Grid {...props}>
       <Grid container>
           <Typography variant="h2" sx={{justifyContent:"center"}}>Employees</Typography>
-          <Input  label="Search"/>
+          <Search type="employee"/>
       </Grid>
       <hr/>
       <TableHeader/>

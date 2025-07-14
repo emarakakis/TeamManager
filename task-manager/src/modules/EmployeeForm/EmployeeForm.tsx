@@ -7,7 +7,7 @@ import {
     Container, 
     Typography} from "@mui/material";
 
-import SelectControl from "./SelectControl";
+import SelectControl from "../SelectControl/SelectControl";
 import { useFormContext } from "react-hook-form";
 import { Employee } from "@/types/employee";
 
