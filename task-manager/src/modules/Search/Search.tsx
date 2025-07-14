@@ -11,7 +11,7 @@ export default function Search({type}:{type:string}){
     const {handleSubmit} = methods
 
     function onSubmit(data: {category: string}){
-        console.log(data)
+        console.log(`Μπλε πουτσα ${data}`)
     }
 
     return (

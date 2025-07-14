@@ -55,7 +55,7 @@ export default function EditItemDrawer(){
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['employees']})
             handleClose()
-            setEditDataBatch([{key:"editItem", value:null}, {key:"dataType", value:null}])
+            setEditDataBatch({editItem:null, dataType:null})
         }
     })
 
@@ -65,7 +65,7 @@ export default function EditItemDrawer(){
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['fields']})
             handleClose()
-            setEditDataBatch([{key:"editItem", value:null}, {key:"dataType", value:null}])
+            setEditDataBatch({editItem:null, dataType:null})
         }
     })
 
@@ -75,7 +75,7 @@ export default function EditItemDrawer(){
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['jobs']})
             handleClose()
-            setEditDataBatch([{key:"editItem", value:null}, {key:"dataType", value:null}])
+            setEditDataBatch({editItem:null, dataType:null})
         }
     })
 
@@ -90,7 +90,7 @@ export default function EditItemDrawer(){
     }
 
     function handleClose(){
-        setEditDataBatch([{key:"editItem", value:null}, {key:"dataType", value:null}])
+        setEditDataBatch({editItem:null, dataType:null})
     }
 
     return (
