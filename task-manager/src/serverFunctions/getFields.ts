@@ -1,7 +1,10 @@
 import { FieldDataReturn } from "@/types/FieldData"
 import axios from "axios"
+import qs from 'qs'
 
-export default async function getFields(query: string){
+export default async function getFields(fieldSearchParams: Object){
+
+    const query = qs.stringify(fieldSearchParams)
     const result = await axios.get<FieldDataReturn[]>(`/api/fields?${query}`)
     const data = await result.data
     if (!Array.isArray(data)){

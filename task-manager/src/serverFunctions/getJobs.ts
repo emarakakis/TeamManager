@@ -1,6 +1,8 @@
 import axios from "axios";
+import qs from 'qs'
 
-export default async function getJobs(query: string){
+export default async function getJobs(jobSearchParam: Object){
+    const query = qs.stringify(jobSearchParam)
     const result = await axios.get(`/api/jobs?${query}`)
     const data = await result.data
 

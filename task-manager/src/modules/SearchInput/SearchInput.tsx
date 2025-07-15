@@ -5,8 +5,9 @@ import { useFormContext } from "react-hook-form"
 import qs from 'qs'
 export default function SearchInput({
     ref,
+    value,
     ...props
-} : {ref : RefObject<string>}){
+} : {ref : RefObject<string>, value: string}){
     const [intenalValue, setInternalValue] = useState<string>("")
     
     function handleChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){

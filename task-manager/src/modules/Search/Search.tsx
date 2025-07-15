@@ -14,12 +14,12 @@ export default function Search({
 }:{type:string, options: Option[]}){
     const [searchType, setSearchType] = useQueryState(type)
     const input = useRef("")
-    const methods = useForm<{category: string}>()
+    const {getValues, control} = useForm<{category: string}>()
 
     function handleSearch(){
         const value = input.current
-        const typeObject = {...qs.parse(searchType ?? "")}
-        const field = methods.getValues('category') ?? 'name'
+        const typeObject = {...searchType}
+        const field = getValues('category') ?? 'name'
         console.log(`Employee : ${typeObject}`)
 
         if (value === null){
@@ -30,18 +30,20 @@ export default function Search({
         setSearchType(qs.stringify(typeObject))
     }
 
+    console.log(searchType)
+
     return (
         <Box>
             <Grid container spacing={2} sx={{width:1}}>
                 <Grid size = {3}>
                     <SelectControl
                         name="category"
-                        control={methods.control}
+                        control={control}
                         options={options}
                     />
                 </Grid>
                 <Grid>
-                    <SearchInput ref={input} />
+                    <SearchInput ref={input} value={"d"}/>
                 </Grid>
                 <Grid>
                     <Button onClick={handleSearch}>Press</Button>

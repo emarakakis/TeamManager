@@ -50,7 +50,8 @@ export function useQueryState(param: string){
 
     const getState = useCallback(() => {
         const state = searchParams.get(param)
-        return state
+
+        return qs.parse(state ?? "") as Object
     }, [param, searchParams])
 
     const setState = useCallback((val: string) => {
