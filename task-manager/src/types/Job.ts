@@ -9,6 +9,7 @@ export type JobCreate = {
 
 export type JobReturn = {
     id: number
-} & JobCreate
+    fieldId: number
+} & Omit<JobCreate, "field">
 
 type Profession = "intern" | "junior" | "intermediate" | "senior"
