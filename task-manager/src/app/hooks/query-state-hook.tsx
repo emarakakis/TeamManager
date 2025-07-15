@@ -57,11 +57,17 @@ export function useQueryState(param: string){
         const newParams = new URLSearchParams(searchParams.toString())
         const str = searchParams.get(param)
         const prevObject = str ? {...qs.parse(str)} : {}
-        let wtf = qs.parse(val)
-        const newObject = {...prevObject, ...wtf}
-
-        newParams.set(param, qs.stringify(newObject))
-        
+        let valueObject = qs.parse(val)
+        const newObject = Object
+            .fromEntries(
+                Object.entries({...prevObject, ...valueObject})
+                    .filter(([_, value]) => value !== null && value !== null && value !== '')
+            )
+        if (Object.entries(newObject).length > 0){
+            newParams.set(param, qs.stringify(newObject))
+        } else {
+            newParams.delete(param)
+        }
         router.push(`?${newParams.toString()}`)
     }, [router, searchParams, param])
 
