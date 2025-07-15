@@ -13,7 +13,6 @@ const paperProps = {
             height: 150, 
             padding: 3,
             borderRadius: 3,
-            // overflow: 'hidden'
         }
     }
 }
@@ -31,7 +30,7 @@ export default function RemoveItemModal(){
         mutationFn: deleteEmployee,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['employees']})
-            setEditDataBatch([{key:"deleteItem", value:null}, {key:"dataType", value:null}])
+            setEditDataBatch({deleteItem:null , dataType:null})
             handleClose()
         },
     })
@@ -41,7 +40,7 @@ export default function RemoveItemModal(){
         mutationFn: deleteField,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['fields']})
-            setEditDataBatch([{key:"deleteItem", value:null}, {key:"dataType", value:null}])
+            setEditDataBatch({deleteItem:null , dataType:null})
             handleClose()
         },
     })
@@ -51,13 +50,13 @@ export default function RemoveItemModal(){
         mutationFn: deleteJob,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['jobs']})
-            setEditDataBatch([{key:"deleteItem", value:null}, {key:"dataType", value:null}])
+            setEditDataBatch({deleteItem:null , dataType:null})
             handleClose()
         },
     })
 
     function handleClose(){
-        setEditDataBatch([{key:"deleteItem", value:null}, {key:"dataType", value:null}])
+        setEditDataBatch({deleteItem:null , dataType:null})
     }
 
     function handleClick(){
@@ -70,6 +69,8 @@ export default function RemoveItemModal(){
     }
 
     let content = dataType === "employee" ? "Employee" : dataType === "Field" ? "Field" : "Job"
+
+    
 
     return (
         <Dialog scroll="paper" open={open} sx={{width:1}} slotProps={paperProps} onClose={handleClose}>

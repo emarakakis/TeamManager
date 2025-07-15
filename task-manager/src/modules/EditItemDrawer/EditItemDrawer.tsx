@@ -28,21 +28,18 @@ export default function EditItemDrawer(){
 
 
     const open = !!editItem && !!dataType
-
     const {data, isLoading} = useQuery<EmployeeReturn | JobReturn | Exclude<FieldDataReturn,"success">>({
-        queryKey: ['employee', dataType, editItem],
+        queryKey: [dataType, editItem],
         queryFn: () => {
             if(dataType==="employee")
-                return getEmployee(editItem ?? "")
+                return getEmployee(editDataBatch.editItem ?? "")
             else if (dataType==="field")
-                return getField(editItem ?? "")
+                return getField(editDataBatch.editItem ?? "")
             else (dataType==="job")
-                return getJob(editItem ?? "")
+                return getJob(editDataBatch.editItem ?? "")
         },
         enabled: !!editItem
     })
-
-    console.log(data)
  
     useEffect(() => {
         if (data !== undefined)
@@ -55,7 +52,7 @@ export default function EditItemDrawer(){
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['employees']})
             handleClose()
-            setEditDataBatch([{key:"editItem", value:null}, {key:"dataType", value:null}])
+            setEditDataBatch({editItem:null, dataType:null})
         }
     })
 
@@ -65,7 +62,7 @@ export default function EditItemDrawer(){
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['fields']})
             handleClose()
-            setEditDataBatch([{key:"editItem", value:null}, {key:"dataType", value:null}])
+            setEditDataBatch({editItem:null, dataType:null})
         }
     })
 
@@ -75,7 +72,7 @@ export default function EditItemDrawer(){
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['jobs']})
             handleClose()
-            setEditDataBatch([{key:"editItem", value:null}, {key:"dataType", value:null}])
+            setEditDataBatch({editItem:null, dataType:null})
         }
     })
 
@@ -90,7 +87,7 @@ export default function EditItemDrawer(){
     }
 
     function handleClose(){
-        setEditDataBatch([{key:"editItem", value:null}, {key:"dataType", value:null}])
+        setEditDataBatch({editItem:null, dataType:null})
     }
 
     return (

@@ -9,7 +9,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 export default function ItemModal({id, type} : {id: number, type:string}){ 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
-    const [editDataBatch, setEditDataBatch] = useQueryBatch(['editItem', 'dataType'])
+    const [editDataBatch, setEditDataBatch] = useQueryBatch(['editItem', 'deleteItem', 'dataType'])
     const queryClient = useQueryClient()
     
     const open = !!anchorEl
@@ -22,12 +22,12 @@ export default function ItemModal({id, type} : {id: number, type:string}){
     }
 
     function handleEdit(){
-        setEditDataBatch([{key:"editItem", value:id}, {key:"dataType", value:type}])
+    setEditDataBatch({editItem:id , dataType:type})
         setAnchorEl(null)
     }
 
     function handleDelete(){
-        setEditDataBatch([{key:"deleteItem", value:id}, {key:"dataType", value:type}])
+        setEditDataBatch({deleteItem:id , dataType:type})
         setAnchorEl(null)
     }
 

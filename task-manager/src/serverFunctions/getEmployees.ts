@@ -1,11 +1,13 @@
 import { EmployeeReturn } from "@/types/employee";
 import axios from "axios";
-
-export default async function getEmployees(employeeParam: string | null){
-    const result = await axios.get<EmployeeReturn[]>(`/api/employees?${employeeParam}`)
-    if (!result) throw new Error("Mple")
-    let data =  await result.data
-    if (employeeParam)
-        data = data.filter(employee => employee.name.startsWith(employeeParam))
-    return data
+import qs from 'qs'
+import { ObjectType } from "@/app/hooks/query-state-hook";
+export default async function getEmployees(employeeSearchParam: ObjectType){
+    const query = qs.stringify(employeeSearchParam)
+    const result = await axios.get(`/api/employees?${query}`)
+    const data = result.data
+    if (!data.success){
+        throw new Error("Mple")
+    }
+    return data.employees
 }
