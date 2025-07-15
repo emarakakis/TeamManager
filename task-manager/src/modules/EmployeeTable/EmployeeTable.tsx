@@ -15,13 +15,17 @@ export default function EmployeeTable({...props}){
   })
   return(
     <Grid {...props}>
-      <Grid container>
-          <Typography variant="h2" sx={{justifyContent:"center"}}>Employees</Typography>
-          <Search type="employee" options = {[
-            {key: 'name', value: 'Name'},
-            {key: 'surname', value:'Surname'},
-            {key: 'phoneNumber', value: 'Phone Number'},
-            {key: 'sex', value: 'Sex'}]}/>
+      <Grid container direction="row" sx ={{alignItems:'center'}}>
+          <Grid container sx={{backgroundColor:'lightGray', justifyContent:'center', alignItems:'center', height:"100px", width:"30%", borderRadius:"16px"}}>
+            <Typography variant="h2" sx={{justifyContent:"center"}}>Employees</Typography>
+          </Grid>
+          <Grid size={9} container sx={{justifyContent:'center', alignItems:'center', height:"100px", width:"70%", borderRadius:"16px"}}>
+            <Search type="employee" options = {[
+              {key: 'name', value: 'Name'},
+              {key: 'surname', value:'Surname'},
+              {key: 'phoneNumber', value: 'Phone Number'},
+              {key: 'sex', value: 'Sex'}]}/>
+          </Grid>
       </Grid>
       <hr/>
       <TableHeader/>

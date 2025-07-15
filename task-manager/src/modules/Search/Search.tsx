@@ -1,13 +1,13 @@
 
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { Box, Grid, Button, List, ListItem, Typography } from "@mui/material";
+import { Box, Grid, Button, List, ListItem, Typography, TextField } from "@mui/material";
 import SearchInput from "../SearchInput/SearchInput";
 import SelectControl from "../SelectControl/SelectControl";
 import { useQueryState } from "@/app/hooks/query-state-hook";
 import qs from 'qs'
 import { Option } from "../SelectControl/SelectControl";
-import { useRef } from "react";
+import SearchCondition from "./SearchCondition";
 
 export default function Search({
     type,
@@ -40,9 +40,9 @@ export default function Search({
     const conditions = Object.entries(searchType)
 
     return (
-        <Box>
-            <Grid container spacing={2} sx={{width:1}}>
-                <Grid size = {3}>
+        <Grid container direction="column">
+            <Grid container sx={{ml:2}} >
+                <Grid container sx={{width:"40%"}}>
                     <SelectControl
                         name="category"
                         defaultValue="name"
@@ -50,24 +50,25 @@ export default function Search({
                         options={options}
                     />
                 </Grid>
-                <Grid>
+                <Grid container sx={{width:'40%'}}>
                     <SearchInput value={intenalValue} setValue={setInternalValue}/>
                 </Grid>
-                <Grid>
-                    <Button onClick={handleSearch}>Press</Button>
+                <Grid container sx={{width:'20%'}}>
+                    <Button sx={{width:1}}onClick={handleSearch}>Search</Button>
                 </Grid>
                 <Grid>
-                    <List>
-                    {conditions.map(([key, value], index) => 
-                        <ListItem key={key}>
-                            <Typography>{key} = {value}</Typography>
-                            <Button onClick={()=>handleDeleteCondition(key)}>Delete</Button>
-                        </ListItem>
-                        )}
-                    </List>
+
                 </Grid>
             </Grid>
-
-        </Box>
+            <Grid container spacing={2} sx={{width:"100%"}}>
+                    {conditions.map(([condition, value], index) => 
+                        <SearchCondition 
+                            condition={condition}
+                            value={value}
+                            onClick={()=>handleDeleteCondition(condition)}
+                            key={index}/>
+                    )}
+                    </Grid>
+        </Grid>
     )
 }

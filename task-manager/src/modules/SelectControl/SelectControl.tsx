@@ -41,7 +41,7 @@ const SelectPure = forwardRef<HTMLDivElement, SelectPureProps>(({options, onChan
 }
   
 
-    return <Select
+    return <Select sx={{width:"100%", minWidth:"100%", maxWidth:"100%", fontSize:'14px'}}
         {...props}
         onChange={(event) => handleChange(event)}
         ref = {ref}
