@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import qs from "qs";
 import { stat } from "fs";
 
-type ObjectType = {
+export type ObjectType = {
     [key: string] : any
 }
 
@@ -51,7 +51,7 @@ export function useQueryState(param: string){
     const getState = useCallback(() => {
         const state = searchParams.get(param)
 
-        return qs.parse(state ?? "") as Object
+        return qs.parse(state ?? "") as ObjectType
     }, [param, searchParams])
 
     const setState = useCallback((val: string) => {

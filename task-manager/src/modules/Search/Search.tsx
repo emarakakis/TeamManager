@@ -1,6 +1,7 @@
 
 import { useForm } from "react-hook-form";
-import { Box, Grid, Button } from "@mui/material";
+import { useState } from "react";
+import { Box, Grid, Button, List, ListItem, Typography } from "@mui/material";
 import SearchInput from "../SearchInput/SearchInput";
 import SelectControl from "../SelectControl/SelectControl";
 import { useQueryState } from "@/app/hooks/query-state-hook";
@@ -13,24 +14,30 @@ export default function Search({
     options
 }:{type:string, options: Option[]}){
     const [searchType, setSearchType] = useQueryState(type)
-    const input = useRef("")
+    const [intenalValue, setInternalValue] = useState<string>("")
+    const [activeSearch, setActiveSearch] = useState<Array<Object>>([])
+
     const {getValues, control} = useForm<{category: string}>()
 
     function handleSearch(){
-        const value = input.current
         const typeObject = {...searchType}
         const field = getValues('category') ?? 'name'
-        console.log(`Employee : ${typeObject}`)
 
-        if (value === null){
-            typeObject[field] = undefined
-        } else {
-            typeObject[field] = value
-        }
+        const val = intenalValue ? intenalValue : null
+        typeObject[field] = val
+        
+        setInternalValue("")
         setSearchType(qs.stringify(typeObject))
     }
 
-    console.log(searchType)
+    function handleDeleteCondition(key: string){
+        const typeObject = {...searchType}
+        typeObject[key] = null
+        setSearchType(qs.stringify(typeObject))
+
+    }
+
+    const conditions = Object.entries(searchType)
 
     return (
         <Box>
@@ -38,15 +45,26 @@ export default function Search({
                 <Grid size = {3}>
                     <SelectControl
                         name="category"
+                        defaultValue="name"
                         control={control}
                         options={options}
                     />
                 </Grid>
                 <Grid>
-                    <SearchInput ref={input} value={"d"}/>
+                    <SearchInput value={intenalValue} setValue={setInternalValue}/>
                 </Grid>
                 <Grid>
                     <Button onClick={handleSearch}>Press</Button>
+                </Grid>
+                <Grid>
+                    <List>
+                    {conditions.map(([key, value], index) => 
+                        <ListItem key={key}>
+                            <Typography>{key} = {value}</Typography>
+                            <Button onClick={()=>handleDeleteCondition(key)}>Delete</Button>
+                        </ListItem>
+                        )}
+                    </List>
                 </Grid>
             </Grid>
 

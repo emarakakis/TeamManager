@@ -12,18 +12,20 @@ type SelectProps<T extends FieldValues> = {
     options: Option[]
     control: Control<T>
     onChange?: (event: SelectChangeEvent) => void
+    defaultValue?: string
 }
 
 type SelectPureProps = {
     options: Option[]
     onChange: (event: SelectChangeEvent) => void
+    defaultValue?: string | undefined
     value : string
 }
 
 
 
-const SelectPure = forwardRef<HTMLDivElement, SelectPureProps>(({options, onChange, value, ...props}, ref) => {
-    const [selected, setSelected] = useState<string>("undefined")
+const SelectPure = forwardRef<HTMLDivElement, SelectPureProps>(({options, onChange, value, defaultValue, ...props}, ref) => {
+    const [selected, setSelected] = useState<string>(defaultValue || "")
 
     function handleChange(event: SelectChangeEvent){
         if ("nativeEvent" in event) {
@@ -46,7 +48,7 @@ const SelectPure = forwardRef<HTMLDivElement, SelectPureProps>(({options, onChan
         value = {value ?? ""}
     >
         {options.map((s, i) => {
-            return <MenuItem selected={selected === s.key} value={s.key} key={i}>{s.value}</MenuItem>
+            return <MenuItem value={s.key} key={i}>{s.value}</MenuItem>
         })}
     </Select>
 
