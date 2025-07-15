@@ -2,6 +2,8 @@ import { EmployeeReturn } from "@/types/employee";
 import axios from "axios";
 
 export default async function getEmployees(employeeParam: string | null){
+
+    console.log(employeeParam)
     const result = await axios.get<EmployeeReturn[]>(`/api/employees?${employeeParam}`)
     if (!result) throw new Error("Mple")
     let data =  await result.data

@@ -28,21 +28,20 @@ export default function EditItemDrawer(){
 
 
     const open = !!editItem && !!dataType
-
     const {data, isLoading} = useQuery<EmployeeReturn | JobReturn | Exclude<FieldDataReturn,"success">>({
-        queryKey: ['employee', dataType, editItem],
+        queryKey: [dataType, editItem],
         queryFn: () => {
             if(dataType==="employee")
-                return getEmployee(editItem ?? "")
+                return getEmployee(editDataBatch.editItem ?? "")
             else if (dataType==="field")
-                return getField(editItem ?? "")
+                return getField(editDataBatch.editItem ?? "")
             else (dataType==="job")
-                return getJob(editItem ?? "")
+                return getJob(editDataBatch.editItem ?? "")
         },
         enabled: !!editItem
     })
 
-    console.log(data)
+    console.log(editDataBatch)
  
     useEffect(() => {
         if (data !== undefined)
