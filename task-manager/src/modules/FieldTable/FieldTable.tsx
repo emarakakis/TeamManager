@@ -17,7 +17,7 @@ export default function FieldTable({...props}){
     return (
         <Grid {...props}>
             <Typography variant="h2" sx={{justifyContent:"center"}}>Fields</Typography>
-            <Search type="field"/>
+            <Search type="field" options = {[{key: 'name', value: 'Name'}, {key:'area', value:'Area'}]}/>
             <hr/>
             <TableHeader/>
             <hr/>

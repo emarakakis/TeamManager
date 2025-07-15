@@ -17,7 +17,7 @@ export default function JobTable({...props}){
     return (
         <Grid {...props}>
             <Typography variant="h2">Jobs</Typography>
-            <Search type="jobs"/>
+            <Search type="jobs" options = {[{key: 'name', value: 'Name'}, {key:'area', value:'Area'}]}/>
             <hr/>
             <TableHeader />
             <hr/>

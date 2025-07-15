@@ -36,7 +36,6 @@ export function useQueryBatch<T extends ObjectType>(params: string[]){
             else
                 newParams.delete(key)
         }
-        // const query = qs.stringify(values, { encode: false });
         router.push(`?${newParams}`);
     }, [router, searchParams, params])
 

@@ -17,7 +17,11 @@ export default function EmployeeTable({...props}){
     <Grid {...props}>
       <Grid container>
           <Typography variant="h2" sx={{justifyContent:"center"}}>Employees</Typography>
-          <Search type="employee"/>
+          <Search type="employee" options = {[
+            {key: 'name', value: 'Name'},
+            {key: 'surname', value:'Surname'},
+            {key: 'phoneNumber', value: 'Phone Number'},
+            {key: 'sex', value: 'Sex'}]}/>
       </Grid>
       <hr/>
       <TableHeader/>

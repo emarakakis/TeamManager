@@ -40,8 +40,6 @@ export default function EditItemDrawer(){
         },
         enabled: !!editItem
     })
-
-    console.log(editDataBatch)
  
     useEffect(() => {
         if (data !== undefined)

@@ -2,7 +2,7 @@ import { forwardRef, useState, ChangeEvent } from "react"
 import { Control, Controller, FieldValues, Path } from "react-hook-form"
 import { Select, SelectChangeEvent, MenuItem } from "@mui/material"
 
-type Option = {
+export type Option = {
     key: string
     value: string
 }

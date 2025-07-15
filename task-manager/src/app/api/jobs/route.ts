@@ -6,7 +6,6 @@ export async function GET(req:Request) {
     try{
         const url = new URL(req.url)
         const query = url.searchParams.get('query')
-        console.log(query)
         const result = await db.select().from(jobTable).where(like(jobTable.name, `${query}%`)).all()
 
         if (!Array.isArray(result)){
