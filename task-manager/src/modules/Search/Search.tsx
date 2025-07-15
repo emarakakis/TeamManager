@@ -1,34 +1,38 @@
-import { useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { Box, Grid } from "@mui/material";
+
+import { useForm } from "react-hook-form";
+import { Box, Grid, Button } from "@mui/material";
 import SearchInput from "../SearchInput/SearchInput";
 import SelectControl from "../SelectControl/SelectControl";
 import { useQueryState } from "@/app/hooks/query-state-hook";
 import qs from 'qs'
 import { Option } from "../SelectControl/SelectControl";
+import { useRef } from "react";
 
 export default function Search({
     type,
     options
 }:{type:string, options: Option[]}){
     const [searchType, setSearchType] = useQueryState(type)
+    const input = useRef("")
     const methods = useForm<{category: string}>()
 
-    function handleSearch(str : string | null){
+    function handleSearch(){
+        const value = input.current
         const typeObject = {...qs.parse(searchType ?? "")}
         const field = methods.getValues('category') ?? 'name'
+        console.log(`Employee : ${typeObject}`)
 
-        if (str === null){
+        if (value === null){
             typeObject[field] = undefined
         } else {
-            typeObject[field] = str
+            typeObject[field] = value
         }
         setSearchType(qs.stringify(typeObject))
     }
 
     return (
         <Box>
-            <Grid container spacing={5}>
+            <Grid container spacing={2} sx={{width:1}}>
                 <Grid size = {3}>
                     <SelectControl
                         name="category"
@@ -37,7 +41,10 @@ export default function Search({
                     />
                 </Grid>
                 <Grid>
-                    <SearchInput handleSearch={handleSearch} />
+                    <SearchInput ref={input} />
+                </Grid>
+                <Grid>
+                    <Button onClick={handleSearch}>Press</Button>
                 </Grid>
             </Grid>
 

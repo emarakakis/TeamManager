@@ -29,6 +29,7 @@ export function useQueryBatch<T extends ObjectType>(params: string[]){
     const setState = useCallback((values: T) => {
         const newParams = new URLSearchParams(searchParams.toString())
         for(const [key, value] of Object.entries(values)){
+            
             const query = qs.stringify({[key] : value}, {encode:false})
             const v = query.split('=')[1]
             if (!!v)
@@ -52,13 +53,14 @@ export function useQueryState(param: string){
         return state
     }, [param, searchParams])
 
-    const setState = useCallback((val: any) => {
+    const setState = useCallback((val: string) => {
         const newParams = new URLSearchParams(searchParams.toString())
-        if (!val){
-            newParams.delete(param)
-        } else {
-            newParams.set(param, val)
-        }
+        const str = searchParams.get(param)
+        const prevObject = str ? {...qs.parse(str)} : {}
+        let wtf = qs.parse(val)
+        const newObject = {...prevObject, ...wtf}
+
+        newParams.set(param, qs.stringify(newObject))
         
         router.push(`?${newParams.toString()}`)
     }, [router, searchParams, param])

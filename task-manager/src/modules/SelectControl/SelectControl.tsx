@@ -11,6 +11,7 @@ type SelectProps<T extends FieldValues> = {
     name: Path<T>
     options: Option[]
     control: Control<T>
+    onChange?: (event: SelectChangeEvent) => void
 }
 
 type SelectPureProps = {
