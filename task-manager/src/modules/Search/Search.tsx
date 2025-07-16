@@ -54,7 +54,7 @@ export default function Search({
                     <SearchInput value={intenalValue} setValue={setInternalValue}/>
                 </Grid>
                 <Grid container sx={{width:'20%'}}>
-                    <Button sx={{width:1}}onClick={handleSearch}>Search</Button>
+                    <Button onClick={handleSearch}>Search</Button>
                 </Grid>
                 <Grid>
 
