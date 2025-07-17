@@ -5,11 +5,22 @@ import { useQueryClient } from "@tanstack/react-query";
 import { RemoveItemModal } from "./RemoveItemModal";
 import MergeFieldJobModal from "./MergeFieldJobModal";
 
-const paperProps = {
+const deletePaperProps = {
   paper: {
     sx: {
       width: 350,
       height: 150,
+      padding: 3,
+      borderRadius: 3,
+    },
+  },
+};
+
+const mergePaperProps = {
+  paper: {
+    sx: {
+      width: 500,
+      height: 450,
       padding: 3,
       borderRadius: 3,
     },
@@ -44,7 +55,7 @@ export default function ActionModal() {
       scroll="paper"
       open={open}
       sx={{ width: 1 }}
-      slotProps={paperProps}
+      slotProps={!!deleteItem ? deletePaperProps : mergePaperProps}
       onClose={() => (deleteItem ? handleCloseDelete() : handleCloseMerge())}
     >
       {!!deleteItem && !!dataType && <RemoveItemModal />}

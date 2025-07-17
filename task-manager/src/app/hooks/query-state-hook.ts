@@ -20,7 +20,6 @@ export function useQueryBatch<T extends ObjectType>(params: string[]) {
       if (!query?.includes("=")) state[param] = query;
       else state[param] = qs.parse(query ?? "");
     }
-    console.log(state);
     return clearBatchObject(state);
   }, [searchParams, params]);
 
@@ -32,7 +31,6 @@ export function useQueryBatch<T extends ObjectType>(params: string[]) {
       } else {
         for (const [key, value] of Object.entries(values)) {
           let val = "";
-          console.log(key, value);
           if (typeof value === "string" || typeof value === "number") {
             val = value.toString();
           } else if (value) {
