@@ -46,6 +46,7 @@ export default function ItemModal({
   }
 
   function handleEdit() {
+    console.log(data.id);
     setEditDataBatch({ editItem: data.id, dataType: type });
     setAnchorEl(null);
   }
@@ -58,6 +59,7 @@ export default function ItemModal({
   function handleJobAssign() {
     const job = data as JobReturn;
     setAssignJob(qs.stringify({ id: job.id, area: job.area }));
+    setAnchorEl(null);
   }
 
   return (

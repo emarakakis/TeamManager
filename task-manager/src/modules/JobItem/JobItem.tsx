@@ -10,7 +10,6 @@ export default function JobItem({
   data: JobReturn;
   index: number;
 }) {
-  console.log(data);
   const color = index % 2 === 1 ? "white" : "#1976d2";
   return (
     <Grid container sx={{ backgroundColor: color }}>

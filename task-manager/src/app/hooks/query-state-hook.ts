@@ -3,6 +3,7 @@
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useCallback } from "react";
 import qs from "qs";
+import { stat } from "fs";
 
 export type ObjectType = {
   [key: string]: any;
@@ -16,19 +17,33 @@ export function useQueryBatch<T extends ObjectType>(params: string[]) {
     const state: ObjectType = {};
     for (const param of params) {
       const query = searchParams.get(param);
-      state[param] = qs.parse(query ?? "") as ObjectType;
+      if (!query?.includes("=")) state[param] = query;
+      else state[param] = qs.parse(query ?? "");
     }
+    console.log(state);
     return clearBatchObject(state);
   }, [searchParams, params]);
 
   const setState = useCallback(
-    (values: T) => {
+    (values: T | null) => {
       const newParams = new URLSearchParams(searchParams.toString());
-      for (const [key, value] of Object.entries(values)) {
-        const query = qs.stringify({ [key]: value }, { encode: false });
-        const v = query.split("=")[1];
-        if (!!v) newParams.set(key, value);
-        else newParams.delete(key);
+      if (!values) {
+        params.forEach((p) => newParams.delete(p));
+      } else {
+        for (const [key, value] of Object.entries(values)) {
+          let val = "";
+          console.log(key, value);
+          if (typeof value === "string" || typeof value === "number") {
+            val = value.toString();
+          } else if (value) {
+            const prevState = qs.parse(searchParams.get(key) ?? "");
+            const newState = { ...prevState, ...value };
+            val = qs.stringify(newState);
+          }
+
+          if (!!val) newParams.set(key, val);
+          else newParams.delete(key);
+        }
       }
       router.push(`?${newParams}`);
     },
@@ -38,7 +53,7 @@ export function useQueryBatch<T extends ObjectType>(params: string[]) {
   return [getState(), setState] as const;
 }
 
-export function useQueryState(param: string) {
+export function useQueryState<T extends ObjectType>(param: string) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const path = usePathname();
@@ -58,6 +73,7 @@ export function useQueryState(param: string) {
         const str = searchParams.get(param);
         const prevObject = str ? { ...qs.parse(str) } : {};
         let valueObject = qs.parse(val);
+
         const newObject = Object.fromEntries(
           Object.entries({ ...prevObject, ...valueObject }).filter(
             ([_, value]) => value !== null && value !== null && value !== ""

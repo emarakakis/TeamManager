@@ -21,8 +21,10 @@ export function RemoveItemModal() {
     "dataType",
   ]);
 
-  const { deleteItem, dataType } = editDataBatch;
+  const { deleteItem, dataType } = { ...editDataBatch };
   const queryClient = useQueryClient();
+
+  console.log(editDataBatch);
 
   function handleClick() {
     if (dataType === "employee") mutateEmployee(Number(deleteItem));

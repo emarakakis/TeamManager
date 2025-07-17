@@ -22,7 +22,7 @@ export default function ActionModal() {
     "mergeFieldJob",
     "dataType",
   ]);
-  const { deleteItem, dataType, mergeFieldJob } = editDataBatch;
+  const { deleteItem, dataType, mergeFieldJob } = { ...editDataBatch };
   const queryClient = useQueryClient();
 
   function handleCloseDelete() {
@@ -32,14 +32,12 @@ export default function ActionModal() {
 
   function handleCloseMerge() {
     console.log("Deleted merge");
-    setEditDataBatch({ mergeFieldJob: null });
+    setEditDataBatch(null);
   }
 
+  console.log(editDataBatch);
+
   const open = (!!deleteItem && !!dataType) || !!mergeFieldJob;
-  console.log(
-    mergeFieldJob,
-    !deleteItem && !!mergeFieldJob && Object.entries(mergeFieldJob).length > 0
-  );
 
   return (
     <Dialog

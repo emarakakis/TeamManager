@@ -1,8 +1,8 @@
 import { FieldDataReturn } from "@/types/FieldData";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { Grid, Typography, Button, IconButton } from "@mui/material";
+import { Grid, Typography, IconButton } from "@mui/material";
 import ItemModal from "../ItemModal/ItemModal";
-import { useQueryState } from "@/app/hooks/query-state-hook";
+import { useQueryBatch } from "@/app/hooks/query-state-hook";
 import qs from "qs";
 export default function FieldItem({
   data,
@@ -13,16 +13,14 @@ export default function FieldItem({
 }) {
   const color = index % 2 === 1 ? "white" : "#1976d2";
 
-  const [assignJob, setAssignJob] = useQueryState("assignJob");
-  const [mergeFieldJob, setMergeFieldJob] = useQueryState("mergeFieldJob");
-  const hasAssign = Object.entries(assignJob).length > 0;
-  const sameArea = assignJob.area === data.area;
+  const [batch, setBatch] = useQueryBatch(["assignJob", "mergeFieldJob"]);
+  const { assignJob, mergeFieldJob } = batch;
+  const hasAssign = assignJob && Object.entries(assignJob).length > 0;
+  const sameArea = assignJob && assignJob.area === data.area;
 
   function handleJobFieldPair() {
     const mergeFieldJobObject = { jobId: assignJob.id, fieldId: data.id };
-    const str = qs.stringify(mergeFieldJobObject);
-    setMergeFieldJob(str);
-    // setAssignJob(qs.stringify(null));
+    setBatch({ assignJob: null, mergeFieldJob: mergeFieldJobObject });
   }
 
   return (
