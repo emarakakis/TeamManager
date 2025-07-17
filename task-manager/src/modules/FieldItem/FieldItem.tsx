@@ -3,6 +3,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Grid, Typography, Button, IconButton } from "@mui/material";
 import ItemModal from "../ItemModal/ItemModal";
 import { useQueryState } from "@/app/hooks/query-state-hook";
+import qs from "qs";
 export default function FieldItem({
   data,
   index,
@@ -13,9 +14,16 @@ export default function FieldItem({
   const color = index % 2 === 1 ? "white" : "#1976d2";
 
   const [assignJob, setAssignJob] = useQueryState("assignJob");
-
+  const [mergeFieldJob, setMergeFieldJob] = useQueryState("mergeFieldJob");
   const hasAssign = Object.entries(assignJob).length > 0;
   const sameArea = assignJob.area === data.area;
+
+  function handleJobFieldPair() {
+    const mergeFieldJobObject = { jobId: assignJob.id, fieldId: data.id };
+    const str = qs.stringify(mergeFieldJobObject);
+    setMergeFieldJob(str);
+    // setAssignJob(qs.stringify(null));
+  }
 
   return (
     <Grid container sx={{ backgroundColor: color, justifyContent: "center" }}>
@@ -27,7 +35,7 @@ export default function FieldItem({
       </Grid>
       <Grid size={3} container sx={{ justifyContent: "end", pr: 3.5 }}>
         {hasAssign && sameArea ? (
-          <IconButton>
+          <IconButton onClick={handleJobFieldPair}>
             <CheckCircleIcon
               sx={{
                 color: "lightGreen",

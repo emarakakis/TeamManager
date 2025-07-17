@@ -16,7 +16,6 @@ export default function Page() {
   const { handleSubmit } = methods;
 
   function onSubmit(data: JobCreate) {
-    console.log(data);
     mutate(data);
   }
 
