@@ -1,6 +1,8 @@
-import { FieldData, FieldDataReturn } from "@/types/FieldData";
-import { Grid, Typography } from "@mui/material";
+import { FieldDataReturn } from "@/types/FieldData";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { Grid, Typography, Button, IconButton } from "@mui/material";
 import ItemModal from "../ItemModal/ItemModal";
+import { useQueryState } from "@/app/hooks/query-state-hook";
 export default function FieldItem({
   data,
   index,
@@ -9,6 +11,11 @@ export default function FieldItem({
   index: number;
 }) {
   const color = index % 2 === 1 ? "white" : "#1976d2";
+
+  const [assignJob, setAssignJob] = useQueryState("assignJob");
+
+  const hasAssign = Object.entries(assignJob).length > 0;
+  const sameArea = assignJob.area === data.area;
 
   return (
     <Grid container sx={{ backgroundColor: color, justifyContent: "center" }}>
@@ -19,7 +26,21 @@ export default function FieldItem({
         <Typography>{data.name}</Typography>
       </Grid>
       <Grid size={3} container sx={{ justifyContent: "end", pr: 3.5 }}>
-        <ItemModal id={data.id} type="field" />
+        {hasAssign && sameArea ? (
+          <IconButton>
+            <CheckCircleIcon
+              sx={{
+                color: "lightGreen",
+                border: "1px solid black",
+                borderRadius: "32px",
+                backgroundColor: "white",
+              }}
+            />
+          </IconButton>
+        ) : (
+          <></>
+        )}
+        {!hasAssign && <ItemModal data={data} type="field" />}
       </Grid>
     </Grid>
   );

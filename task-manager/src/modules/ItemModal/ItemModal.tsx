@@ -10,17 +10,30 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState, MouseEvent } from "react";
-import { useQueryBatch } from "@/app/hooks/query-state-hook";
+import { useQueryBatch, useQueryState } from "@/app/hooks/query-state-hook";
 import { useQueryClient } from "@tanstack/react-query";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import qs from "qs";
+import { EmployeeReturn } from "@/types/employee";
+import { JobReturn } from "@/types/Job";
+import { FieldDataReturn } from "@/types/FieldData";
 
-export default function ItemModal({ id, type }: { id: number; type: string }) {
+type ModalItem = EmployeeReturn | JobReturn | FieldDataReturn;
+
+export default function ItemModal({
+  data,
+  type,
+}: {
+  data: ModalItem;
+  type: string;
+}) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [editDataBatch, setEditDataBatch] = useQueryBatch([
     "editItem",
     "deleteItem",
     "dataType",
   ]);
+  const [assignJob, setAssignJob] = useQueryState("assignJob");
   const queryClient = useQueryClient();
 
   const open = !!anchorEl;
@@ -33,17 +46,18 @@ export default function ItemModal({ id, type }: { id: number; type: string }) {
   }
 
   function handleEdit() {
-    setEditDataBatch({ editItem: id, dataType: type });
+    setEditDataBatch({ editItem: data.id, dataType: type });
     setAnchorEl(null);
   }
 
   function handleDelete() {
-    setEditDataBatch({ deleteItem: id, dataType: type });
+    setEditDataBatch({ deleteItem: data.id, dataType: type });
     setAnchorEl(null);
   }
 
   function handleJobAssign() {
-    //Do the assign here!
+    const job = data as JobReturn;
+    setAssignJob(qs.stringify({ id: job.id, area: job.area }));
   }
 
   return (

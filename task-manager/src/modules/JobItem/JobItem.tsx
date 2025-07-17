@@ -24,7 +24,7 @@ export default function JobItem({
         <Typography>{data.area} </Typography>
       </Grid>
       <Grid size={3} container sx={{ justifyContent: "end", pr: 3.5 }}>
-        <ItemModal id={data.id} type="job" />
+        <ItemModal data={data} type="job" />
       </Grid>
     </Grid>
   );
