@@ -35,6 +35,7 @@ export default function MergeFieldJobModal() {
     onSuccess: () => {
       setMergeFieldJob(null);
       queryClient.invalidateQueries({ queryKey: ["jobs"] });
+      queryClient.invalidateQueries({ queryKey: ["fieldJobs"] });
     },
   });
 

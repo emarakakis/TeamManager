@@ -44,9 +44,7 @@ export const fieldJobsTable = sqliteTable(
     jobName: text("jobName").notNull(),
     profession: text("profession").notNull(),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.fieldId, table.jobId] }),
-  })
+  (table) => [primaryKey({ columns: [table.fieldId, table.jobId] })]
 );
 
 export const db = drizzle(sqlite, {
