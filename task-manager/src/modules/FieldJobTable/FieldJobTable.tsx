@@ -30,7 +30,7 @@ export default function FieldJobTable() {
         ]}
       />
       {data?.map((item, index) => (
-        <TypeItem key={index} data={item} index={index} type="fieldItem" />
+        <TypeItem key={index} data={item} index={index} type="fieldJob" />
       ))}
     </TypeTable>
   );

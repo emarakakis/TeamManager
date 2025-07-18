@@ -2,7 +2,7 @@ export type FieldJob = {
   fieldName: string;
   jobName: string;
   profession: string;
-  area: string;
+  jobFieldArea: string;
 };
 
 export type FieldJobReturn = {

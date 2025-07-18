@@ -42,7 +42,13 @@ export default function OptionButton<T extends ModalItem>({
   }
 
   function handleEdit() {
-    setEditDataBatch({ editItem: data.id, dataType: type });
+    setEditDataBatch({
+      editItem:
+        "jobId" in data
+          ? { fieldId: data.fieldId, jobId: data.jobId }
+          : data.id,
+      dataType: type,
+    });
     setAnchorEl(null);
   }
 
@@ -78,7 +84,13 @@ export default function OptionButton<T extends ModalItem>({
           </MenuItem>
           <MenuItem
             onClick={() => {
-              setEditDataBatch({ deleteItem: data.id, dataType: type });
+              setEditDataBatch({
+                deleteItem:
+                  "jobId" in data
+                    ? { jobId: data.jobId, fieldId: data.fieldId }
+                    : data.id,
+                dataType: type,
+              });
               setAnchorEl(null);
             }}
           >
