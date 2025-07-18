@@ -17,7 +17,7 @@ export default function TableHeader({
           size={12 / columnNames.length}
           sx={
             name.toLowerCase() === "options"
-              ? { display: "flex", justifyContent: "center" }
+              ? { display: "flex", justifyContent: "end" }
               : {}
           }
         >

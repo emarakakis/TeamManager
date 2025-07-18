@@ -10,10 +10,9 @@ import {
 } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Grid } from "@mui/material";
-import JobItem from "../JobItem/JobItem";
-import FieldItem from "../FieldItem/FieldItem";
 import postFieldJob from "@/serverFunctions/postFieldJob";
 import { useQueryClient } from "@tanstack/react-query";
+import TypeItem from "../TypeItem/TypeItem";
 
 export default function MergeFieldJobModal() {
   const [mergeFieldJob, setMergeFieldJob] = useQueryState("mergeFieldJob");
@@ -52,9 +51,9 @@ export default function MergeFieldJobModal() {
         </DialogContentText>
         <DialogContent>
           <Typography>Job</Typography>
-          <JobItem data={data?.job} index={0} />
+          <TypeItem data={data?.job} index={0} type="job" />
           <Typography>Field</Typography>
-          <FieldItem data={data?.field} index={0} />
+          <TypeItem data={data?.field} index={0} type="field" />
         </DialogContent>
       </DialogContent>
       <Grid container sx={{ justifyContent: "center" }}>

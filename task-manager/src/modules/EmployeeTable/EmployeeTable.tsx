@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { EmployeeReturn } from "@/types/employee";
-import EmployeeItem from "@/modules/EmployeeItem/EmployeeItem";
 import getEmployees from "@/serverFunctions/getEmployees";
 import { useQueryState } from "@/app/hooks/query-state-hook";
 import TypeTable from "../TypeTable/TypeTable";
 import TableHeader from "../TypeTable/TableHeader";
+import TypeItem from "../TypeItem/TypeItem";
 
 const options = [
   { key: "name", value: "Name" },
@@ -35,7 +35,12 @@ export default function EmployeeTable() {
       {data &&
         data.map((employee, index) => {
           return (
-            <EmployeeItem key={index + 1} colorIndex={index} data={employee} />
+            <TypeItem
+              key={index}
+              index={index}
+              data={employee}
+              type={"employee"}
+            />
           );
         })}
     </TypeTable>
