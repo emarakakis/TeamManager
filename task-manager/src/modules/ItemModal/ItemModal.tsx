@@ -5,8 +5,13 @@ import { JobReturn } from "@/types/Job";
 import { FieldDataReturn } from "@/types/FieldData";
 import OptionButton from "./OptionButton";
 import AssignFieldJobButton from "./AssignFieldJobButton";
+import { FieldJobReturn } from "@/types/FieldJob";
 
-export type ModalItem = EmployeeReturn | JobReturn | FieldDataReturn;
+export type ModalItem =
+  | EmployeeReturn
+  | JobReturn
+  | FieldDataReturn
+  | FieldJobReturn;
 
 export default function ItemModal<T extends ModalItem>({
   data,

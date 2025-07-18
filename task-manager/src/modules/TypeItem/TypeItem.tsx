@@ -3,8 +3,13 @@ import { FieldDataReturn } from "@/types/FieldData";
 import { JobReturn } from "@/types/Job";
 import ItemModal from "../ItemModal/ItemModal";
 import { Grid, Typography } from "@mui/material";
+import { FieldJobReturn } from "@/types/FieldJob";
 
-type TypeItemProps = EmployeeReturn | JobReturn | FieldDataReturn;
+type TypeItemProps =
+  | EmployeeReturn
+  | JobReturn
+  | FieldDataReturn
+  | FieldJobReturn;
 
 export default function TypeItem<T extends TypeItemProps>({
   data,
@@ -16,7 +21,9 @@ export default function TypeItem<T extends TypeItemProps>({
   index: number;
 }) {
   let items = Object.entries(data);
-  items = items.filter(([key, _]) => key !== "id");
+  items = items.filter(
+    ([key, _]) => key !== "id" && key !== "jobId" && key !== "fieldId"
+  );
   const dataLength = items.length + 1;
   const itemSize = 12 / dataLength;
 
