@@ -1,13 +1,18 @@
-import { Box, Grid, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import getJobs from "@/serverFunctions/getJobs";
 import { JobReturn } from "@/types/Job";
-import JobItem from "../JobItem/JobItem";
-import TableHeader from "./TableHeader";
-import Search from "../Search/Search";
+import TableHeader from "../TypeTable/TableHeader";
 import { useQueryState } from "@/app/hooks/query-state-hook";
+import TypeTable from "../TypeTable/TypeTable";
+import TypeItem from "../TypeItem/TypeItem";
 
-export default function JobTable({ ...props }) {
+const options = [
+  { key: "name", value: "Name" },
+  { key: "profession", value: "Profession" },
+  { key: "area", value: "Area" },
+];
+
+export default function JobTable() {
   const [searchJobs, setSearchJobs] = useQueryState("jobs");
   const { data } = useQuery<JobReturn[]>({
     queryKey: ["jobs", searchJobs],
@@ -15,24 +20,12 @@ export default function JobTable({ ...props }) {
   });
 
   return (
-    <Grid {...props}>
-      <Typography variant="h2">Jobs</Typography>
-      <Search
-        type="jobs"
-        options={[
-          { key: "name", value: "Name" },
-          { key: "profession", value: "Profession" },
-        ]}
-      />
-      <hr />
-      <TableHeader />
-      <hr />
-      <Grid>
-        {data &&
-          data.map((item, index) => (
-            <JobItem data={item} index={index} key={index} />
-          ))}
-      </Grid>
-    </Grid>
+    <TypeTable type="job" title="Jobs" searchOptions={options}>
+      <TableHeader columnNames={["Name", "Profession", "Area", "Options"]} />
+      {data &&
+        data.map((item, index) => (
+          <TypeItem data={item} index={index} key={index} type="job" />
+        ))}
+    </TypeTable>
   );
 }

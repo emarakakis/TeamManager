@@ -18,10 +18,14 @@ import EditEmployee from "./EditEmployee";
 import EditField from "./EditField";
 import putField from "@/serverFunctions/putField";
 import { JobReturn } from "@/types/Job";
+import { FieldJob, FieldJobReturn } from "@/types/FieldJob";
+import getFieldJob from "@/serverFunctions/getFieldJob";
+import putFieldJob from "@/serverFunctions/putFieldJob";
+import EditFieldJob from "./EditFieldJob";
 
 export default function EditItemDrawer() {
   const methods = useForm<
-    EmployeeReturn | Exclude<FieldDataReturn, "success">
+    EmployeeReturn | FieldDataReturn | JobReturn | FieldJobReturn
   >();
   const queryClient = useQueryClient();
   const [editDataBatch, setEditDataBatch] = useQueryBatch([
@@ -33,7 +37,7 @@ export default function EditItemDrawer() {
 
   const open = !!editItem && !!dataType;
   const { data, isLoading } = useQuery<
-    EmployeeReturn | JobReturn | Exclude<FieldDataReturn, "success">
+    EmployeeReturn | JobReturn | FieldDataReturn | FieldJobReturn
   >({
     queryKey: [dataType, editItem],
     queryFn: () => {
@@ -41,14 +45,18 @@ export default function EditItemDrawer() {
         return getEmployee(editDataBatch.editItem ?? "");
       else if (dataType === "field")
         return getField(editDataBatch.editItem ?? "");
-      else dataType === "job";
-      return getJob(editDataBatch.editItem ?? "");
+      else if (dataType === "job") return getJob(editDataBatch.editItem ?? "");
+      else return getFieldJob(editDataBatch.editItem ?? "");
     },
     enabled: !!editItem,
   });
 
   useEffect(() => {
-    if (data !== undefined) methods.reset(data);
+    if (data !== undefined) {
+      if (dataType === "employee") methods.reset(data as EmployeeReturn);
+      else if (dataType === "field") methods.reset(data as FieldDataReturn);
+      else if (dataType === "fieldJob") methods.reset(data as FieldJobReturn);
+    }
   }, [data]);
 
   const { mutate: mutateEmployee } = useMutation({
@@ -81,10 +89,23 @@ export default function EditItemDrawer() {
     },
   });
 
-  function onSubmit(data: EmployeeReturn | FieldDataReturn | JobReturn) {
+  const { mutate: mutateFieldJob } = useMutation({
+    mutationKey: ["fieldJobs", "update"],
+    mutationFn: putFieldJob,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["fieldJobs"] });
+      handleClose();
+      setEditDataBatch({ editItem: null, dataType: null });
+    },
+  });
+
+  function onSubmit(
+    data: EmployeeReturn | FieldDataReturn | JobReturn | FieldJobReturn
+  ) {
     if (dataType === "employee") mutateEmployee(data as EmployeeReturn);
     else if (dataType === "job") mutateJob(data as JobReturn);
     else if (dataType === "field") mutateField(data as FieldDataReturn);
+    else if (dataType === "fieldJob") mutateFieldJob(data as FieldJobReturn);
   }
 
   function handleClose() {
@@ -109,6 +130,10 @@ export default function EditItemDrawer() {
             )}
 
             {dataType === "job" && data && <EditJob data={data as JobReturn} />}
+
+            {dataType === "fieldJob" && data && (
+              <EditFieldJob data={data as FieldJobReturn} />
+            )}
 
             <Grid
               container
