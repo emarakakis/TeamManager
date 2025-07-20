@@ -27,7 +27,6 @@ export default function TypeItem<T extends TypeItemProps>({
   const dataLength = items.length + 1;
   const itemSize = 12 / dataLength;
 
-  console.log(items);
   return (
     <Grid
       container

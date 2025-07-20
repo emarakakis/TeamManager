@@ -18,27 +18,29 @@ import EditEmployee from "./EditEmployee";
 import EditField from "./EditField";
 import putField from "@/serverFunctions/putField";
 import { JobReturn } from "@/types/Job";
-import { FieldJob, FieldJobReturn } from "@/types/FieldJob";
+import { FieldJobReturn } from "@/types/FieldJob";
 import getFieldJob from "@/serverFunctions/getFieldJob";
 import putFieldJob from "@/serverFunctions/putFieldJob";
 import EditFieldJob from "./EditFieldJob";
 
+type EditItemType =
+  | EmployeeReturn
+  | FieldDataReturn
+  | JobReturn
+  | FieldJobReturn;
+
 export default function EditItemDrawer() {
-  const methods = useForm<
-    EmployeeReturn | FieldDataReturn | JobReturn | FieldJobReturn
-  >();
   const queryClient = useQueryClient();
   const [editDataBatch, setEditDataBatch] = useQueryBatch([
     "editItem",
     "dataType",
   ]);
   const { editItem, dataType } = { ...editDataBatch };
-  console.log(editItem);
+  const methods = useForm<EditItemType>();
+  const { handleSubmit } = methods;
 
   const open = !!editItem && !!dataType;
-  const { data, isLoading } = useQuery<
-    EmployeeReturn | JobReturn | FieldDataReturn | FieldJobReturn
-  >({
+  const { data, isLoading } = useQuery<EditItemType>({
     queryKey: [dataType, editItem],
     queryFn: () => {
       if (dataType === "employee")
@@ -56,81 +58,54 @@ export default function EditItemDrawer() {
       if (dataType === "employee") methods.reset(data as EmployeeReturn);
       else if (dataType === "field") methods.reset(data as FieldDataReturn);
       else if (dataType === "fieldJob") methods.reset(data as FieldJobReturn);
+      else methods.reset(data as JobReturn);
     }
   }, [data]);
 
-  const { mutate: mutateEmployee } = useMutation({
-    mutationKey: ["employee", "update"],
-    mutationFn: putEmployee,
+  const { mutate } = useMutation({
+    mutationKey: ["update", dataType],
+    mutationFn: async (data: EditItemType) => {
+      let fn: (data: any) => void;
+      switch (dataType) {
+        case "employee":
+          fn = putEmployee;
+          break;
+        case "field":
+          fn = putField;
+          break;
+        case "job":
+          fn = putJob;
+          break;
+        case "fieldJob":
+          fn = putFieldJob;
+          break;
+        default:
+          throw new Error("This type isn't recognizable.");
+      }
+      return await fn(data);
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["employees"] });
-      handleClose();
-      setEditDataBatch({ editItem: null, dataType: null });
+      queryClient.invalidateQueries({ queryKey: [`${dataType}s`] });
+      setEditDataBatch(null);
     },
   });
-
-  const { mutate: mutateField } = useMutation({
-    mutationKey: ["fields", "update"],
-    mutationFn: putField,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["fields"] });
-      handleClose();
-      setEditDataBatch({ editItem: null, dataType: null });
-    },
-  });
-
-  const { mutate: mutateJob } = useMutation({
-    mutationKey: ["jobs", "update"],
-    mutationFn: putJob,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["jobs"] });
-      handleClose();
-      setEditDataBatch({ editItem: null, dataType: null });
-    },
-  });
-
-  const { mutate: mutateFieldJob } = useMutation({
-    mutationKey: ["fieldJobs", "update"],
-    mutationFn: putFieldJob,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["fieldJobs"] });
-      handleClose();
-      setEditDataBatch({ editItem: null, dataType: null });
-    },
-  });
-
-  function onSubmit(
-    data: EmployeeReturn | FieldDataReturn | JobReturn | FieldJobReturn
-  ) {
-    if (dataType === "employee") mutateEmployee(data as EmployeeReturn);
-    else if (dataType === "job") mutateJob(data as JobReturn);
-    else if (dataType === "field") mutateField(data as FieldDataReturn);
-    else if (dataType === "fieldJob") mutateFieldJob(data as FieldJobReturn);
-  }
-
-  function handleClose() {
-    setEditDataBatch({ editItem: null, dataType: null });
-  }
 
   return (
     <Drawer
       anchor="right"
-      onClose={handleClose}
+      onClose={() => setEditDataBatch(null)}
       open={open}
       slotProps={slotProps}
     >
       {isLoading && <Box>Loading...</Box>}
       {!isLoading && (
         <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit((data: EditItemType) => mutate(data))}>
             {dataType === "employee" && data && <EditEmployee />}
-
             {dataType === "field" && data && (
               <EditField data={data as FieldDataReturn} />
             )}
-
             {dataType === "job" && data && <EditJob data={data as JobReturn} />}
-
             {dataType === "fieldJob" && data && (
               <EditFieldJob data={data as FieldJobReturn} />
             )}
@@ -141,7 +116,10 @@ export default function EditItemDrawer() {
               sx={{ mt: 2, justifyContent: "center" }}
             >
               <Button type="submit">Submit</Button>
-              <Button sx={{ color: "red" }} onClick={handleClose}>
+              <Button
+                sx={{ color: "red" }}
+                onClick={() => setEditDataBatch(null)}
+              >
                 Cancel
               </Button>
             </Grid>

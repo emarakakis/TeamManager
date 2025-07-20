@@ -1,7 +1,6 @@
 import { Dialog } from "@mui/material";
 import { useQueryBatch } from "@/app/hooks/query-state-hook";
 
-import { useQueryClient } from "@tanstack/react-query";
 import { RemoveItemModal } from "./RemoveItemModal";
 import MergeFieldJobModal from "./MergeFieldJobModal";
 
@@ -34,7 +33,6 @@ export default function ActionModal() {
     "dataType",
   ]);
   const { deleteItem, dataType, mergeFieldJob } = { ...editDataBatch };
-  const queryClient = useQueryClient();
 
   function handleCloseDelete() {
     console.log("Deleted Item");
@@ -45,8 +43,6 @@ export default function ActionModal() {
     console.log("Deleted merge");
     setEditDataBatch(null);
   }
-
-  console.log(editDataBatch);
 
   const open = (!!deleteItem && !!dataType) || !!mergeFieldJob;
 
