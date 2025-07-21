@@ -21,7 +21,6 @@ export default function ItemModal<T extends ModalItem>({
   type: string;
 }) {
   const [assignItem, setAssignItem] = useQueryState("assignItem");
-  console.log(assignItem);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = !!anchorEl;
 

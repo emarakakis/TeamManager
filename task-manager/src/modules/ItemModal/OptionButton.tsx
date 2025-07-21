@@ -60,7 +60,6 @@ export default function OptionButton<T extends ModalItem>({
         ? { jobId: d.jobId, fieldId: d.fieldId }
         : { id: d.id, area: d.area };
 
-    console.log(item);
     setAssignItem(qs.stringify(item));
     setAnchorEl(null);
   }

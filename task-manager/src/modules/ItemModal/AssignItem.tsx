@@ -1,6 +1,7 @@
 import { useQueryBatch } from "@/app/hooks/query-state-hook";
 import { IconButton, Box } from "@mui/material";
 import AddTaskIcon from "@mui/icons-material/AddTask";
+import { FieldDataReturn } from "@/types/FieldData";
 
 type AssignEmployeeJob = {
   employeeId: number;
@@ -34,9 +35,6 @@ export default function AssignItem<T extends AssignItemType>({
     "area" in data &&
     data.area === assignItem.area;
 
-  console.log(type);
-  console.log(sameArea);
-
   const isEmployee =
     Object.entries(assignItem).length > 0 && "fieldId" in assignItem;
   return (
@@ -47,11 +45,9 @@ export default function AssignItem<T extends AssignItemType>({
           <AddTaskIcon
             onClick={() => {
               const item = {
-                fieldId: assignItem.fieldId,
+                fieldId: assignItem.fieldId ?? (data as AssignFieldJob).fieldId,
                 jobId: type === "field" ? assignItem.id : assignItem.jobId,
-                ...assignItem.fieldId,
               };
-
               const assignedItem =
                 type === "employee"
                   ? { employeeJob: item }
