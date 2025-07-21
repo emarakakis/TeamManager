@@ -16,6 +16,7 @@ import { useQueryBatch, useQueryState } from "@/app/hooks/query-state-hook";
 import { ModalItem } from "./ItemModal";
 import { JobReturn } from "@/types/Job";
 import qs from "qs";
+import { FieldJobReturn } from "@/types/FieldJob";
 
 export default function OptionButton<T extends ModalItem>({
   data,
@@ -35,7 +36,7 @@ export default function OptionButton<T extends ModalItem>({
     "deleteItem",
     "dataType",
   ]);
-  const [assignJob, setAssignJob] = useQueryState("assignJob");
+  const [assignItem, setAssignItem] = useQueryState("assignItem");
 
   function handleClick(event: MouseEvent<HTMLElement>) {
     setAnchorEl(event?.currentTarget);
@@ -52,9 +53,15 @@ export default function OptionButton<T extends ModalItem>({
     setAnchorEl(null);
   }
 
-  function handleJobAssign() {
-    const job = data as JobReturn;
-    setAssignJob(qs.stringify({ id: job.id, area: job.area }));
+  function handleAssign() {
+    const d = type === "job" ? (data as JobReturn) : (data as FieldJobReturn);
+    const item =
+      "jobId" in d
+        ? { jobId: d.jobId, fieldId: d.fieldId }
+        : { id: d.id, area: d.area };
+
+    console.log(item);
+    setAssignItem(qs.stringify(item));
     setAnchorEl(null);
   }
 
@@ -99,12 +106,14 @@ export default function OptionButton<T extends ModalItem>({
             </ListItemIcon>
             <ListItemText>Delete</ListItemText>
           </MenuItem>
-          {type === "job" && (
-            <MenuItem onClick={handleJobAssign}>
+          {(type === "job" || type === "fieldJob") && (
+            <MenuItem onClick={handleAssign}>
               <ListItemIcon>
                 <AssignmentIcon sx={{ color: "green" }} />
               </ListItemIcon>
-              <ListItemText>Assign to Field</ListItemText>
+              <ListItemText>
+                Assign to {type === "job" ? "Field" : "Employee"}
+              </ListItemText>
             </MenuItem>
           )}
         </MenuList>

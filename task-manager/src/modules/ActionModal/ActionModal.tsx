@@ -35,12 +35,10 @@ export default function ActionModal() {
   const { deleteItem, dataType, mergeFieldJob } = { ...editDataBatch };
 
   function handleCloseDelete() {
-    console.log("Deleted Item");
     setEditDataBatch({ deleteItem: null, dataType: null });
   }
 
   function handleCloseMerge() {
-    console.log("Deleted merge");
     setEditDataBatch(null);
   }
 
