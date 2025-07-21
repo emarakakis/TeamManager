@@ -34,12 +34,24 @@ export const jobTable = sqliteTable("jobs", {
   area: text("area"),
 });
 
+export const employeeJobTable = sqliteTable(
+  "employeeJobs",
+  {
+    employeeId: integer("employeeId"),
+    jobId: integer("jobId"),
+    fieldId: integer("fieldId"),
+  },
+  (table) => [
+    primaryKey({ columns: [table.fieldId, table.jobId, table.employeeId] }),
+  ]
+);
+
 export const fieldJobsTable = sqliteTable(
   "fieldJobs",
   {
     fieldId: integer("fieldId").notNull(),
     jobId: integer("jobId").notNull(),
-    area: text("area").notNull(),
+    jobFieldArea: text("jobFieldArea").notNull(),
     fieldName: text("fieldName").notNull(),
     jobName: text("jobName").notNull(),
     profession: text("profession").notNull(),
@@ -53,6 +65,7 @@ export const db = drizzle(sqlite, {
     fieldTable,
     jobTable,
     fieldJobsTable,
+    employeeJobTable,
   },
 });
 
@@ -67,27 +80,39 @@ export async function initializeDB() {
       sex TEXT,
       email TEXT
     );
+
     DROP TABLE IF EXISTS fields;
     CREATE TABLE IF NOT EXISTS fields (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       area TEXT NOT NULL
     );
+
     DROP TABLE IF EXISTS jobs;
     CREATE TABLE IF NOT EXISTS jobs (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       profession TEXT NOT NULL,
-      area TEXT  
+      area TEXT
     );
+
     DROP TABLE IF EXISTS fieldJobs;
     CREATE TABLE IF NOT EXISTS fieldJobs (
       fieldId INTEGER,
       jobId INTEGER,
       fieldName TEXT NOT NULL,
       jobName TEXT NOT NULL,
-      area TEXT NOT NULL,
+      jobFieldArea TEXT NOT NULL,
       profession TEXT NOT NULL,
-      PRIMARY KEY (fieldId, jobId))
+      PRIMARY KEY (fieldId, jobId)
+    );
+
+    DROP TABLE IF EXISTS employeeJobs;
+    CREATE TABLE IF NOT EXISTS employeeJobs (
+      employeeId INTEGER,
+      jobId INTEGER,
+      fieldId INTEGER,
+      PRIMARY KEY (fieldId, jobId, employeeId)
+    );
   `);
 }

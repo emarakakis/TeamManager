@@ -2,7 +2,7 @@ import { useQueryBatch } from "@/app/hooks/query-state-hook";
 import AssignFieldJob from "./AssignFieldJob";
 import AssignEmployeeJob from "./AssignEmployeeJob";
 
-export default function MergeFieldJobModal() {
+export default function AssignItemModal() {
   const [assignItemBatch, setAssignItemBatch] = useQueryBatch([
     "mergeFieldJob",
     "employeeJob",

@@ -49,8 +49,8 @@ export default function AssignItem<T extends AssignItemType>({
                 jobId: type === "field" ? assignItem.id : assignItem.jobId,
               };
               const assignedItem =
-                type === "employee"
-                  ? { employeeJob: item }
+                "employeeId" in data && type === "employee"
+                  ? { employeeJob: { ...item, employeeId: data.employeeId } }
                   : { mergeFieldJob: item };
 
               setBatchState({ assignItem: null, ...assignedItem });
