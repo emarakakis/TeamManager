@@ -15,6 +15,7 @@ import { useQueryBatch } from "@/app/hooks/query-state-hook";
 
 import { useQueryClient } from "@tanstack/react-query";
 import deleteFieldJob from "@/serverFunctions/deleteFieldJob";
+import deleteEmployeeJob from "@/serverFunctions/deleteEmployeeJob";
 
 export function RemoveItemModal() {
   const [editDataBatch, setEditDataBatch] = useQueryBatch([
@@ -41,6 +42,8 @@ export function RemoveItemModal() {
           break;
         case "fieldJob":
           fn = deleteFieldJob;
+        case "employeeJob":
+          fn = deleteEmployeeJob;
           break;
         default:
           throw new Error("Unknown data Type");
@@ -60,8 +63,9 @@ export function RemoveItemModal() {
       ? "Field"
       : dataType === "job"
       ? "Job"
-      : "Field Job";
-
+      : dataType === "fieldJob"
+      ? "FieldJob"
+      : "EmployeeJob";
   return (
     <Grid>
       <Grid container sx={{ justifyContent: "center" }}>

@@ -32,7 +32,7 @@ export default function EmployeeJobTable() {
         columns={4}
         sx={{
           display: "grid",
-          gridTemplateColumns: "repeat(4,1fr)",
+          gridTemplateColumns: "repeat(4,10fr) 1fr",
           gap: 2,
           justifyContent: "center",
           backgroundColor: "#e8e8e8",
@@ -51,6 +51,9 @@ export default function EmployeeJobTable() {
         </Grid>
         <Grid container sx={{ justifyContent: "center" }}>
           <Typography>Tasks</Typography>
+        </Grid>
+        <Grid container sx={{ justifyContent: "center" }}>
+          <Typography>Options</Typography>
         </Grid>
       </Grid>
 
