@@ -3,7 +3,7 @@ import { FieldDataReturn } from "./FieldData";
 import { JobReturn } from "./Job";
 
 export type EmployeeJob = {
-  employee: Omit<EmployeeReturn, "sex" | "phoneNumber">;
+  employee: EmployeeReturn;
   field: FieldDataReturn;
   job: JobReturn;
 };

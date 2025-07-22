@@ -16,9 +16,12 @@ export async function GET(req: Request) {
           name: employeeTable.name,
           surname: employeeTable.surname,
           email: employeeTable.email,
+          sex: employeeTable.sex,
+          phoneNumber: employeeTable.phoneNumber,
         },
         field: {
           id: fieldJobsTable.fieldId,
+          name: fieldJobsTable.fieldName,
           area: fieldJobsTable.jobFieldArea,
         },
         job: {
