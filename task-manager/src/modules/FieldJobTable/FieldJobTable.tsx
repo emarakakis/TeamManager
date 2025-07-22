@@ -4,6 +4,7 @@ import { FieldJobReturn } from "@/types/FieldJob";
 import TypeTable from "../TypeTable/TypeTable";
 import TableHeader from "../TypeTable/TableHeader";
 import TypeItem from "../TypeItem/TypeItem";
+import { useQueryState } from "@/app/hooks/query-state-hook";
 
 const searchOptions = [
   { key: "fieldName", value: "Field Name" },
@@ -13,19 +14,22 @@ const searchOptions = [
 ];
 
 export default function FieldJobTable() {
+  const [fieldJob, setFieldJob] = useQueryState("fieldJob");
   const { data } = useQuery<FieldJobReturn[]>({
-    queryKey: ["fieldJobs"],
-    queryFn: getFieldJobs,
+    queryKey: ["fieldJobs", fieldJob],
+    queryFn: () => getFieldJobs(fieldJob),
   });
+
+  console.log(fieldJob);
 
   return (
     <TypeTable type="fieldJob" title="Field Jobs" searchOptions={searchOptions}>
       <TableHeader
         columnNames={[
+          "Area",
           "Field Name",
           "Job Name",
           "Profession",
-          "Area",
           "Options",
         ]}
       />
