@@ -9,6 +9,4 @@ export default async function postFieldJob(data: {
   if (!ret.success) {
     throw new Error("Something went wrong when creating!");
   }
-
-  const deleteJob = await axios.delete(`/api/job?id=${data.jobId}`);
 }

@@ -32,6 +32,12 @@ export async function POST(req: Request) {
 
     if (result.length > 0) {
       const fieldJob = result[0];
+
+      const assignJob = await db
+        .update(jobTable)
+        .set({ assigned: 1 })
+        .where(eq(jobTable.id, fieldJob.jobId));
+
       const ins = await db.insert(fieldJobsTable).values(fieldJob);
 
       return NextResponse.json({ success: true });

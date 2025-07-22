@@ -8,6 +8,7 @@ export type JobCreate = {
 
 export type JobReturn = {
   id: number;
+  assigned: number;
 } & JobCreate;
 
 type Profession = "intern" | "junior" | "intermediate" | "senior";

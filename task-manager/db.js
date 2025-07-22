@@ -8,6 +8,7 @@ import {
 } from "drizzle-orm/sqlite-core";
 import Database from "better-sqlite3";
 import { varchar } from "drizzle-orm/mysql-core";
+import { boolean } from "drizzle-orm/gel-core";
 
 const sqlite = new Database("sqlite.db");
 
@@ -18,6 +19,7 @@ export const employeeTable = sqliteTable("employees", {
   phoneNumber: text("phoneNumber"),
   sex: text("sex"),
   email: text("email"),
+  assigned: integer("assigned").default(0),
 });
 
 export const fieldTable = sqliteTable("fields", {
@@ -32,6 +34,7 @@ export const jobTable = sqliteTable("jobs", {
   name: text("name").notNull(),
   profession: text("profession").notNull(),
   area: text("area"),
+  assigned: integer("assigned").default(0),
 });
 
 export const employeeJobTable = sqliteTable(
@@ -55,6 +58,7 @@ export const fieldJobsTable = sqliteTable(
     fieldName: text("fieldName").notNull(),
     jobName: text("jobName").notNull(),
     profession: text("profession").notNull(),
+    assigned: integer("assigned").default(0),
   },
   (table) => [primaryKey({ columns: [table.fieldId, table.jobId] })]
 );
@@ -78,7 +82,8 @@ export async function initializeDB() {
       surname TEXT NOT NULL,
       phoneNumber TEXT,
       sex TEXT,
-      email TEXT
+      email TEXT,
+      assigned INTEGER
     );
 
     DROP TABLE IF EXISTS fields;
@@ -93,7 +98,8 @@ export async function initializeDB() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       profession TEXT NOT NULL,
-      area TEXT
+      area TEXT,
+      assigned INTEGER
     );
 
     DROP TABLE IF EXISTS fieldJobs;
@@ -104,6 +110,7 @@ export async function initializeDB() {
       jobName TEXT NOT NULL,
       jobFieldArea TEXT NOT NULL,
       profession TEXT NOT NULL,
+      assigned INTEGER,
       PRIMARY KEY (fieldId, jobId)
     );
 

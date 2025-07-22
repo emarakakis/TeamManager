@@ -32,6 +32,11 @@ export default function AssignEmployeeJob() {
   const { mutate } = useMutation({
     mutationKey: ["employeeJob", employeeId],
     mutationFn: postEmployeeJob,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+      queryClient.invalidateQueries({ queryKey: ["fieldJobs"] });
+      setEmployeeJob(null);
+    },
   });
   if (isLoading) {
     return <DialogTitle>Loading...</DialogTitle>;
