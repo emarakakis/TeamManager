@@ -1,10 +1,10 @@
-import { useState, MouseEvent } from "react";
-import { useQueryBatch, useQueryState } from "@/app/hooks/query-state-hook";
+import { useState } from "react";
+import { useQueryState } from "@/app/hooks/query-state-hook";
 import { EmployeeReturn } from "@/types/employee";
 import { JobReturn } from "@/types/Job";
 import { FieldDataReturn } from "@/types/FieldData";
 import OptionButton from "./OptionButton";
-import AssignFieldJobButton from "./AssignFieldJobButton";
+import AssignItem from "./AssignItem";
 import { FieldJobReturn } from "@/types/FieldJob";
 
 export type ModalItem =
@@ -20,13 +20,17 @@ export default function ItemModal<T extends ModalItem>({
   data: T;
   type: string;
 }) {
-  const [assignJob, setAssignJob] = useQueryState("assignJob");
+  const [assignItem, setAssignItem] = useQueryState("assignItem");
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-
-  const hasJobAssign = Object.entries(assignJob).length > 0 && type === "field";
   const open = !!anchorEl;
 
-  return !hasJobAssign ? (
+  const hasAssign =
+    (Object.entries(assignItem).length > 0 &&
+      type === "employee" &&
+      "fieldId" in assignItem) ||
+    (type === "field" && "area" in assignItem);
+
+  return !hasAssign ? (
     <OptionButton
       anchorEl={anchorEl}
       setAnchorEl={setAnchorEl}
@@ -35,9 +39,16 @@ export default function ItemModal<T extends ModalItem>({
       type={type}
     />
   ) : (
-    <AssignFieldJobButton
-      area={(data as FieldDataReturn).area}
-      id={(data as FieldDataReturn).id}
+    <AssignItem
+      type={type}
+      data={
+        type === "employee"
+          ? { employeeId: (data as EmployeeReturn).id }
+          : {
+              fieldId: (data as FieldDataReturn).id,
+              area: (data as FieldDataReturn).area,
+            }
+      }
     />
   );
 }

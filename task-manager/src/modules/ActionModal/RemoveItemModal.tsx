@@ -25,63 +25,42 @@ export function RemoveItemModal() {
   const { deleteItem, dataType } = { ...editDataBatch };
   const queryClient = useQueryClient();
 
-  function handleClick() {
-    if (dataType === "employee") mutateEmployee(Number(deleteItem));
-    else if (dataType === "field") mutateField(Number(deleteItem));
-    else if (dataType === "job") mutateJob(Number(deleteItem));
-    else if (dataType === "fieldJob") mutateFieldJob(deleteItem);
-  }
+  const { mutate } = useMutation({
+    mutationKey: ["delete", dataType],
+    mutationFn: async (data: any) => {
+      let fn: (data: any) => void;
+      switch (dataType) {
+        case "employee":
+          fn = deleteEmployee;
+          break;
+        case "field":
+          fn = deleteField;
+          break;
+        case "job":
+          fn = deleteJob;
+          break;
+        case "fieldJob":
+          fn = deleteFieldJob;
+          break;
+        default:
+          throw new Error("Unknown data Type");
+      }
+      return await fn(data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`${dataType}s`] });
+      setEditDataBatch(null);
+    },
+  });
 
   let content =
     dataType === "employee"
       ? "Employee"
-      : dataType === "Field"
+      : dataType === "field"
       ? "Field"
-      : "Job";
-
-  function handleClose() {
-    setEditDataBatch(null);
-  }
-
-  const { mutate: mutateEmployee } = useMutation({
-    mutationKey: ["delete", "employee"],
-    mutationFn: deleteEmployee,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["employees"] });
-      setEditDataBatch(null);
-      handleClose();
-    },
-  });
-
-  const { mutate: mutateField } = useMutation({
-    mutationKey: ["delete", "field"],
-    mutationFn: deleteField,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["fields"] });
-      setEditDataBatch(null);
-      handleClose();
-    },
-  });
-
-  const { mutate: mutateJob } = useMutation({
-    mutationKey: ["delete", "job"],
-    mutationFn: deleteJob,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["jobs"] });
-      setEditDataBatch(null);
-      handleClose();
-    },
-  });
-
-  const { mutate: mutateFieldJob } = useMutation({
-    mutationKey: ["delete", "fieldJob"],
-    mutationFn: deleteFieldJob,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["fieldJobs"] });
-      setEditDataBatch(null);
-      handleClose();
-    },
-  });
+      : dataType === "job"
+      ? "Job"
+      : "Field Job";
 
   return (
     <Grid>
@@ -95,10 +74,10 @@ export function RemoveItemModal() {
       </Grid>
       <Grid container sx={{ justifyContent: "center" }}>
         <DialogContent sx={{ display: "flex", justifyContent: "center" }}>
-          <Button sx={{ color: "green" }} onClick={handleClick}>
+          <Button sx={{ color: "green" }} onClick={() => mutate(deleteItem)}>
             Yes
           </Button>
-          <Button sx={{ color: "red" }} onClick={() => handleClose()}>
+          <Button sx={{ color: "red" }} onClick={() => setEditDataBatch(null)}>
             No
           </Button>
         </DialogContent>

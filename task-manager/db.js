@@ -8,6 +8,7 @@ import {
 } from "drizzle-orm/sqlite-core";
 import Database from "better-sqlite3";
 import { varchar } from "drizzle-orm/mysql-core";
+import { boolean } from "drizzle-orm/gel-core";
 
 const sqlite = new Database("sqlite.db");
 
@@ -18,6 +19,7 @@ export const employeeTable = sqliteTable("employees", {
   phoneNumber: text("phoneNumber"),
   sex: text("sex"),
   email: text("email"),
+  assigned: integer("assigned").default(0),
 });
 
 export const fieldTable = sqliteTable("fields", {
@@ -32,17 +34,31 @@ export const jobTable = sqliteTable("jobs", {
   name: text("name").notNull(),
   profession: text("profession").notNull(),
   area: text("area"),
+  assigned: integer("assigned").default(0),
 });
+
+export const employeeJobTable = sqliteTable(
+  "employeeJobs",
+  {
+    employeeId: integer("employeeId"),
+    jobId: integer("jobId"),
+    fieldId: integer("fieldId"),
+  },
+  (table) => [
+    primaryKey({ columns: [table.fieldId, table.jobId, table.employeeId] }),
+  ]
+);
 
 export const fieldJobsTable = sqliteTable(
   "fieldJobs",
   {
     fieldId: integer("fieldId").notNull(),
     jobId: integer("jobId").notNull(),
-    area: text("area").notNull(),
+    jobFieldArea: text("jobFieldArea").notNull(),
     fieldName: text("fieldName").notNull(),
     jobName: text("jobName").notNull(),
     profession: text("profession").notNull(),
+    assigned: integer("assigned").default(0),
   },
   (table) => [primaryKey({ columns: [table.fieldId, table.jobId] })]
 );
@@ -53,6 +69,7 @@ export const db = drizzle(sqlite, {
     fieldTable,
     jobTable,
     fieldJobsTable,
+    employeeJobTable,
   },
 });
 
@@ -65,29 +82,44 @@ export async function initializeDB() {
       surname TEXT NOT NULL,
       phoneNumber TEXT,
       sex TEXT,
-      email TEXT
+      email TEXT,
+      assigned INTEGER
     );
+
     DROP TABLE IF EXISTS fields;
     CREATE TABLE IF NOT EXISTS fields (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       area TEXT NOT NULL
     );
+
     DROP TABLE IF EXISTS jobs;
     CREATE TABLE IF NOT EXISTS jobs (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       profession TEXT NOT NULL,
-      area TEXT  
+      area TEXT,
+      assigned INTEGER
     );
+
     DROP TABLE IF EXISTS fieldJobs;
     CREATE TABLE IF NOT EXISTS fieldJobs (
       fieldId INTEGER,
       jobId INTEGER,
       fieldName TEXT NOT NULL,
       jobName TEXT NOT NULL,
-      area TEXT NOT NULL,
+      jobFieldArea TEXT NOT NULL,
       profession TEXT NOT NULL,
-      PRIMARY KEY (fieldId, jobId))
+      assigned INTEGER,
+      PRIMARY KEY (fieldId, jobId)
+    );
+
+    DROP TABLE IF EXISTS employeeJobs;
+    CREATE TABLE IF NOT EXISTS employeeJobs (
+      employeeId INTEGER,
+      jobId INTEGER,
+      fieldId INTEGER,
+      PRIMARY KEY (fieldId, jobId, employeeId)
+    );
   `);
 }

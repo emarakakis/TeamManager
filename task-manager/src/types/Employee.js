@@ -6,5 +6,5 @@ exports.employeeDefault = {
     surname: "",
     phoneNumber: "",
     sex: undefined,
-    email: ""
+    email: "",
 };

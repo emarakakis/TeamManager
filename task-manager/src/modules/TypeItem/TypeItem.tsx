@@ -22,12 +22,12 @@ export default function TypeItem<T extends TypeItemProps>({
 }) {
   let items = Object.entries(data);
   items = items.filter(
-    ([key, _]) => key !== "id" && key !== "jobId" && key !== "fieldId"
+    ([key, _]) =>
+      key !== "id" && key !== "jobId" && key !== "fieldId" && key !== "assigned"
   );
   const dataLength = items.length + 1;
   const itemSize = 12 / dataLength;
 
-  console.log(items);
   return (
     <Grid
       container

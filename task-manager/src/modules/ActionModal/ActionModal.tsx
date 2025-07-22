@@ -1,9 +1,9 @@
 import { Dialog } from "@mui/material";
 import { useQueryBatch } from "@/app/hooks/query-state-hook";
 
-import { useQueryClient } from "@tanstack/react-query";
 import { RemoveItemModal } from "./RemoveItemModal";
-import MergeFieldJobModal from "./MergeFieldJobModal";
+import AssignFieldJob from "./AssignItemModal/AssignFieldJob";
+import AssignEmployeeJob from "./AssignItemModal/AssignEmployeeJob";
 
 const deletePaperProps = {
   paper: {
@@ -31,24 +31,22 @@ export default function ActionModal() {
   const [editDataBatch, setEditDataBatch] = useQueryBatch([
     "deleteItem",
     "mergeFieldJob",
+    "employeeJob",
     "dataType",
   ]);
-  const { deleteItem, dataType, mergeFieldJob } = { ...editDataBatch };
-  const queryClient = useQueryClient();
+  const { deleteItem, dataType, mergeFieldJob, employeeJob } = {
+    ...editDataBatch,
+  };
 
   function handleCloseDelete() {
-    console.log("Deleted Item");
     setEditDataBatch({ deleteItem: null, dataType: null });
   }
 
   function handleCloseMerge() {
-    console.log("Deleted merge");
     setEditDataBatch(null);
   }
 
-  console.log(editDataBatch);
-
-  const open = (!!deleteItem && !!dataType) || !!mergeFieldJob;
+  const open = (!!deleteItem && !!dataType) || !!mergeFieldJob || !!employeeJob;
 
   return (
     <Dialog
@@ -60,8 +58,11 @@ export default function ActionModal() {
     >
       {!!deleteItem && !!dataType && <RemoveItemModal />}
       {!deleteItem &&
-        !!mergeFieldJob &&
-        Object.entries(mergeFieldJob).length > 0 && <MergeFieldJobModal />}
+        mergeFieldJob &&
+        Object.entries(mergeFieldJob).length > 0 && <AssignFieldJob />}
+      {!deleteItem && employeeJob && Object.entries(employeeJob).length > 0 && (
+        <AssignEmployeeJob />
+      )}
     </Dialog>
   );
 }
