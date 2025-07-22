@@ -20,8 +20,6 @@ export default function FieldJobTable() {
     queryFn: () => getFieldJobs(fieldJob),
   });
 
-  console.log(fieldJob);
-
   return (
     <TypeTable type="fieldJob" title="Field Jobs" searchOptions={searchOptions}>
       <TableHeader

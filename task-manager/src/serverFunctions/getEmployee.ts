@@ -2,12 +2,12 @@ import { EmployeeReturn } from "@/types/employee";
 import axios from "axios";
 
 export default async function getEmployee(id: Object | string) {
-  const result = await axios.get<EmployeeReturn>(`/api/employee?id=${id}`);
-  const data = await result.data;
+  const result = await axios.get(`/api/employee?id=${id}`);
+  const resultData = result.data;
 
-  if (typeof data !== "object" || !data || !data.id) {
-    throw new Error("Something went wrong while fetching an Employee");
+  if (!resultData.success) {
+    throw new Error("Something went wrong when getting an Employee");
   }
 
-  return data;
+  return resultData.data;
 }

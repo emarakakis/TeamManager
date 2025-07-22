@@ -6,7 +6,6 @@ import EditEmployeeJobModal from "../EditEmployeeJobModal/EditEmployeeJobModal";
 export default function Row({ data }: { data: EmployeeJob }) {
   const { employee, job, field } = data;
 
-  console.log(field);
   return (
     <Grid
       container

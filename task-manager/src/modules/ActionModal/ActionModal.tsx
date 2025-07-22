@@ -1,7 +1,7 @@
 import { Dialog } from "@mui/material";
 import { useQueryBatch } from "@/app/hooks/query-state-hook";
 
-import { RemoveItemModal } from "./RemoveItemModal";
+import { RemoveItemModal } from "./RemoveItemModal/RemoveItemModal";
 import AssignFieldJob from "./AssignItemModal/AssignFieldJob";
 import AssignEmployeeJob from "./AssignItemModal/AssignEmployeeJob";
 

@@ -1,65 +1,67 @@
-import { Employee } from "@/types/employee"
-import { db, employeeTable } from "../../../../db"
-import { NextResponse } from "next/server"
+import { Employee } from "@/types/employee";
+import { db, employeeTable } from "../../../../db";
+import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 
-export async function POST(req:Request){
-    try{
-        const employee = await req.json()
-        const result = await db.insert(employeeTable).values({
-            name: employee.name,
-            surname: employee.surname,
-            phoneNumber: employee.phoneNumber,
-            sex: employee.sex,
-            email: employee.email,
-        });
-        return NextResponse.json({success : 200})
-    } catch(error) {
-        console.log("Something went wrong with addition!")
-        throw error
-    }
+export async function POST(req: Request) {
+  try {
+    const employee = await req.json();
+    const result = await db.insert(employeeTable).values({
+      name: employee.name,
+      surname: employee.surname,
+      phoneNumber: employee.phoneNumber,
+      sex: employee.sex,
+      email: employee.email,
+    });
+    return NextResponse.json({ success: 200 });
+  } catch (error) {
+    console.log("Something went wrong with addition!");
+    throw error;
+  }
 }
 
-export async function GET(req:Request){
-    try{
-        const url = new URL(req.url)
-        const id = url.searchParams.get('id')
-        const result = await db.select().from(employeeTable).where(eq(employeeTable.id, Number(id)))
-        console.log(result)
-        return NextResponse.json(result[0])
-    } catch (error) {
-        throw error
+export async function GET(req: Request) {
+  try {
+    const url = new URL(req.url);
+    const id = url.searchParams.get("id");
+    const result = await db
+      .select()
+      .from(employeeTable)
+      .where(eq(employeeTable.id, Number(id)));
+    if (result.length > 0) {
+      return NextResponse.json({ success: true, data: result[0] });
+    } else {
+      return NextResponse.json({ success: false });
     }
+  } catch (error) {
+    throw error;
+  }
 }
 
-export async function PUT(req:Request){
-    try{
-        const employee = await req.json()
-        const {id, name, surname, phoneNumber, email, sex} = employee
-        console.log(typeof id)
-        const result = await db.update(employeeTable).set({
-            name: name,
-            surname: surname,
-            phoneNumber: phoneNumber,
-            email: email,
-            sex:sex
-        }).where(eq(employeeTable.id,Number(id)))
+export async function PUT(req: Request) {
+  try {
+    const employee = await req.json();
+    const result = await db
+      .update(employeeTable)
+      .set(employee)
+      .where(eq(employeeTable.id, Number(employee.id)));
 
-        return NextResponse.json({success: true})
-    } catch(error) {
-        throw error
-    }
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    throw error;
+  }
 }
 
-export async function DELETE(req:Request){
-    try{
-        const url = new URL(req.url)
-        const id = url.searchParams.get('id')
+export async function DELETE(req: Request) {
+  try {
+    const url = new URL(req.url);
+    const id = url.searchParams.get("id");
 
-        const res = await db.delete(employeeTable).where(eq(employeeTable.id, Number(id)))
-        return NextResponse.json({success: true, status: 200})
-
-    } catch (error) {
-        throw error
-    }
+    const res = await db
+      .delete(employeeTable)
+      .where(eq(employeeTable.id, Number(id)));
+    return NextResponse.json({ success: true, status: 200 });
+  } catch (error) {
+    throw error;
+  }
 }
