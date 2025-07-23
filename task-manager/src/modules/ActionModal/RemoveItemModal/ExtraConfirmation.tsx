@@ -12,7 +12,7 @@ type FieldJobFields = {
   field: boolean;
 };
 
-const employeeJobFields = ["employee", "job", "field"];
+const employeeJobFields = ["employee", "job", "field", "fieldJob"];
 const fieldJobFields = ["job", "field"];
 
 export default function ExtraConfirmation({ type }: { type: string }) {
