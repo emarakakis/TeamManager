@@ -15,10 +15,13 @@ const searchOptions = [
 
 export default function FieldJobTable() {
   const [fieldJob, setFieldJob] = useQueryState("fieldJob");
+
   const { data } = useQuery<FieldJobReturn[]>({
-    queryKey: ["fieldJobs", fieldJob],
+    queryKey: ["fieldJobs", JSON.stringify(fieldJob)],
     queryFn: () => getFieldJobs(fieldJob),
   });
+
+  console.log(data);
 
   return (
     <TypeTable type="fieldJob" title="Field Jobs" searchOptions={searchOptions}>
@@ -31,9 +34,10 @@ export default function FieldJobTable() {
           "Options",
         ]}
       />
-      {data?.map((item, index) => (
-        <TypeItem key={index} data={item} index={index} type="fieldJob" />
-      ))}
+      {data &&
+        data.map((item, index) => (
+          <TypeItem key={index} data={item} index={index} type="fieldJob" />
+        ))}
     </TypeTable>
   );
 }

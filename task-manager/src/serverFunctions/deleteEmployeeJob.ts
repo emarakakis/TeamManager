@@ -1,4 +1,5 @@
 import { EmployeeFields } from "@/modules/ActionModal/RemoveItemModal/ExtraConfirmation";
+import { JobReturn } from "@/types/Job";
 import axios from "axios";
 import qs from "qs";
 type EmployeeJobId = {
@@ -11,11 +12,14 @@ export default async function deleteEmployeeJob(input: {
   fields: Record<string, boolean>;
 }) {
   const { deleteItem, fields } = input;
+  console.log(fields);
   fields.fieldJob = !!fields.fieldJob || !!fields.job || !!fields.field;
   const deleteFields = Object.entries(fields).filter(([key, value]) => value);
   const unAssignFields = Object.entries(fields).filter(
     ([key, value]) => !value && key !== "field"
   );
+  const createNewJob = !fields.fieldJob && !fields.job;
+  console.log(unAssignFields);
 
   const query = qs.stringify(deleteItem);
   const result = await axios.delete(`/api/employeeJob?${query}`);
@@ -32,16 +36,27 @@ export default async function deleteEmployeeJob(input: {
       const id = deleteItem[key as keyof EmployeeJobId];
       q = qs.stringify({ id: id });
     }
-    console.log(q);
     await axios.delete(`/api/${k}?${q}`);
   });
 
   unAssignFields.forEach(async ([k, v]) => {
     const key = `${k}Id`;
-    const id = deleteItem[key as keyof EmployeeJobId];
-    const item = await axios.get(`/api/${k}?id=${id}`);
+    const id =
+      k === "fieldJob"
+        ? { jobId: deleteItem.jobId, fieldId: deleteItem.fieldId }
+        : { id: deleteItem[key as keyof EmployeeJobId] };
+
+    const item = await axios.get(`/api/${k}?${qs.stringify(id)}`);
     const returnData = item.data;
-    const newItem = { ...returnData.data, assigned: 0 };
-    const unAssignItem = await axios.put(`/api/${k}`, newItem);
+
+    if (k === "job" && createNewJob) {
+      const { id, ...duplicateData } = returnData.data;
+      console.log(duplicateData);
+      duplicateData.assigned = 0;
+      const newJob = await axios.post(`/api/job`, duplicateData);
+    } else {
+      const newItem = { ...returnData.data, assigned: 0 };
+      const unAssignItem = await axios.put(`/api/${k}`, newItem);
+    }
   });
 }

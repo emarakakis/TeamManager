@@ -68,8 +68,16 @@ export function RemoveItemModal() {
   const methods = useForm<any>();
   const { handleSubmit } = methods;
 
-  function onSubmit(fields: any) {
+  function onSubmit(fields?: {
+    employee: boolean;
+    field: boolean;
+    job: boolean;
+    fieldJob: boolean;
+  }) {
     if (dataType === "employeeJob" || dataType === "fieldJob") {
+      if (Object.entries(fields as Object).length == 0) {
+        fields = { employee: false, field: false, job: false, fieldJob: false };
+      }
       return mutate({ deleteItem: deleteItem, fields: fields });
     }
     return mutate(deleteItem);
