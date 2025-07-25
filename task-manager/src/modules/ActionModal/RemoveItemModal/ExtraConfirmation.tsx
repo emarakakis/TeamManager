@@ -12,61 +12,62 @@ type FieldJobFields = {
   field: boolean;
 };
 
-const employeeJobFields = ["employee", "job", "field", "fieldJob"];
+const employeeJobFields = ["employee", "fieldJob"];
 const fieldJobFields = ["job", "field"];
 
 export default function ExtraConfirmation({ type }: { type: string }) {
-  const [confirmation, setConfirmation] = useState<boolean>(false);
-  const [keepFields, setKeepFields] = useState<boolean>(false);
-  const fields = type === "employeeJob" ? employeeJobFields : fieldJobFields;
-  const { register } = useFormContext<EmployeeFields | FieldJobFields>();
+  const [deleteFields, setDeleteFields] = useState<boolean>(false);
+
+  const { register, setValue, watch, reset } = useFormContext<
+    EmployeeFields | FieldJobFields | { fieldJob: boolean }
+  >();
+  let fields = type === "employeeJob" ? employeeJobFields : fieldJobFields;
+  if (watch("fieldJob")) fields = [...fields, ...fieldJobFields];
+
   return (
     <DialogContent sx={{ display: "flex", justifyContent: "center" }}>
       <Grid container direction="column" sx={{ justifyContent: "center" }}>
-        <FormControlLabel
-          sx={{ justifyContent: "center" }}
-          control={
-            <Checkbox
-              value={confirmation}
-              onChange={(event, checked) => setConfirmation(checked)}
-            />
-          }
-          label="Are you sure?"
-        />
-        {confirmation && (
-          <DialogContent>
-            <FormControlLabel
-              sx={{ justifyContent: "center" }}
-              control={
-                <Checkbox
-                  value={keepFields}
-                  onChange={(event, checked) => setKeepFields(checked)}
-                />
-              }
-              label="Would you like to Delete Some Fields?"
-            />
-            {keepFields && (
-              <Grid container>
-                {fields.map((value, index) => {
-                  return (
-                    <FormControlLabel
-                      key={index}
-                      sx={{ justifyContent: "center" }}
-                      control={
-                        <Checkbox
-                          value={keepFields}
-                          {...register(value as keyof EmployeeFields)}
-                        />
-                      }
-                      label={value}
-                    />
-                  );
-                })}
-              </Grid>
-            )}
-            <RemoveButtons />
-          </DialogContent>
-        )}
+        <DialogContent>
+          <FormControlLabel
+            sx={{ justifyContent: "center" }}
+            control={
+              <Checkbox
+                value={deleteFields}
+                onChange={(event, checked) => {
+                  setDeleteFields(checked);
+                  reset({ fieldJob: false, employee: false });
+                }}
+              />
+            }
+            label="Would you like to Delete Some Fields?"
+          />
+          {deleteFields && (
+            <Grid container>
+              {fields.map((value, index) => {
+                return (
+                  <FormControlLabel
+                    key={index}
+                    sx={{ justifyContent: "center" }}
+                    control={
+                      <Checkbox
+                        {...register(value as keyof EmployeeFields)}
+                        onChange={(e) => {
+                          register(value as keyof EmployeeFields).onChange(e);
+                          if (value === "fieldJob") {
+                            setValue("job", false);
+                            setValue("field", false);
+                          }
+                        }}
+                      />
+                    }
+                    label={value}
+                  />
+                );
+              })}
+            </Grid>
+          )}
+          <RemoveButtons />
+        </DialogContent>
       </Grid>
     </DialogContent>
   );

@@ -12,18 +12,6 @@ import deleteEmployee from "@/serverFunctions/deleteEmployee";
 import { useMutation } from "@tanstack/react-query";
 import { FormProvider, useForm } from "react-hook-form";
 
-type EmployeeFields = {
-  employee: boolean;
-  job: boolean;
-  field: boolean;
-  fieldJob: boolean;
-};
-
-type FieldJobFields = {
-  job: boolean;
-  field: boolean;
-};
-
 export function RemoveItemModal() {
   const [dataTypeObject, setDataType] = useQueryBatch(["dataType"]);
   const [editDataBatch, setEditDataBatch] = useQueryBatch([

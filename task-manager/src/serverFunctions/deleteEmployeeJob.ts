@@ -1,5 +1,3 @@
-import { EmployeeFields } from "@/modules/ActionModal/RemoveItemModal/ExtraConfirmation";
-import { JobReturn } from "@/types/Job";
 import axios from "axios";
 import qs from "qs";
 type EmployeeJobId = {
@@ -22,7 +20,7 @@ export default async function deleteEmployeeJob(input: {
   console.log(unAssignFields);
 
   const query = qs.stringify(deleteItem);
-  const result = await axios.delete(`/api/employeeJob?${query}`);
+  await axios.delete(`/api/employeeJob?${query}`);
 
   deleteFields.forEach(async ([k, v]) => {
     let q = "";
