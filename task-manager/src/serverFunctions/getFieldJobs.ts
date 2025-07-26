@@ -5,6 +5,7 @@ import qs from "qs";
 
 export default async function getFieldJobs(fieldJobQuery: ObjectType) {
   fieldJobQuery["assigned"] = 0;
+
   const query = qs.stringify(fieldJobQuery);
   const result = await axios.get<{ data: FieldJobReturn[]; success: boolean }>(
     `/api/fieldJobs?${query}`

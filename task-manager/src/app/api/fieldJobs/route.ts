@@ -28,11 +28,7 @@ export async function GET(req: Request) {
       .all();
 
     console.log(result);
-    if (result.length > 0) {
-      return NextResponse.json({ success: true, data: result });
-    } else {
-      return NextResponse.json({ success: false });
-    }
+    return NextResponse.json({ success: true, data: result });
   } catch (error) {
     throw error;
   }

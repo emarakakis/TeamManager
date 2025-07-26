@@ -1,9 +1,10 @@
 import { Dialog } from "@mui/material";
 import { useQueryBatch } from "@/app/hooks/query-state-hook";
 
-import { RemoveItemModal } from "./RemoveItemModal";
+import { RemoveItemModal } from "./RemoveItemModal/RemoveItemModal";
 import AssignFieldJob from "./AssignItemModal/AssignFieldJob";
 import AssignEmployeeJob from "./AssignItemModal/AssignEmployeeJob";
+import AssignItemModal from "./AssignItemModal/AssignItemModal";
 
 const deletePaperProps = {
   paper: {
@@ -57,12 +58,7 @@ export default function ActionModal() {
       onClose={() => (deleteItem ? handleCloseDelete() : handleCloseMerge())}
     >
       {!!deleteItem && !!dataType && <RemoveItemModal />}
-      {!deleteItem &&
-        mergeFieldJob &&
-        Object.entries(mergeFieldJob).length > 0 && <AssignFieldJob />}
-      {!deleteItem && employeeJob && Object.entries(employeeJob).length > 0 && (
-        <AssignEmployeeJob />
-      )}
+      {!deleteItem && <AssignItemModal />}
     </Dialog>
   );
 }
