@@ -4,8 +4,6 @@ import EmployeeTable from "@/modules/EmployeeTable/EmployeeTable";
 import { Grid, Box, List, ListItem } from "@mui/material";
 
 import FieldTable from "@/modules/FieldTable/FieldTable";
-import EditItemDrawer from "@/modules/EditItemDrawer/EditItemDrawer";
-import ActionModal from "@/modules/ActionModal/ActionModal";
 import JobTable from "@/modules/JobTable/JobTable";
 import FieldJobTable from "@/modules/FieldJobTable/FieldJobTable";
 
@@ -24,8 +22,6 @@ export default function Home() {
           <JobTable />
         </Grid>
       </Box>
-      <EditItemDrawer />
-      <ActionModal />
     </Box>
   );
 }

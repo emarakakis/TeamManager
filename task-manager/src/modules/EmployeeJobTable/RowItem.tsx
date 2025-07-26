@@ -3,6 +3,7 @@ import ItemModal, { ModalItem } from "../ItemModal/ItemModal";
 import { EmployeeReturn } from "@/types/employee";
 import { JobReturn } from "@/types/Job";
 import { FieldDataReturn } from "@/types/FieldData";
+import RowModal from "./RowModal/RowModal";
 
 export default function RowItem<
   T extends EmployeeReturn | JobReturn | FieldDataReturn
@@ -30,7 +31,7 @@ export default function RowItem<
         ))}
       </Grid>
       <Grid container sx={{ justifyContent: "center" }}>
-        <ItemModal data={data} type={type} />
+        <RowModal type={type} id={data.id} />
       </Grid>
     </Box>
   );
