@@ -12,6 +12,13 @@ import deleteEmployee from "@/serverFunctions/deleteEmployee";
 import { useMutation } from "@tanstack/react-query";
 import { FormProvider, useForm } from "react-hook-form";
 
+export type DeleteFields = {
+  field: boolean;
+  job: boolean;
+  fieldJob?: boolean;
+  employee?: boolean;
+};
+
 export function RemoveItemModal() {
   const [dataTypeObject, setDataType] = useQueryBatch(["dataType"]);
   const [editDataBatch, setEditDataBatch] = useQueryBatch([
@@ -39,6 +46,7 @@ export function RemoveItemModal() {
           break;
         case "fieldJob":
           fn = deleteFieldJob;
+          break;
         case "employeeJob":
           fn = deleteEmployeeJob;
           break;
@@ -49,6 +57,8 @@ export function RemoveItemModal() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`${dataType}s`] });
+      queryClient.invalidateQueries({ queryKey: [`fields`] });
+      queryClient.invalidateQueries({ queryKey: [`jobs`] });
       setEditDataBatch(null);
     },
   });
@@ -56,17 +66,18 @@ export function RemoveItemModal() {
   const methods = useForm<any>();
   const { handleSubmit } = methods;
 
-  function onSubmit(fields?: {
-    employee: boolean;
-    field: boolean;
-    job: boolean;
-    fieldJob: boolean;
-  }) {
-    if (dataType === "employeeJob" || dataType === "fieldJob") {
+  function onSubmit(fields?: DeleteFields) {
+    if (dataType === "employeeJob") {
+      console.log("Why?");
       if (Object.entries(fields as Object).length == 0) {
         fields = { employee: false, field: false, job: false, fieldJob: false };
       }
       return mutate({ deleteItem: deleteItem, fields: fields });
+    } else if (dataType === "fieldJob") {
+      if (Object.entries(fields as Object).length == 0) {
+        fields = { field: false, job: false };
+      }
+      return mutate({ id: deleteItem, fields: fields });
     }
     return mutate(deleteItem);
   }

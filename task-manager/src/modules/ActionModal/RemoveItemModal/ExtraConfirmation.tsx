@@ -24,6 +24,8 @@ export default function ExtraConfirmation({ type }: { type: string }) {
   let fields = type === "employeeJob" ? employeeJobFields : fieldJobFields;
   if (watch("fieldJob")) fields = [...fields, ...fieldJobFields];
 
+  console.log(watch("job"), watch("field"));
+
   return (
     <DialogContent sx={{ display: "flex", justifyContent: "center" }}>
       <Grid container direction="column" sx={{ justifyContent: "center" }}>
@@ -35,7 +37,9 @@ export default function ExtraConfirmation({ type }: { type: string }) {
                 value={deleteFields}
                 onChange={(event, checked) => {
                   setDeleteFields(checked);
-                  reset({ fieldJob: false, employee: false });
+                  if (type === "employeeJob")
+                    reset({ fieldJob: false, employee: false });
+                  if (type === "fieldJob") reset({ field: false, job: false });
                 }}
               />
             }
