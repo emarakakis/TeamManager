@@ -62,6 +62,7 @@ export default function RowModal({
                 changeItemId: id.toString(),
               });
               setChangeItem(itemStr);
+              setAnchorEl(null);
             }}
           >
             <ListItemIcon>

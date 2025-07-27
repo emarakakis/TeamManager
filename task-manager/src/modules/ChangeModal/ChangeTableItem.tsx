@@ -1,11 +1,7 @@
-import {
-  Box,
-  Checkbox,
-  FormControlLabel,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { ChangeType } from "./ChangeModal";
+import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 
+import { useFormContext } from "react-hook-form";
 export default function ChangeTableItem({
   data,
   index,
@@ -18,9 +14,8 @@ export default function ChangeTableItem({
   const items = data.filter(
     ([key, value]) => key !== "id" && key !== "assigned" && key !== "sex"
   );
-
-  console.log(selected);
-
+  const { setValue, watch } = useFormContext<{ id: number }>();
+  const itemId = data.filter(([key, value]) => key === "id")[0][1];
   const color = selected
     ? "lightGreen"
     : index % 2 === 0
@@ -44,7 +39,13 @@ export default function ChangeTableItem({
       })}
       <FormControlLabel
         sx={{ display: "flex", justifyContent: "end" }}
-        control={<Checkbox checked={selected} />}
+        control={
+          <Checkbox
+            checked={selected}
+            value={itemId}
+            onChange={(e) => setValue("id", Number(e.currentTarget.value))}
+          />
+        }
         label=""
       />
     </Box>

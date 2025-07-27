@@ -1,24 +1,17 @@
-import { useState } from "react";
-import { ChangeType } from "./ChangeModal";
+import { ChangeTypeArray, ChangeType } from "./ChangeModal";
 import { Box } from "@mui/material";
 import ChangeTableItem from "./ChangeTableItem";
-import { useQueryState } from "@/app/hooks/query-state-hook";
+import { useFormContext } from "react-hook-form";
 export default function ChangeTable({
   data,
   defaultValue,
 }: {
-  data: ChangeType;
+  data: ChangeTypeArray;
   defaultValue: string;
 }) {
-  const [changeItem, setChangeItem] = useQueryState("changeItem");
-  const { changeType, changeItemId } = { ...changeItem };
-  const orderedData = [
-    ...data.sort((a, b) => {
-      if (a.id === Number(changeItemId)) return -1; // a πάει πάνω
-      if (b.id === Number(changeItemId)) return 1; // b πάει πάνω
-      return 0; // δεν αλλάζει η σειρά
-    }),
-  ];
+  const { watch, getValues } = useFormContext<{ id: number }>();
+  console.log(defaultValue, watch("id"));
+  const changedValue = Number(defaultValue) !== watch("id");
   return (
     <Box>
       <Box
@@ -31,11 +24,14 @@ export default function ChangeTable({
           padding: 1,
         }}
       >
-        {orderedData.map((item, index) => (
+        {data.map((item, index) => (
           <ChangeTableItem
             key={index}
             index={index}
-            selected={defaultValue === item.id.toString()}
+            selected={
+              item.id === Number(watch("id")) ||
+              (!changedValue && item.id === Number(defaultValue))
+            }
             data={Object.entries(item)}
           />
         ))}
