@@ -11,6 +11,7 @@ export async function GET(req: Request) {
   try {
     const result = await db
       .select({
+        id: employeeJobTable.id,
         employee: {
           id: employeeTable.id,
           name: employeeTable.name,

@@ -14,21 +14,29 @@ import InfoIcon from "@mui/icons-material/Info";
 import RedoRoundedIcon from "@mui/icons-material/RedoRounded";
 import { useQueryBatch, useQueryState } from "@/app/hooks/query-state-hook";
 import qs from "qs";
+import { EmployeeJobId } from "@/types/EmployeeJob";
 
 export default function RowModal({
   type,
   id,
+  ejId,
 }: {
   type: string;
   id: string | number;
+  ejId: number;
 }) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const [changeItem, setChangeItem] = useQueryState("changeItem");
+  const [changeItemBatch, setChangeItemBatch] = useQueryBatch([
+    "changeItem",
+    "employeeJobId",
+  ]);
   const [editItemBatch, setEditItemBatch] = useQueryBatch([
     "editItem",
     "dataType",
   ]);
   const open = !!anchorEl;
+
+  const { changeItem, employeeJobId } = { ...changeItemBatch };
 
   return (
     <Box>
@@ -61,7 +69,14 @@ export default function RowModal({
                 changeType: type,
                 changeItemId: id.toString(),
               });
-              setChangeItem(itemStr);
+              setChangeItemBatch({
+                changeItem: {
+                  changeType: type,
+                  changeItemId: id.toString(),
+                  employeeJobId: ejId,
+                },
+                employeeJobId: ejId,
+              });
               setAnchorEl(null);
             }}
           >

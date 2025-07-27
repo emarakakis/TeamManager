@@ -8,7 +8,7 @@ import { EmployeeReturn } from "@/types/employee";
 import { JobReturn } from "@/types/Job";
 import { FieldDataReturn } from "@/types/FieldData";
 
-export default async function getMutationFunction(
+export default async function getItemFunction(
   type: string,
   id: number | EmployeeJobId
 ): Promise<EmployeeReturn | JobReturn | FieldDataReturn | null> {

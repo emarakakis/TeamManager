@@ -62,6 +62,7 @@ export async function GET(request: Request) {
 
     const result = await db
       .select({
+        id: employeeJobTable.id,
         employee: {
           id: employeeTable.id,
           name: employeeTable.name,
@@ -103,6 +104,30 @@ export async function GET(request: Request) {
       .all();
 
     return NextResponse.json({ success: true, data: result[0] });
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    console.log("mple");
+    const info = await request.json();
+
+    const { employeeJobId, itemId, type } = { ...info };
+    console.log(employeeJobId);
+    console.log(type);
+    const res2 = await db.select().from(employeeJobTable);
+    console.log(res2);
+    const result = await db
+      .update(employeeJobTable)
+      .set({ [`${type}Id`]: itemId })
+      .where(eq(employeeJobTable.id, Number(employeeJobId)));
+
+    const res1 = await db.select().from(employeeJobTable);
+    console.log(res1);
+
+    return NextResponse.json({ success: true });
   } catch (error) {
     throw error;
   }

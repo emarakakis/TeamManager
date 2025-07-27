@@ -13,3 +13,7 @@ export type EmployeeJob = {
   field: FieldDataReturn;
   job: JobReturn;
 };
+
+export type EmployeeJobReturn = {
+  id: number;
+} & EmployeeJob;

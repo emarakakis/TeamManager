@@ -1,10 +1,11 @@
-import { EmployeeJob } from "@/types/EmployeeJob";
+import { EmployeeJob, EmployeeJobReturn } from "@/types/EmployeeJob";
 import axios from "axios";
 
 export default async function getEmployeeJobs() {
-  const result = await axios.get<{ data: EmployeeJob[]; success: boolean }>(
-    "/api/employeeJobs"
-  );
+  const result = await axios.get<{
+    data: EmployeeJobReturn[];
+    success: boolean;
+  }>("/api/employeeJobs");
   const data = result.data;
 
   if (!data.success) {
