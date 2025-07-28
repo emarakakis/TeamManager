@@ -46,8 +46,9 @@ export default function ChangeModal() {
   const { mutate } = useMutation({
     mutationKey: ["change", changeType],
     mutationFn: putEmployeeJob,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["employeeJobs"] });
+    onSuccess: async () => {
+      console.log("success");
+      await queryClient.invalidateQueries({ queryKey: ["employeeJobs"] });
       setChangeBatch(null);
     },
   });
@@ -82,7 +83,7 @@ export default function ChangeModal() {
         <FormProvider {...methods}>
           <form
             onSubmit={methods.handleSubmit((data: { id: number }) => {
-              putEmployeeJob({
+              mutate({
                 employeeJobId: employeeJobId,
                 type: changeType,
                 itemId: data.id,

@@ -1,8 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { db, fieldJobsTable, fieldTable, jobTable } from "../../../../db";
 import { NextResponse } from "next/server";
-import { error } from "console";
-import axios from "axios";
 
 export async function POST(req: Request) {
   try {
@@ -15,6 +13,9 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
+    const res1 = await db.select().from(fieldJobsTable);
+    console.log(1, res1);
 
     const result = await db
       .select({
@@ -36,9 +37,12 @@ export async function POST(req: Request) {
       const assignJob = await db
         .update(jobTable)
         .set({ assigned: 1 })
-        .where(eq(jobTable.id, fieldJob.jobId));
+        .where(eq(jobTable.id, Number(fieldJob.jobId)));
 
       const ins = await db.insert(fieldJobsTable).values(fieldJob);
+
+      const res2 = await db.select().from(fieldJobsTable);
+      console.log(2, res2);
 
       return NextResponse.json({ success: true });
     } else {
@@ -79,16 +83,32 @@ export async function PUT(req: Request) {
   try {
     const fieldJob = await req.json();
 
-    const result = await db
-      .update(fieldJobsTable)
-      .set(fieldJob)
-      .where(
-        and(
-          eq(fieldJobsTable.fieldId, Number(fieldJob.fieldId)),
-          eq(fieldJobsTable.jobId, Number(fieldJob.jobId))
-        )
-      );
-    return NextResponse.json({ success: true });
+    if (fieldJob.type && fieldJob.type === "assignAction") {
+      console.log(fieldJob.assigned);
+      const result = await db
+        .update(fieldJobsTable)
+        .set({ assigned: fieldJob.assigned })
+        .where(
+          and(
+            eq(fieldJobsTable.fieldId, Number(fieldJob.fieldId)),
+            eq(fieldJobsTable.jobId, Number(fieldJob.jobId))
+          )
+        );
+      console.log(result);
+      return NextResponse.json({ success: true });
+    } else {
+      const result = await db
+        .update(fieldJobsTable)
+        .set(fieldJob)
+        .where(
+          and(
+            eq(fieldJobsTable.fieldId, Number(fieldJob.fieldId)),
+            eq(fieldJobsTable.jobId, Number(fieldJob.jobId))
+          )
+        );
+
+      return NextResponse.json({ success: true });
+    }
   } catch (error) {
     throw error;
   }

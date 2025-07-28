@@ -40,10 +40,11 @@ export async function GET(req: Request) {
         fieldJobsTable,
         and(
           eq(fieldJobsTable.jobId, employeeJobTable.jobId),
-          eq(fieldJobsTable.fieldId, fieldJobsTable.fieldId)
+          eq(fieldJobsTable.fieldId, employeeJobTable.fieldId)
         )
       )
       .all();
+    console.log(result);
     return NextResponse.json({ success: true, data: result });
   } catch (error) {
     throw error;
