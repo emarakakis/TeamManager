@@ -37,17 +37,12 @@ export const jobTable = sqliteTable("jobs", {
   assigned: integer("assigned").default(0),
 });
 
-export const employeeJobTable = sqliteTable(
-  "employeeJobs",
-  {
-    employeeId: integer("employeeId"),
-    jobId: integer("jobId"),
-    fieldId: integer("fieldId"),
-  },
-  (table) => [
-    primaryKey({ columns: [table.fieldId, table.jobId, table.employeeId] }),
-  ]
-);
+export const employeeJobTable = sqliteTable("employeeJobs", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  employeeId: integer("employeeId"),
+  jobId: integer("jobId"),
+  fieldId: integer("fieldId"),
+});
 
 export const fieldJobsTable = sqliteTable(
   "fieldJobs",
@@ -116,10 +111,10 @@ export async function initializeDB() {
 
     DROP TABLE IF EXISTS employeeJobs;
     CREATE TABLE IF NOT EXISTS employeeJobs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       employeeId INTEGER,
       jobId INTEGER,
-      fieldId INTEGER,
-      PRIMARY KEY (fieldId, jobId, employeeId)
+      fieldId INTEGER
     );
   `);
 }

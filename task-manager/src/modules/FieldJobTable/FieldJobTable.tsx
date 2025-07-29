@@ -2,9 +2,9 @@ import getFieldJobs from "@/serverFunctions/getFieldJobs";
 import { useQuery } from "@tanstack/react-query";
 import { FieldJobReturn } from "@/types/FieldJob";
 import TypeTable from "../TypeTable/TypeTable";
-import TableHeader from "../TypeTable/TableHeader";
 import TypeItem from "../TypeItem/TypeItem";
 import { useQueryState } from "@/app/hooks/query-state-hook";
+import LoadingData from "../LoadingData/LoadingData";
 
 const searchOptions = [
   { key: "fieldName", value: "Field Name" },
@@ -16,7 +16,7 @@ const searchOptions = [
 export default function FieldJobTable() {
   const [fieldJob, setFieldJob] = useQueryState("fieldJob");
 
-  const { data } = useQuery<FieldJobReturn[]>({
+  const { data, isLoading } = useQuery<FieldJobReturn[]>({
     queryKey: ["fieldJobs", JSON.stringify(fieldJob)],
     queryFn: () => getFieldJobs(fieldJob),
   });
@@ -24,17 +24,15 @@ export default function FieldJobTable() {
   console.log(data);
 
   return (
-    <TypeTable type="fieldJob" title="Field Jobs" searchOptions={searchOptions}>
-      <TableHeader
-        columnNames={[
-          "Area",
-          "Field Name",
-          "Job Name",
-          "Profession",
-          "Options",
-        ]}
-      />
+    <TypeTable
+      type="fieldJob"
+      title="Field Jobs"
+      searchOptions={searchOptions}
+      columnNames={["Area", "Field Name", "Job Name", "Profession"]}
+    >
+      {isLoading && <LoadingData />}
       {data &&
+        !isLoading &&
         data.map((item, index) => (
           <TypeItem key={index} data={item} index={index} type="fieldJob" />
         ))}

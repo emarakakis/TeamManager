@@ -9,25 +9,30 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import { EmployeeJob } from "@/types/EmployeeJob";
+import { EmployeeJob, EmployeeJobReturn } from "@/types/EmployeeJob";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useQueryBatch, useQueryState } from "@/app/hooks/query-state-hook";
 import qs from "qs";
 
-export default function EditEmployeeJobModal({ data }: { data: EmployeeJob }) {
+export default function EditEmployeeJobModal({
+  data,
+}: {
+  data: EmployeeJobReturn;
+}) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>();
   const [employeeJobBatch, setEmployeeJobBatch] = useQueryBatch([
     "deleteItem",
     "dataType",
   ]);
   const open = !!anchorEl;
-  const { employee, job, field } = data;
+  const { employee, job, field, id } = data;
   const employeeJobIds = {
     employeeId: employee.id,
     fieldId: field.id,
     jobId: job.id,
   };
+
   return (
     <>
       <IconButton

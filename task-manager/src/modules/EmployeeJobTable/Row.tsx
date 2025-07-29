@@ -1,10 +1,10 @@
-import { EmployeeJob } from "@/types/EmployeeJob";
+import { EmployeeJob, EmployeeJobReturn } from "@/types/EmployeeJob";
 import { Box, Grid, Typography } from "@mui/material";
 import ItemModal from "../ItemModal/ItemModal";
 import RowItem from "./RowItem";
 import EditEmployeeJobModal from "../EditEmployeeJobModal/EditEmployeeJobModal";
-export default function Row({ data }: { data: EmployeeJob }) {
-  const { employee, job, field } = data;
+export default function Row({ data }: { data: EmployeeJobReturn }) {
+  const { id, employee, job, field } = data;
 
   return (
     <Grid
@@ -20,10 +20,10 @@ export default function Row({ data }: { data: EmployeeJob }) {
         padding: 1,
       }}
     >
-      <RowItem data={employee} type={"employee"} />
-      <RowItem data={field} type={"field"} />
-      <RowItem data={job} type={"job"} />
-      <RowItem data={job} type={"job"} />
+      <RowItem data={employee} type={"employee"} employeeJobId={id} />
+      <RowItem data={field} type={"field"} employeeJobId={id} />
+      <RowItem data={job} type={"job"} employeeJobId={id} />
+      <RowItem data={job} type={"job"} employeeJobId={id} />
       <EditEmployeeJobModal data={data} />
     </Grid>
   );

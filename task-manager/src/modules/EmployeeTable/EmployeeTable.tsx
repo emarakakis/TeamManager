@@ -3,8 +3,9 @@ import { EmployeeReturn } from "@/types/employee";
 import getEmployees from "@/serverFunctions/getEmployees";
 import { useQueryState } from "@/app/hooks/query-state-hook";
 import TypeTable from "../TypeTable/TypeTable";
-import TableHeader from "../TypeTable/TableHeader";
+
 import TypeItem from "../TypeItem/TypeItem";
+import LoadingData from "../LoadingData/LoadingData";
 
 const options = [
   { key: "name", value: "Name" },
@@ -16,23 +17,21 @@ const options = [
 
 export default function EmployeeTable() {
   const [searchEmployee, setSearchEmployee] = useQueryState("employee");
-  const { data } = useQuery<EmployeeReturn[]>({
+  const { data, isLoading } = useQuery<EmployeeReturn[]>({
     queryKey: ["employees", searchEmployee],
     queryFn: () => getEmployees(searchEmployee),
   });
+
   return (
-    <TypeTable title="Employees" type="employee" searchOptions={options}>
-      <TableHeader
-        columnNames={[
-          "Name",
-          "Surname",
-          "Phone Number",
-          "Sex",
-          "Email",
-          "Options",
-        ]}
-      />
+    <TypeTable
+      title="Employees"
+      type="employee"
+      searchOptions={options}
+      columnNames={["Name", "Surname", "Phone Number", "Sex", "Email"]}
+    >
+      {isLoading && <LoadingData />}
       {data &&
+        !isLoading &&
         data.map((employee, index) => {
           return (
             <TypeItem

@@ -11,6 +11,7 @@ import deleteField from "@/serverFunctions/deleteField";
 import deleteEmployee from "@/serverFunctions/deleteEmployee";
 import { useMutation } from "@tanstack/react-query";
 import { FormProvider, useForm } from "react-hook-form";
+import { useFormButtonState } from "@/app/hooks/form-button-hook";
 
 export type DeleteFields = {
   field: boolean;
@@ -28,6 +29,7 @@ export function RemoveItemModal() {
   const { deleteItem, dataType } = { ...editDataBatch };
   const needFurtherConfirmation =
     dataType === "fieldJob" || dataType === "employeeJob";
+  const [disabled, setDisabled] = useFormButtonState("deleteItem");
 
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
@@ -72,14 +74,19 @@ export function RemoveItemModal() {
       if (Object.entries(fields as Object).length == 0) {
         fields = { employee: false, field: false, job: false, fieldJob: false };
       }
-      return mutate({ deleteItem: deleteItem, fields: fields });
+      mutate({ deleteItem: deleteItem, fields: fields });
+      setDisabled(true);
+      return;
     } else if (dataType === "fieldJob") {
       if (Object.entries(fields as Object).length == 0) {
         fields = { field: false, job: false };
       }
-      return mutate({ id: deleteItem, fields: fields });
+      mutate({ id: deleteItem, fields: fields });
+      setDisabled(true);
+      return;
     }
-    return mutate(deleteItem);
+    mutate(deleteItem);
+    setDisabled(true);
   }
 
   let content =
