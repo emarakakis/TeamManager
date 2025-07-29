@@ -11,7 +11,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import InfoIcon from "@mui/icons-material/Info";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import { useState, Dispatch, SetStateAction, MouseEvent } from "react";
+import { Dispatch, SetStateAction, MouseEvent } from "react";
 import { useQueryBatch, useQueryState } from "@/app/hooks/query-state-hook";
 import { ModalItem } from "./ItemModal";
 import { JobReturn } from "@/types/Job";
@@ -65,9 +65,21 @@ export default function OptionButton<T extends ModalItem>({
   }
 
   return (
-    <Box>
+    <Box
+      sx={{
+        height: "39px",
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
       <IconButton
-        sx={{ justifyContent: "center" }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+          height: "100%",
+          width: "100%",
+        }}
         onClick={handleClick}
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"

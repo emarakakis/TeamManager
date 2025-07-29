@@ -25,22 +25,52 @@ export default function TypeItem<T extends TypeItemProps>({
     ([key, _]) =>
       key !== "id" && key !== "jobId" && key !== "fieldId" && key !== "assigned"
   );
-  const dataLength = items.length + 1;
+  const dataLength = items.length;
   const itemSize = 12 / dataLength;
 
   return (
     <Grid
-      container
-      sx={{ background: index % 2 === 0 ? "#1976d2" : "white", width: 1 }}
+      sx={{
+        display: "grid",
+        gridTemplateColumns: "14fr 1fr",
+        mt: 1,
+        gap: "5px",
+      }}
     >
-      {items.map(([_, value], index) => {
-        return (
-          <Grid size={itemSize} key={index}>
-            <Typography>{value}</Typography>
-          </Grid>
-        );
-      })}
-      <Grid size={itemSize} container sx={{ justifyContent: "end", pr: 1 }}>
+      <Grid
+        sx={{
+          display: "grid",
+          gridTemplateColumns: `repeat(${dataLength},1fr)`,
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: "16px",
+          background: index % 2 === 0 ? "#1976d2" : "white",
+          minWidth: `${dataLength * 180}px`,
+          minHeight: "40px",
+          width: "100%",
+        }}
+      >
+        {items.map(([_, value], index) => {
+          return (
+            <Grid
+              key={index}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
+              <Typography>{value}</Typography>
+            </Grid>
+          );
+        })}
+      </Grid>
+      <Grid
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+          width: "100%",
+          borderRadius: "16px",
+        }}
+      >
         <ItemModal data={data} type={type} />
       </Grid>
     </Grid>

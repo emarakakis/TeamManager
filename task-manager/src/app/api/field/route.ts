@@ -17,7 +17,8 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const field = (await request.json()) as FieldDataReturn;
+    const field = await request.json();
+    console.log(field);
     const result = await db
       .update(fieldTable)
       .set(field)

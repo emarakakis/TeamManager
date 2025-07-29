@@ -52,3 +52,92 @@ export async function DELETE(request: Request) {
     throw error;
   }
 }
+
+export async function GET(request: Request) {
+  try {
+    const url = new URL(request.url);
+    const id = url.searchParams.get("id");
+    if (id) {
+      const result = await db
+        .select()
+        .from(employeeJobTable)
+        .where(eq(employeeJobTable.id, Number(id)));
+      return NextResponse.json({ success: true, data: result[0] });
+    } else {
+      const employeeId = url.searchParams.get("employeeId");
+      const jobId = url.searchParams.get("jobId");
+      const fieldId = url.searchParams.get("fieldId");
+
+      const result = await db
+        .select({
+          id: employeeJobTable.id,
+          employee: {
+            id: employeeTable.id,
+            name: employeeTable.name,
+            surname: employeeTable.surname,
+            email: employeeTable.email,
+            sex: employeeTable.sex,
+            phoneNumber: employeeTable.phoneNumber,
+          },
+          field: {
+            id: fieldJobsTable.fieldId,
+            name: fieldJobsTable.fieldName,
+            area: fieldJobsTable.jobFieldArea,
+          },
+          job: {
+            id: fieldJobsTable.jobId,
+            name: fieldJobsTable.jobName,
+            profession: fieldJobsTable.profession,
+          },
+        })
+        .from(employeeJobTable)
+        .innerJoin(
+          employeeTable,
+          eq(employeeJobTable.employeeId, employeeTable.id)
+        )
+        .innerJoin(
+          fieldJobsTable,
+          and(
+            eq(fieldJobsTable.jobId, employeeJobTable.jobId),
+            eq(fieldJobsTable.fieldId, employeeJobTable.fieldId)
+          )
+        )
+        .where(
+          and(
+            eq(employeeJobTable.employeeId, Number(employeeId)),
+            eq(employeeJobTable.fieldId, Number(fieldId)),
+            eq(employeeJobTable.jobId, Number(jobId))
+          )
+        )
+        .all();
+
+      return NextResponse.json({ success: true, data: result[0] });
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+const allowedTypes = ["field", "job", "employee"] as const;
+
+export async function PUT(request: Request) {
+  try {
+    const info = await request.json();
+
+    const { employeeJobId, itemId, type } = { ...info };
+    if (!allowedTypes.includes(type)) {
+      return NextResponse.json(
+        { success: false, error: "Invalid type" },
+        { status: 400 }
+      );
+    }
+    const result = await db
+      .update(employeeJobTable)
+      .set({ [`${type}Id`]: itemId })
+      .where(eq(employeeJobTable.id, Number(employeeJobId)));
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    throw error;
+  }
+}

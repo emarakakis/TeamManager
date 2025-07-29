@@ -26,13 +26,7 @@ export default function FieldJobTable() {
   return (
     <TypeTable type="fieldJob" title="Field Jobs" searchOptions={searchOptions}>
       <TableHeader
-        columnNames={[
-          "Area",
-          "Field Name",
-          "Job Name",
-          "Profession",
-          "Options",
-        ]}
+        columnNames={["Area", "Field Name", "Job Name", "Profession"]}
       />
       {data &&
         data.map((item, index) => (

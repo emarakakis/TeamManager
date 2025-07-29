@@ -21,7 +21,7 @@ export default function JobTable() {
 
   return (
     <TypeTable type="job" title="Jobs" searchOptions={options}>
-      <TableHeader columnNames={["Name", "Profession", "Area", "Options"]} />
+      <TableHeader columnNames={["Name", "Profession", "Area"]} />
       {data &&
         data.map((item, index) => (
           <TypeItem data={item} index={index} key={index} type="job" />

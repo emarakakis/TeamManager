@@ -1,12 +1,12 @@
 "use client";
 import getEmployeeJobs from "@/serverFunctions/getEmployeeJobs";
-import { EmployeeJob } from "@/types/EmployeeJob";
+import { EmployeeJob, EmployeeJobReturn } from "@/types/EmployeeJob";
 import { Box, Grid, List, ListItem, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import Row from "./Row";
 
 export default function EmployeeJobTable() {
-  const { data, isLoading } = useQuery<EmployeeJob[]>({
+  const { data, isLoading } = useQuery<EmployeeJobReturn[]>({
     queryKey: ["employeeJobs"],
     queryFn: getEmployeeJobs,
   });

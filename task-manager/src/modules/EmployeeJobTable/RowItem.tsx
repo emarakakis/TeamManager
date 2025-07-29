@@ -3,10 +3,20 @@ import ItemModal, { ModalItem } from "../ItemModal/ItemModal";
 import { EmployeeReturn } from "@/types/employee";
 import { JobReturn } from "@/types/Job";
 import { FieldDataReturn } from "@/types/FieldData";
+import RowModal from "./RowModal/RowModal";
+import { EmployeeJobId } from "@/types/EmployeeJob";
 
 export default function RowItem<
   T extends EmployeeReturn | JobReturn | FieldDataReturn
->({ data, type }: { data: T; type: string }) {
+>({
+  data,
+  type,
+  employeeJobId,
+}: {
+  data: T;
+  type: string;
+  employeeJobId: number;
+}) {
   const items = Object.entries(data).filter(([key, value]) => key !== "id");
 
   return (
@@ -30,7 +40,7 @@ export default function RowItem<
         ))}
       </Grid>
       <Grid container sx={{ justifyContent: "center" }}>
-        <ItemModal data={data} type={type} />
+        <RowModal type={type} id={data.id} ejId={employeeJobId} />
       </Grid>
     </Box>
   );

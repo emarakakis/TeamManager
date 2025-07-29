@@ -20,7 +20,7 @@ export default function FieldTable() {
 
   return (
     <TypeTable title="Fields" type="field" searchOptions={options}>
-      <TableHeader columnNames={["Name", "Area", "Options"]} />
+      <TableHeader columnNames={["Name", "Area"]} />
       {data?.map((f, i) => {
         return <TypeItem key={i} data={f} index={i} type="field" />;
       })}
