@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, Box } from "@mui/material";
 import Search from "../Search/Search";
 import TableHeader from "./TableHeader";
 import { Option } from "../SelectControl/SelectControl";
@@ -7,43 +7,47 @@ export default function TypeTable({
   type,
   title,
   children,
+  columnNames,
   searchOptions,
   ...props
 }: {
   children: React.ReactNode;
   type: string;
   title: string;
+  columnNames: string[];
   searchOptions: Option[];
 }) {
   return (
-    <Grid container direction="row" sx={tableSx}>
-      <Grid
-        container
-        sx={{
-          backgroundColor: "lightGray",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100px",
-          width: "30%",
-          borderRadius: "16px",
-        }}
-      >
-        <Typography variant="h2" sx={{ justifyContent: "center" }}>
-          {title}
-        </Typography>
-      </Grid>
-      <Grid
-        size={9}
-        container
-        sx={{
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100px",
-          width: "70%",
-          borderRadius: "16px",
-        }}
-      >
-        <Search type={type} options={searchOptions} />
+    <Grid sx={tableSx}>
+      <Grid container sx={{ minHeight: "100%", minWidth: "100%" }}>
+        <Grid
+          container
+          sx={{
+            backgroundColor: "lightGray",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100px",
+            width: "30%",
+            borderRadius: "16px",
+          }}
+        >
+          <Typography variant="h2" sx={{ justifyContent: "center" }}>
+            {title}
+          </Typography>
+        </Grid>
+        <Grid
+          size={9}
+          container
+          sx={{
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100px",
+            width: "70%",
+            borderRadius: "16px",
+          }}
+        >
+          <Search type={type} options={searchOptions} />
+        </Grid>
       </Grid>
       <Grid
         sx={{
@@ -58,10 +62,17 @@ export default function TypeTable({
           overflowX: "auto",
           overfloxY: "auto",
           whiteSpace: "nowrap",
-          scrollbarWidth: "thin", // για Firefox
+          scrollbarWidth: "thin",
         }}
       >
-        {children}
+        <Box
+          sx={{
+            height: "320px",
+          }}
+        >
+          <TableHeader columnNames={columnNames} />
+          {children}
+        </Box>
       </Grid>
     </Grid>
   );
