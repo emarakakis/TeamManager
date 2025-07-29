@@ -21,12 +21,10 @@ export default function RootLayout({
         <QueryClientProvider client={client}>
           <NavigationHeader>
             <ThemeProvider theme={theme}>
-              <Box sx={{ width: 1 }}>
-                {children}
-                <EditItemDrawer />
-                <ActionModal />
-                <ChangeModal />
-              </Box>
+              <Box sx={{ width: 1 }}>{children}</Box>
+              <EditItemDrawer />
+              <ActionModal />
+              <ChangeModal />
             </ThemeProvider>
           </NavigationHeader>
         </QueryClientProvider>

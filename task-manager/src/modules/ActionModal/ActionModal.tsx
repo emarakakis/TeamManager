@@ -20,7 +20,7 @@ const deletePaperProps = {
 const mergePaperProps = {
   paper: {
     sx: {
-      width: 500,
+      width: 2000,
       height: 450,
       padding: 3,
       borderRadius: 3,

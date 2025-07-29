@@ -17,8 +17,12 @@ export default function ModalType({
   return (
     <Grid>
       <DialogContent>
-        <DialogTitle>{title}</DialogTitle>
-        <DialogContentText>{contentText}</DialogContentText>
+        <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
+          {title}
+        </DialogTitle>
+        <DialogContentText sx={{ display: "flex", justifyContent: "center" }}>
+          {contentText}
+        </DialogContentText>
         <DialogContent>{children}</DialogContent>
       </DialogContent>
     </Grid>
