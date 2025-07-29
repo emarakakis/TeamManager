@@ -22,6 +22,9 @@ import { FieldJobReturn } from "@/types/FieldJob";
 import getFieldJob from "@/serverFunctions/getFieldJob";
 import putFieldJob from "@/serverFunctions/putFieldJob";
 import EditFieldJob from "./EditFieldJob";
+import FormButton from "../FormButton/FormButton";
+import { useFormButtonState } from "@/app/hooks/form-button-hook";
+import { boolean } from "drizzle-orm/gel-core";
 
 type EditItemType =
   | EmployeeReturn
@@ -35,6 +38,7 @@ export default function EditItemDrawer() {
     "editItem",
     "dataType",
   ]);
+  const [disabled, setDisabled] = useFormButtonState("editItem");
   const { editItem, dataType } = { ...editDataBatch };
   const methods = useForm<EditItemType>();
   const { handleSubmit } = methods;
@@ -62,6 +66,12 @@ export default function EditItemDrawer() {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (!open) {
+      setDisabled(false); // reset όταν κλείσει το modal π.χ.
+    }
+  }, [open]);
+
   const { mutate } = useMutation({
     mutationKey: ["update", dataType],
     mutationFn: async (data: EditItemType) => {
@@ -87,20 +97,29 @@ export default function EditItemDrawer() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`${dataType}s`] });
       setEditDataBatch(null);
+      setDisabled(true);
     },
   });
 
   return (
     <Drawer
       anchor="right"
-      onClose={() => setEditDataBatch(null)}
+      onClose={() => {
+        setEditDataBatch(null);
+        setDisabled(false);
+      }}
       open={open}
       slotProps={slotProps}
     >
       {isLoading && <Box>Loading...</Box>}
       {!isLoading && (
         <FormProvider {...methods}>
-          <form onSubmit={handleSubmit((data: EditItemType) => mutate(data))}>
+          <form
+            onSubmit={handleSubmit((data: EditItemType) => {
+              mutate(data);
+              setDisabled(true);
+            })}
+          >
             {dataType === "employee" && data && <EditEmployee />}
             {dataType === "field" && data && (
               <EditField data={data as FieldDataReturn} />
@@ -115,10 +134,12 @@ export default function EditItemDrawer() {
               spacing={5}
               sx={{ mt: 2, justifyContent: "center" }}
             >
-              <Button type="submit">Submit</Button>
+              <FormButton state="editItem">Submit</FormButton>
               <Button
                 sx={{ color: "red" }}
-                onClick={() => setEditDataBatch(null)}
+                onClick={() => {
+                  setEditDataBatch(null);
+                }}
               >
                 Cancel
               </Button>

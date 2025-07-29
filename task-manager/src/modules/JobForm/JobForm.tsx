@@ -2,6 +2,7 @@ import { Grid, TextField, Typography, Box, Button } from "@mui/material";
 import RadioSelect from "../FieldForm/RadioSelect";
 import { useFormContext } from "react-hook-form";
 import { JobCreate } from "@/types/Job";
+import FormButton from "../FormButton/FormButton";
 
 export default function JobForm() {
   const { register, control } = useFormContext<JobCreate>();
@@ -70,7 +71,7 @@ export default function JobForm() {
         </Grid>
 
         <Grid container sx={{ justifyContent: "center" }}>
-          <Button type="submit">Submit</Button>
+          <FormButton state="job">Submit</FormButton>
         </Grid>
       </Grid>
     </Box>

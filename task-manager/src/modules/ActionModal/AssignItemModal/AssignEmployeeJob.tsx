@@ -1,11 +1,4 @@
-import {
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Typography,
-  Button,
-  Grid,
-} from "@mui/material";
+import { Box, DialogTitle, Typography, Button } from "@mui/material";
 
 import { useQueryState } from "@/app/hooks/query-state-hook";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -14,12 +7,21 @@ import TypeItem from "../../TypeItem/TypeItem";
 import getEmployee from "@/serverFunctions/getEmployee";
 import getFieldJob from "@/serverFunctions/getFieldJob";
 import postEmployeeJob from "@/serverFunctions/postEmployeeJob";
+import { useFormButtonState } from "@/app/hooks/form-button-hook";
+import FormButton from "@/modules/FormButton/FormButton";
+import { EmployeeReturn } from "@/types/employee";
+import { FieldJobReturn } from "@/types/FieldJob";
+import AssignItem from "./AssignItem";
 
 export default function AssignEmployeeJob() {
   const [employeeJob, setEmployeeJob] = useQueryState("employeeJob");
   const { fieldId, jobId, employeeId } = { ...employeeJob };
   const queryClient = useQueryClient();
-  const { data, isLoading } = useQuery({
+  const [disabled, setDisabled] = useFormButtonState("assignItem");
+  const { data, isLoading } = useQuery<{
+    employee: EmployeeReturn;
+    fieldJob: FieldJobReturn;
+  }>({
     queryKey: ["employeeJob", fieldId, jobId, employeeId],
     queryFn: async () => {
       const employee = await getEmployee(employeeId);
@@ -41,24 +43,50 @@ export default function AssignEmployeeJob() {
   if (isLoading) {
     return <DialogTitle>Loading...</DialogTitle>;
   }
+  const allowedKeys = ["id", "assigned", "sex", "phoneNumber"];
+  const { employee, fieldJob } = { ...data };
   return (
-    <ModalType
-      title="Employee Job"
-      contentText="Are you sure you want to merge?"
-    >
-      <Typography>Employee</Typography>
-      <TypeItem data={data?.employee!} index={0} type="employee" />
-      <Typography>Field</Typography>
-      <TypeItem data={data?.fieldJob!} index={0} type="field" />
-      <Button
-        sx={{ color: "green" }}
-        onClick={() => mutate({ jobId, fieldId, employeeId })}
+    <Box sx={{ display: "grid", justifyContent: "center" }}>
+      <ModalType
+        title="Employee Job Creation"
+        contentText="Are you sure you want to merge?"
       >
-        Yes
-      </Button>
-      <Button sx={{ color: "red" }} onClick={() => setEmployeeJob(null)}>
-        No
-      </Button>
-    </ModalType>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            justifyContent: "center",
+            gap: 5,
+          }}
+        >
+          <AssignItem data={employee!} />
+          <AssignItem data={fieldJob!} />
+        </Box>
+      </ModalType>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          gap: 2,
+        }}
+      >
+        <FormButton
+          state="assignItem"
+          sx={{ color: "green" }}
+          onClick={() => {
+            mutate({ jobId, fieldId, employeeId });
+            setDisabled(true);
+          }}
+        >
+          Yes
+        </FormButton>
+        <Button
+          sx={{ color: "red", width: "200px" }}
+          onClick={() => setEmployeeJob(null)}
+        >
+          No
+        </Button>
+      </Box>
+    </Box>
   );
 }

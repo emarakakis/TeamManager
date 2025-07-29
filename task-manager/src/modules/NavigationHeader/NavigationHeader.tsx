@@ -1,19 +1,13 @@
 import * as React from "react";
-import {
-  AppBar,
-  Link,
-  Box,
-  Button,
-  Toolbar,
-  Typography,
-  Container,
-} from "@mui/material";
-
+import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
+import NextLink from "next/link";
 export default function NavigationHeader({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
   return (
     <>
       <AppBar
@@ -23,33 +17,33 @@ export default function NavigationHeader({
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6" component="div">
-            <Link href="/">
+            <NextLink href="/">
               <Button variant="text" sx={{ color: "white" }}>
                 GameDev CEO
               </Button>
-            </Link>
+            </NextLink>
           </Typography>
           <Box>
-            <Link href="/pages/employeeJobs">
+            <NextLink href="/pages/employeeJobs">
               <Button variant="text" sx={{ color: "white" }}>
                 EmployeesJobs
               </Button>
-            </Link>
-            <Link href="/pages/jobs/create">
+            </NextLink>
+            <NextLink href="/pages/jobs/create">
               <Button variant="text" sx={{ color: "white" }}>
                 Create Job
               </Button>
-            </Link>
-            <Link href="/pages/fields/create" underline="none">
+            </NextLink>
+            <NextLink href="/pages/fields/create">
               <Button variant="outlined" sx={{ color: "white" }}>
                 Create Field
               </Button>
-            </Link>
-            <Link href="/pages/employees/create">
+            </NextLink>
+            <NextLink href="/pages/employees/create">
               <Button variant="outlined" sx={{ color: "white" }}>
                 Create Employee
               </Button>
-            </Link>
+            </NextLink>
           </Box>
         </Toolbar>
       </AppBar>

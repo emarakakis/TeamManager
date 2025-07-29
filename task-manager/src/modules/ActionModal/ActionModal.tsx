@@ -2,9 +2,9 @@ import { Dialog } from "@mui/material";
 import { useQueryBatch } from "@/app/hooks/query-state-hook";
 
 import { RemoveItemModal } from "./RemoveItemModal/RemoveItemModal";
-import AssignFieldJob from "./AssignItemModal/AssignFieldJob";
-import AssignEmployeeJob from "./AssignItemModal/AssignEmployeeJob";
 import AssignItemModal from "./AssignItemModal/AssignItemModal";
+import { useFormButtonState } from "@/app/hooks/form-button-hook";
+import { useEffect } from "react";
 
 const deletePaperProps = {
   paper: {
@@ -20,7 +20,7 @@ const deletePaperProps = {
 const mergePaperProps = {
   paper: {
     sx: {
-      width: 500,
+      width: 2000,
       height: 450,
       padding: 3,
       borderRadius: 3,
@@ -48,6 +48,14 @@ export default function ActionModal() {
   }
 
   const open = (!!deleteItem && !!dataType) || !!mergeFieldJob || !!employeeJob;
+  const [disabledDelete, setDisabledDelete] = useFormButtonState("deleteItem");
+  const [disabledAssign, setDisabledAssign] = useFormButtonState("assignItem");
+  useEffect(() => {
+    if (!open) {
+      setDisabledDelete(false);
+      setDisabledAssign(false);
+    }
+  }, [open]);
 
   return (
     <Dialog

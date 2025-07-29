@@ -8,17 +8,18 @@ import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import postEmployee from "@/serverFunctions/postEmployee";
 import { useRouter } from "next/navigation";
+import { useFormButtonState } from "@/app/hooks/form-button-hook";
 
 export default function Page() {
   const router = useRouter();
+  const [disabled, setDisabled] = useFormButtonState("employee");
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationKey: ["add-employee"],
     mutationFn: postEmployee,
     onSuccess: async () => {
-      console.log("Insertion worked!");
-      await queryClient.invalidateQueries({ queryKey: ["employees"] });
       router.push("/");
+      await queryClient.invalidateQueries({ queryKey: ["employees"] });
     },
   });
 
@@ -27,6 +28,7 @@ export default function Page() {
 
   function onSubmit(data: Employee) {
     mutate(data);
+    setDisabled(true);
   }
 
   return (
