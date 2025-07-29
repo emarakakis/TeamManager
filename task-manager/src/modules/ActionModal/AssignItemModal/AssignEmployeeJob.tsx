@@ -1,11 +1,4 @@
-import {
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Typography,
-  Button,
-  Grid,
-} from "@mui/material";
+import { Box, DialogTitle, Typography, Button } from "@mui/material";
 
 import { useQueryState } from "@/app/hooks/query-state-hook";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -14,11 +7,14 @@ import TypeItem from "../../TypeItem/TypeItem";
 import getEmployee from "@/serverFunctions/getEmployee";
 import getFieldJob from "@/serverFunctions/getFieldJob";
 import postEmployeeJob from "@/serverFunctions/postEmployeeJob";
+import { useFormButtonState } from "@/app/hooks/form-button-hook";
+import FormButton from "@/modules/FormButton/FormButton";
 
 export default function AssignEmployeeJob() {
   const [employeeJob, setEmployeeJob] = useQueryState("employeeJob");
   const { fieldId, jobId, employeeId } = { ...employeeJob };
   const queryClient = useQueryClient();
+  const [disabled, setDisabled] = useFormButtonState("assignItem");
   const { data, isLoading } = useQuery({
     queryKey: ["employeeJob", fieldId, jobId, employeeId],
     queryFn: async () => {
@@ -50,15 +46,24 @@ export default function AssignEmployeeJob() {
       <TypeItem data={data?.employee!} index={0} type="employee" />
       <Typography>Field</Typography>
       <TypeItem data={data?.fieldJob!} index={0} type="field" />
-      <Button
-        sx={{ color: "green" }}
-        onClick={() => mutate({ jobId, fieldId, employeeId })}
-      >
-        Yes
-      </Button>
-      <Button sx={{ color: "red" }} onClick={() => setEmployeeJob(null)}>
-        No
-      </Button>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <FormButton
+          state="assignItem"
+          sx={{ color: "green" }}
+          onClick={() => {
+            mutate({ jobId, fieldId, employeeId });
+            setDisabled(true);
+          }}
+        >
+          Yes
+        </FormButton>
+        <Button
+          sx={{ color: "red", width: "200px" }}
+          onClick={() => setEmployeeJob(null)}
+        >
+          No
+        </Button>
+      </Box>
     </ModalType>
   );
 }

@@ -18,6 +18,8 @@ import getItemFunction from "@/utils/getItemFunction";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import putEmployeeJob from "@/serverFunctions/putEmployeeJob";
+import FormButton from "../FormButton/FormButton";
+import { useFormButtonState } from "@/app/hooks/form-button-hook";
 
 export type ChangeType = EmployeeReturn | FieldDataReturn | JobReturn;
 export type ChangeTypeArray = Array<ChangeType>;
@@ -27,6 +29,7 @@ export default function ChangeModal() {
     "changeItem",
     "employeeJobId",
   ]);
+  const [disabled, setDisabled] = useFormButtonState("change");
   const { changeItem, employeeJobId } = { ...changeBatch };
   const { changeType, changeItemId } = { ...changeItem };
   const queryClient = useQueryClient();
@@ -61,6 +64,7 @@ export default function ChangeModal() {
 
   useEffect(() => {
     methods.reset({ id: changeItemId });
+    setDisabled(false);
   }, [open]);
 
   const orderedData = [
@@ -75,10 +79,14 @@ export default function ChangeModal() {
 
   return (
     <Dialog open={open} onClose={() => setChangeBatch(null)}>
-      <DialogTitle>Change Item</DialogTitle>
+      <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
+        Change Item
+      </DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          Select the value you want to change to.
+        <DialogContentText
+          sx={{ display: "flex", justifyContent: "center", mb: 2 }}
+        >
+          Select the value you want to change to
         </DialogContentText>
         <FormProvider {...methods}>
           <form
@@ -88,10 +96,15 @@ export default function ChangeModal() {
                 type: changeType,
                 itemId: data.id,
               });
+              setDisabled(true);
             })}
           >
             <ChangeTable data={orderedData ?? []} defaultValue={changeItemId} />
-            <Button type="submit">Submint</Button>
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+              <FormButton state="change" sx={{ color: "green" }}>
+                Submit
+              </FormButton>
+            </Box>
           </form>
         </FormProvider>
       </DialogContent>

@@ -1,6 +1,7 @@
-import { Button, DialogContent } from "@mui/material";
+import { Button, DialogContent, Box } from "@mui/material";
 
 import { useQueryBatch } from "@/app/hooks/query-state-hook";
+import FormButton from "@/modules/FormButton/FormButton";
 
 export default function RemoveButtons() {
   const [editDataBatch, setEditDataBatch] = useQueryBatch([
@@ -10,12 +11,12 @@ export default function RemoveButtons() {
 
   return (
     <DialogContent sx={{ display: "flex", justifyContent: "center" }}>
-      <Button type="submit" sx={{ color: "green" }}>
-        Yes
-      </Button>
-      <Button sx={{ color: "red" }} onClick={() => setEditDataBatch(null)}>
-        No
-      </Button>
+      <FormButton state="deleteItem">Yes</FormButton>
+      <Box sx={{ width: "200px", display: "flex", justifyContent: "center" }}>
+        <Button sx={{ color: "red" }} onClick={() => setEditDataBatch(null)}>
+          No
+        </Button>
+      </Box>
     </DialogContent>
   );
 }
