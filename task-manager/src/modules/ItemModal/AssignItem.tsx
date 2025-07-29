@@ -38,10 +38,22 @@ export default function AssignItem<T extends AssignItemType>({
   const isEmployee =
     Object.entries(assignItem).length > 0 && "fieldId" in assignItem;
   return (
-    <Box>
+    <Box
+      sx={{
+        height: "39px",
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
       {((sameArea && type === "field") ||
         (isEmployee && type === "employee")) && (
-        <IconButton sx={{ justifyContent: "center" }}>
+        <IconButton
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignContent: "center",
+          }}
+        >
           <AddTaskIcon
             onClick={() => {
               const item = {

@@ -45,7 +45,24 @@ export default function TypeTable({
       >
         <Search type={type} options={searchOptions} />
       </Grid>
-      {children}
+      <Grid
+        sx={{
+          display: "block",
+          padding: "5px",
+          mt: 1,
+          width: "100%",
+          borderRadius: "16px",
+          backgroundColor: "lightGray",
+          maxWidth: "2000px",
+          maxHeight: "320px",
+          overflowX: "auto",
+          overfloxY: "auto",
+          whiteSpace: "nowrap",
+          scrollbarWidth: "thin", // για Firefox
+        }}
+      >
+        {children}
+      </Grid>
     </Grid>
   );
 }

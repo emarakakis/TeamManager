@@ -23,14 +23,7 @@ export default function EmployeeTable() {
   return (
     <TypeTable title="Employees" type="employee" searchOptions={options}>
       <TableHeader
-        columnNames={[
-          "Name",
-          "Surname",
-          "Phone Number",
-          "Sex",
-          "Email",
-          "Options",
-        ]}
+        columnNames={["Name", "Surname", "Phone Number", "Sex", "Email"]}
       />
       {data &&
         data.map((employee, index) => {
