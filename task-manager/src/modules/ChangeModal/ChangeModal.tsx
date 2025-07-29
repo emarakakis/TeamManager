@@ -75,7 +75,7 @@ export default function ChangeModal() {
     }),
   ];
 
-  if (isLoading) return <Box>Loading...</Box>;
+  if (isLoading && open) return <Box>Loading...</Box>;
 
   return (
     <Dialog open={open} onClose={() => setChangeBatch(null)}>
