@@ -9,7 +9,9 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import getChangeTableData from "@/serverFunctions/getChangeTableData";
+import getChangeTableData, {
+  FieldJobIdConcat,
+} from "@/serverFunctions/getChangeTableData";
 import { EmployeeReturn } from "@/types/employee";
 import { FieldDataReturn } from "@/types/FieldData";
 import { JobReturn } from "@/types/Job";
@@ -21,7 +23,11 @@ import putEmployeeJob from "@/serverFunctions/putEmployeeJob";
 import FormButton from "../FormButton/FormButton";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
 
-export type ChangeType = EmployeeReturn | FieldDataReturn | JobReturn;
+export type ChangeType =
+  | EmployeeReturn
+  | FieldDataReturn
+  | JobReturn
+  | FieldJobIdConcat;
 export type ChangeTypeArray = Array<ChangeType>;
 
 export default function ChangeModal() {

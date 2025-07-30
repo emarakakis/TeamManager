@@ -17,6 +17,8 @@ import { ModalItem } from "./ItemModal";
 import { JobReturn } from "@/types/Job";
 import qs from "qs";
 import { FieldJobReturn } from "@/types/FieldJob";
+import ChangeItem from "./ChangeItem";
+import { FieldJobIdConcat } from "@/serverFunctions/getChangeTableData";
 
 export default function OptionButton<T extends ModalItem>({
   data,
@@ -126,6 +128,9 @@ export default function OptionButton<T extends ModalItem>({
                 Assign to {type === "job" ? "Field" : "Employee"}
               </ListItemText>
             </MenuItem>
+          )}
+          {type === "fieldJob" && (
+            <ChangeItem data={data as FieldJobIdConcat} />
           )}
         </MenuList>
       </Menu>
