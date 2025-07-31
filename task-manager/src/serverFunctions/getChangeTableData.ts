@@ -7,12 +7,17 @@ import getJobs from "./getJobs";
 import getFieldJobs from "./getFieldJobs";
 import { FieldJob } from "@/types/FieldJob";
 
-export type FieldJobIdConcat = {
-  id: { jobId: number; fieldId: number };
-} & FieldJob;
+export type FieldJobConcat = { fields: FieldDataReturn[]; jobs: JobReturn[] };
+type ChangeDataTypes =
+  | EmployeeReturn[]
+  | FieldDataReturn[]
+  | JobReturn[]
+  | FieldJobConcat;
 
-export default async function getChangeTableData(type: string) {
-  let result: EmployeeReturn[] | FieldDataReturn[] | JobReturn[];
+export default async function getChangeTableData(
+  type: string
+): Promise<ChangeDataTypes> {
+  let result: ChangeDataTypes;
   try {
     if (type === "employee") {
       result = await getEmployees({});
@@ -21,12 +26,9 @@ export default async function getChangeTableData(type: string) {
     } else if (type === "job") {
       result = await getJobs({});
     } else if (type === "fieldJob") {
-      return getFieldJobs({}).then((result) => {
-        return result.map((item) => {
-          const { jobId, fieldId, ...rest } = item;
-          return { id: { jobId, fieldId }, ...rest };
-        });
-      });
+      const jobs = await getJobs({});
+      const fields = await getFields({});
+      return { jobs, fields };
     } else {
       throw new Error("This type doesn't exist");
     }

@@ -4,7 +4,7 @@ import { FieldDataReturn } from "@/types/FieldData";
 import { Grid, Typography, TextField } from "@mui/material";
 
 export default function EditField({ data }: { data: FieldDataReturn }) {
-  const { register, getValues, control } = useFormContext<FieldDataReturn>();
+  const { register, control } = useFormContext<FieldDataReturn>();
   return (
     <Grid>
       <Typography
