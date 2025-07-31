@@ -17,6 +17,10 @@ export default function Page() {
   const router = useRouter();
   const [disabled, setDisabled] = useFormButtonState("field");
 
+  React.useEffect(() => {
+    setDisabled(false);
+  }, [router]);
+
   const { mutate } = useMutation({
     mutationKey: ["fields"],
     mutationFn: postField,

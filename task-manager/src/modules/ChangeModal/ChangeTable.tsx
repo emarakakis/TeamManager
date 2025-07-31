@@ -12,17 +12,22 @@ export default function ChangeTable({
   watchString: string;
 }) {
   const { watch } = useFormContext<{ [watchString]: number }>();
-  console.log("ChangeTable ", defaultValue, watch(watchString));
   const changedValue = Number(defaultValue) !== watch(watchString);
   return (
     <Box>
-      <Typography
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-      >
-        {"email" in data[0] && "Employee"}
-        {"area" in data[0] && !("profession" in data[0]) && "Field"}
-        {"profession" in data[0] && "Job"}
-      </Typography>
+      {data && data.length > 0 && (
+        <Typography
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {"email" in data[0] && "Employee"}
+          {"area" in data[0] && !("profession" in data[0]) && "Field"}
+          {"profession" in data[0] && "Job"}
+        </Typography>
+      )}
       <Box
         sx={{
           display: "grid",

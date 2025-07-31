@@ -22,6 +22,7 @@ import putEmployeeJob from "@/serverFunctions/putEmployeeJob";
 import FormButton from "../FormButton/FormButton";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
 import ChangeField from "./ChangeField";
+import changeFieldJob from "@/serverFunctions/changeFieldJob";
 
 export type ChangeType = EmployeeReturn | FieldDataReturn | JobReturn;
 export type ChangeTypeArray = Array<ChangeType> | FieldJobConcat;
@@ -31,9 +32,8 @@ export default function ChangeModal() {
     "changeItem",
     "employeeJobId",
   ]);
-  console.log(changeBatch);
   const [disabled, setDisabled] = useFormButtonState("change");
-
+  console.log(disabled);
   const { changeItem, employeeJobId } = { ...changeBatch };
   const { changeType, changeItemId } = { ...changeItem };
   const queryClient = useQueryClient();
@@ -45,9 +45,7 @@ export default function ChangeModal() {
       if (changeType === "field") {
         return unAssignedItems;
       }
-      console.log(":D");
       if (changeType === "fieldJob") {
-        console.log(":DD");
         const jobItem = (await getItemFunction(
           "job",
           changeItemId.jobId
@@ -72,12 +70,23 @@ export default function ChangeModal() {
       }
     },
   });
-  const { mutate } = useMutation({
+  const { mutate: mutateEmployeeJobFields } = useMutation({
     mutationKey: ["change", changeType],
     mutationFn: putEmployeeJob,
     onSuccess: async () => {
       console.log("success");
       await queryClient.invalidateQueries({ queryKey: ["employeeJobs"] });
+      setChangeBatch(null);
+    },
+  });
+
+  const { mutate: mutateFieldJobFields } = useMutation({
+    mutationKey: ["change", changeType],
+    mutationFn: changeFieldJob,
+    onSuccess: async () => {
+      console.log("success");
+      await queryClient.invalidateQueries({ queryKey: ["fieldJobs"] });
+      await queryClient.invalidateQueries({ queryKey: ["jobs"] });
       setChangeBatch(null);
     },
   });
@@ -116,9 +125,16 @@ export default function ChangeModal() {
             onSubmit={methods.handleSubmit(
               (data: { id: number } | { jobId: number; fieldId: number }) => {
                 if ("jobId" in data) {
-                  console.log(":D", data);
+                  mutateFieldJobFields({
+                    newId: {
+                      jobId: data.jobId,
+                      fieldId: data.fieldId,
+                    },
+                    previousId: { ...changeItemId },
+                  });
+                  setDisabled(true);
                 } else {
-                  mutate({
+                  mutateEmployeeJobFields({
                     employeeJobId: employeeJobId,
                     type: changeType,
                     itemId: data.id,

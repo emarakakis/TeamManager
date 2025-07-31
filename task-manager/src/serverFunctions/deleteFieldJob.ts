@@ -9,13 +9,10 @@ type FieldJobId = {
 
 export default async function deleteFieldJob(input: {
   id: FieldJobId;
-  fields: FieldJobDeleteFields;
+  fields?: FieldJobDeleteFields;
 }) {
   const { fields, id } = { ...input };
   const { jobId, fieldId } = { ...id };
-  const fieldItems = Object.entries(fields);
-  const deleteItems = fieldItems.filter(([key, val]) => val);
-  const unAssignItems = fieldItems.filter(([key, val]) => !val);
 
   const result = await axios.delete(
     `/api/fieldJob?jobId=${jobId}&fieldId=${fieldId}`
@@ -26,6 +23,14 @@ export default async function deleteFieldJob(input: {
   if (!data) {
     throw new Error("Something went wrong when Deleting a FieldJob");
   }
+
+  if (!fields) {
+    return;
+  }
+
+  const fieldItems = Object.entries(fields ?? {});
+  const deleteItems = fieldItems.filter(([key, val]) => val);
+  const unAssignItems = fieldItems.filter(([key, val]) => !val);
 
   for (const [key, value] of deleteItems) {
     try {

@@ -139,6 +139,7 @@ export default function OptionButton<T extends ModalItem>({
                   fieldId: number;
                 }
               }
+              setAnchorEl={setAnchorEl}
             />
           )}
         </MenuList>
