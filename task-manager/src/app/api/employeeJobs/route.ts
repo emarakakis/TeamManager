@@ -4,11 +4,25 @@ import {
   employeeJobTable,
   employeeTable,
   fieldJobsTable,
+  fieldTable,
+  jobTable,
 } from "../../../../db";
-import { and, eq } from "drizzle-orm";
+import { and, eq, ilike, like } from "drizzle-orm";
+import qs from "qs";
+import { Employee, EmployeeReturn } from "@/types/employee";
+import { JobCreate, JobReturn } from "@/types/Job";
+import { FieldData, FieldDataReturn } from "@/types/FieldData";
 
 export async function GET(req: Request) {
   try {
+    const url = new URL(req.url);
+    const { employee, job, field } = qs.parse(url.searchParams.toString());
+    const whereClause = generateWhereClause(
+      employee as Employee,
+      job as JobCreate,
+      field as FieldData
+    );
+
     const result = await db
       .select({
         id: employeeJobTable.id,
@@ -21,14 +35,14 @@ export async function GET(req: Request) {
           phoneNumber: employeeTable.phoneNumber,
         },
         field: {
-          id: fieldJobsTable.fieldId,
-          name: fieldJobsTable.fieldName,
-          area: fieldJobsTable.jobFieldArea,
+          id: fieldTable.id,
+          name: fieldTable.name,
+          area: fieldTable.area,
         },
         job: {
-          id: fieldJobsTable.jobId,
-          name: fieldJobsTable.jobName,
-          profession: fieldJobsTable.profession,
+          id: jobTable.id,
+          name: jobTable.name,
+          profession: jobTable.profession,
         },
       })
       .from(employeeJobTable)
@@ -36,17 +50,36 @@ export async function GET(req: Request) {
         employeeTable,
         eq(employeeJobTable.employeeId, employeeTable.id)
       )
-      .innerJoin(
-        fieldJobsTable,
-        and(
-          eq(fieldJobsTable.jobId, employeeJobTable.jobId),
-          eq(fieldJobsTable.fieldId, employeeJobTable.fieldId)
-        )
-      )
+      .innerJoin(fieldTable, eq(fieldTable.id, employeeJobTable.jobId))
+      .innerJoin(jobTable, eq(jobTable.id, employeeJobTable.jobId))
+      .where(whereClause)
       .all();
-    console.log(result);
     return NextResponse.json({ success: true, data: result });
   } catch (error) {
     throw error;
   }
+}
+
+function generateWhereClause(
+  employee: Employee,
+  job: JobCreate,
+  field: FieldData
+) {
+  const condition = [];
+
+  for (const [key, value] of Object.entries(employee ?? {})) {
+    condition.push(
+      like(employeeTable[key as keyof EmployeeReturn], `${value}%`)
+    );
+  }
+
+  for (const [key, value] of Object.entries(job ?? {})) {
+    condition.push(like(jobTable[key as keyof JobReturn], `${value}%`));
+  }
+
+  for (const [key, value] of Object.entries(field ?? {})) {
+    condition.push(like(fieldTable[key as keyof FieldDataReturn], `${value}%`));
+  }
+
+  return condition.length > 0 ? and(...condition) : undefined;
 }
