@@ -1,14 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import {
-  Box,
-  Grid,
-  Button,
-  List,
-  ListItem,
-  Typography,
-  TextField,
-} from "@mui/material";
+import { Box, Grid, Button } from "@mui/material";
 import SearchInput from "../SearchInput/SearchInput";
 import SelectControl from "../SelectControl/SelectControl";
 import { useQueryState } from "@/app/hooks/query-state-hook";
@@ -25,7 +17,6 @@ export default function Search({
 }) {
   const [searchType, setSearchType] = useQueryState(type);
   const [intenalValue, setInternalValue] = useState<string>("");
-  const [activeSearch, setActiveSearch] = useState<Array<Object>>([]);
 
   const { getValues, control } = useForm<{ category: string }>();
 
@@ -49,25 +40,56 @@ export default function Search({
   const conditions = Object.entries(searchType);
 
   return (
-    <Grid container direction="column">
-      <Grid container sx={{ ml: 2 }}>
-        <Grid container sx={{ width: "40%" }}>
-          <SelectControl
-            name="category"
-            defaultValue="name"
-            control={control}
-            options={options}
-          />
-        </Grid>
-        <Grid container sx={{ width: "40%" }}>
+    <Box
+      sx={{
+        display: "grid",
+        gridTemplateColumns: "3fr 2fr",
+        width: "100%",
+        height: "50px",
+
+        gap: 2,
+        borderRadius: "16px",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 1,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            gap: 1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Box>
+            <SelectControl
+              name="category"
+              defaultValue="name"
+              control={control}
+              options={options}
+            />
+          </Box>
+
           <SearchInput value={intenalValue} setValue={setInternalValue} />
-        </Grid>
-        <Grid container sx={{ width: "20%" }}>
+        </Box>
+        <Grid container sx={{ justifyContent: "center" }}>
           <Button onClick={handleSearch}>Search</Button>
         </Grid>
-        <Grid></Grid>
-      </Grid>
-      <Grid container spacing={2} sx={{ width: "100%" }}>
+      </Box>
+      <Box
+        sx={{
+          display: "grid",
+          flexDirection: "column",
+          overflowY: "auto",
+          gap: 1,
+        }}
+      >
         {conditions.map(([condition, value], index) => (
           <SearchCondition
             condition={condition}
@@ -76,7 +98,7 @@ export default function Search({
             key={index}
           />
         ))}
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   );
 }

@@ -1,15 +1,16 @@
 import { useQueryBatch, useQueryState } from "@/app/hooks/query-state-hook";
-import ChangeTable from "./ChangeTable";
 import {
   Box,
-  Button,
+  Grid,
   Dialog,
   DialogContent,
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import getChangeTableData from "@/serverFunctions/getChangeTableData";
+import getChangeTableData, {
+  FieldJobConcat,
+} from "@/serverFunctions/getChangeTableData";
 import { EmployeeReturn } from "@/types/employee";
 import { FieldDataReturn } from "@/types/FieldData";
 import { JobReturn } from "@/types/Job";
@@ -20,9 +21,11 @@ import { useEffect } from "react";
 import putEmployeeJob from "@/serverFunctions/putEmployeeJob";
 import FormButton from "../FormButton/FormButton";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
+import ChangeField from "./ChangeField";
+import changeFieldJob from "@/serverFunctions/changeFieldJob";
 
 export type ChangeType = EmployeeReturn | FieldDataReturn | JobReturn;
-export type ChangeTypeArray = Array<ChangeType>;
+export type ChangeTypeArray = Array<ChangeType> | FieldJobConcat;
 
 export default function ChangeModal() {
   const [changeBatch, setChangeBatch] = useQueryBatch([
@@ -30,23 +33,44 @@ export default function ChangeModal() {
     "employeeJobId",
   ]);
   const [disabled, setDisabled] = useFormButtonState("change");
+  console.log(disabled);
   const { changeItem, employeeJobId } = { ...changeBatch };
   const { changeType, changeItemId } = { ...changeItem };
   const queryClient = useQueryClient();
   const { data, isLoading } = useQuery<ChangeTypeArray>({
     queryKey: [`${changeType}s`, "with-item"],
-    queryFn: async () => {
+    queryFn: async (): Promise<ChangeTypeArray> => {
       const unAssignedItems = await getChangeTableData(changeType);
 
       if (changeType === "field") {
         return unAssignedItems;
       }
-      const item = await getItemFunction(changeType, changeItemId);
-      return item ? [...unAssignedItems, item] : unAssignedItems;
+      if (changeType === "fieldJob") {
+        const jobItem = (await getItemFunction(
+          "job",
+          changeItemId.jobId
+        )) as JobReturn;
+        const fieldItem = (await getItemFunction(
+          "field",
+          changeItemId.fieldId
+        )) as FieldDataReturn;
+
+        const { jobs: unAssignedJobs, fields: unAssignedFields } =
+          unAssignedItems as FieldJobConcat;
+        const jobs = jobItem ? [...unAssignedJobs, jobItem] : unAssignedJobs;
+        const fields = fieldItem
+          ? [...unAssignedFields, fieldItem]
+          : unAssignedFields;
+        return { jobs, fields };
+      } else {
+        const item = await getItemFunction(changeType, changeItemId);
+        return item
+          ? [...(unAssignedItems as ChangeType[]), item]
+          : unAssignedItems;
+      }
     },
   });
-
-  const { mutate } = useMutation({
+  const { mutate: mutateEmployeeJobFields } = useMutation({
     mutationKey: ["change", changeType],
     mutationFn: putEmployeeJob,
     onSuccess: async () => {
@@ -56,24 +80,32 @@ export default function ChangeModal() {
     },
   });
 
+  const { mutate: mutateFieldJobFields } = useMutation({
+    mutationKey: ["change", changeType],
+    mutationFn: changeFieldJob,
+    onSuccess: async () => {
+      console.log("success");
+      await queryClient.invalidateQueries({ queryKey: ["fieldJobs"] });
+      await queryClient.invalidateQueries({ queryKey: ["jobs"] });
+      setChangeBatch(null);
+    },
+  });
+
   const open = !!changeItem && Object.entries(changeItem).length > 0;
 
-  const methods = useForm<{ id: number }>({
+  const methods = useForm<{ id: number } | { jobId: number; fieldId: number }>({
     defaultValues: { id: changeItemId },
   });
 
   useEffect(() => {
-    methods.reset({ id: changeItemId });
+    if (changeType !== "fieldJob") methods.reset({ id: changeItemId });
+    else
+      methods.reset({
+        jobId: changeItemId.jobId,
+        fieldId: changeItemId.fieldId,
+      });
     setDisabled(false);
   }, [open]);
-
-  const orderedData = [
-    ...(data ?? [])!.sort((a, b) => {
-      if (a.id === Number(changeItemId)) return -1; // a πάει πάνω
-      if (b.id === Number(changeItemId)) return 1; // b πάει πάνω
-      return 0; // δεν αλλάζει η σειρά
-    }),
-  ];
 
   if (isLoading && open) return <Box>Loading...</Box>;
 
@@ -90,16 +122,58 @@ export default function ChangeModal() {
         </DialogContentText>
         <FormProvider {...methods}>
           <form
-            onSubmit={methods.handleSubmit((data: { id: number }) => {
-              mutate({
-                employeeJobId: employeeJobId,
-                type: changeType,
-                itemId: data.id,
-              });
-              setDisabled(true);
-            })}
+            onSubmit={methods.handleSubmit(
+              (data: { id: number } | { jobId: number; fieldId: number }) => {
+                if ("jobId" in data) {
+                  mutateFieldJobFields({
+                    newId: {
+                      jobId: data.jobId,
+                      fieldId: data.fieldId,
+                    },
+                    previousId: { ...changeItemId },
+                  });
+                  setDisabled(true);
+                } else {
+                  mutateEmployeeJobFields({
+                    employeeJobId: employeeJobId,
+                    type: changeType,
+                    itemId: data.id,
+                  });
+                  setDisabled(true);
+                }
+              }
+            )}
           >
-            <ChangeTable data={orderedData ?? []} defaultValue={changeItemId} />
+            {changeType !== "fieldJob" && (
+              <ChangeField
+                watchString="id"
+                data={data! as ChangeType[]}
+                id={Number(changeItemId)}
+              />
+            )}
+            {changeType === "fieldJob" && (
+              <Grid
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "48% 48%",
+                  gap: 3,
+
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                }}
+              >
+                <ChangeField
+                  watchString="jobId"
+                  data={(data as FieldJobConcat).jobs}
+                  id={Number(changeItemId.jobId)}
+                />
+                <ChangeField
+                  watchString="fieldId"
+                  data={(data as FieldJobConcat).fields}
+                  id={Number(changeItemId.jobId)}
+                />
+              </Grid>
+            )}
             <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
               <FormButton state="change" sx={{ color: "green" }}>
                 Submit

@@ -17,6 +17,8 @@ import { ModalItem } from "./ItemModal";
 import { JobReturn } from "@/types/Job";
 import qs from "qs";
 import { FieldJobReturn } from "@/types/FieldJob";
+import ChangeItem from "./ChangeItem";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 export default function OptionButton<T extends ModalItem>({
   data,
@@ -37,6 +39,7 @@ export default function OptionButton<T extends ModalItem>({
     "dataType",
   ]);
   const [assignItem, setAssignItem] = useQueryState("assignItem");
+  const [duplicateItem, setDuplicateItem] = useQueryState("duplicateItem");
 
   function handleClick(event: MouseEvent<HTMLElement>) {
     setAnchorEl(event?.currentTarget);
@@ -117,6 +120,27 @@ export default function OptionButton<T extends ModalItem>({
             </ListItemIcon>
             <ListItemText>Delete</ListItemText>
           </MenuItem>
+          {type !== "employeeJob" && (
+            <MenuItem
+              onClick={() => {
+                setDuplicateItem(
+                  qs.stringify({
+                    type: type,
+                    id:
+                      "jobId" in data
+                        ? { jobId: data.jobId, fieldId: data.fieldId }
+                        : data.id,
+                  })
+                );
+                setAnchorEl(null);
+              }}
+            >
+              <ListItemIcon>
+                <ContentCopyIcon sx={{ color: "#aa89b0" }} />
+              </ListItemIcon>
+              <ListItemText>Duplicate</ListItemText>
+            </MenuItem>
+          )}
           {(type === "job" || type === "fieldJob") && (
             <MenuItem onClick={handleAssign}>
               <ListItemIcon>
@@ -126,6 +150,20 @@ export default function OptionButton<T extends ModalItem>({
                 Assign to {type === "job" ? "Field" : "Employee"}
               </ListItemText>
             </MenuItem>
+          )}
+          {type === "fieldJob" && (
+            <ChangeItem
+              data={
+                {
+                  jobId: (data as FieldJobReturn).jobId,
+                  fieldId: (data as FieldJobReturn).fieldId,
+                } as {
+                  jobId: number;
+                  fieldId: number;
+                }
+              }
+              setAnchorEl={setAnchorEl}
+            />
           )}
         </MenuList>
       </Menu>

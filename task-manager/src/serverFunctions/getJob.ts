@@ -8,7 +8,5 @@ export default async function getJob(id: number) {
     throw new Error("Something went wrong while getting a Job");
   }
 
-  console.log(data.data);
-
   return data.data;
 }

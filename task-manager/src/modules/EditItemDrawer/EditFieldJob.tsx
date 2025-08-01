@@ -4,7 +4,7 @@ import { Grid, TextField, Typography } from "@mui/material";
 import RadioSelect from "../FieldForm/RadioSelect";
 
 export default function EditFieldJob({ data }: { data: FieldJobReturn }) {
-  const { register, getValues, control } = useFormContext<FieldJobReturn>();
+  const { register, control } = useFormContext<FieldJobReturn>();
 
   return (
     <Grid>

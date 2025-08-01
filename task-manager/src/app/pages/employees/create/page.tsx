@@ -9,6 +9,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import postEmployee from "@/serverFunctions/postEmployee";
 import { useRouter } from "next/navigation";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
+import { useEffect } from "react";
 
 export default function Page() {
   const router = useRouter();
@@ -22,6 +23,9 @@ export default function Page() {
       await queryClient.invalidateQueries({ queryKey: ["employees"] });
     },
   });
+  useEffect(() => {
+    setDisabled(false);
+  }, [router]);
 
   const methods = useForm<Employee>({ defaultValues: employeeDefault });
   const { handleSubmit } = methods;

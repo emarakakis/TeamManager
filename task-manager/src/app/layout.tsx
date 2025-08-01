@@ -8,6 +8,7 @@ import NavigationHeader from "@/modules/NavigationHeader/NavigationHeader";
 import EditItemDrawer from "@/modules/EditItemDrawer/EditItemDrawer";
 import ActionModal from "@/modules/ActionModal/ActionModal";
 import ChangeModal from "@/modules/ChangeModal/ChangeModal";
+import DuplicateModal from "@/modules/DuplicateModal/DuplicateModal";
 
 export default function RootLayout({
   children,
@@ -25,6 +26,7 @@ export default function RootLayout({
               <EditItemDrawer />
               <ActionModal />
               <ChangeModal />
+              <DuplicateModal />
             </ThemeProvider>
           </NavigationHeader>
         </QueryClientProvider>

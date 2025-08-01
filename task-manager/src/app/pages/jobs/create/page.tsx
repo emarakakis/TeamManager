@@ -7,6 +7,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import postJob from "@/serverFunctions/postJob";
 import { useRouter } from "next/navigation";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
+import { useEffect } from "react";
 
 export default function Page() {
   const router = useRouter();
@@ -14,10 +15,14 @@ export default function Page() {
   const { mutate } = useMutation({
     mutationKey: ["job", ["create"]],
     mutationFn: postJob,
-    onSuccess: () => {
+    onSuccess: async () => {
       router.push("/");
     },
   });
+
+  useEffect(() => {
+    setDisabled(false);
+  }, [router]);
 
   const methods = useForm<JobCreate>();
   const { handleSubmit } = methods;

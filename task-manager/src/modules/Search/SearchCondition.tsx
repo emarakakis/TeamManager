@@ -1,4 +1,12 @@
-import { Grid, Typography, Button, ButtonProps, alpha } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+  Button,
+  ButtonProps,
+  alpha,
+  IconButton,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 interface SearchConditionProps {
@@ -19,27 +27,38 @@ export default function SearchCondition({
   onClick,
 }: SearchConditionProps) {
   return (
-    <Grid
-      container
-      direction="row"
+    <Box
       sx={{
-        backgroundColor: "#ebebeb",
+        backgroundColor: "#c9c9c9ff",
         borderRadius: "16px",
+        display: "grid",
         alignItems: "center",
+        gridTemplateColumns: "1fr 1fr",
         justifyContent: "center",
-        width: "25%",
+        whiteSpace: "nowrap",
       }}
     >
-      <Grid container size={8} sx={{ justifyContent: "center" }}>
-        <Typography sx={{ fontSize: "13px" }}>
-          {condition} = {value}
-        </Typography>
-      </Grid>
-      <Grid container size={4} sx={{ justifyContent: "center" }}>
-        <Button onClick={onClick} sx={buttonSx}>
+      <Typography
+        sx={{ fontSize: "13px", display: "flex", justifyContent: "center" }}
+      >
+        {condition} = {value}
+      </Typography>
+      <Box
+        sx={{ display: "flex", justifyContent: "end", alignItems: "center" }}
+      >
+        <IconButton
+          onClick={onClick}
+          sx={{
+            ...buttonSx,
+            fontSize: "13px",
+            display: "flex",
+            width: "50px",
+            justifyContent: "center",
+          }}
+        >
           <CloseIcon />
-        </Button>
-      </Grid>
-    </Grid>
+        </IconButton>
+      </Box>
+    </Box>
   );
 }
