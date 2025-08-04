@@ -65,7 +65,7 @@ export default function AssignFieldJob() {
           mb: 1,
         }}
       >
-        <Typography>Would you like to keep the fields?</Typography>
+        <Typography>Would you like to keep the Job?</Typography>
         <Checkbox
           value={keepFields}
           onChange={(e) => setKeepFields(e.target.checked)}
