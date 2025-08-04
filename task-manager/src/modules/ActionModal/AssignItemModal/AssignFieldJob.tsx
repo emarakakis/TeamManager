@@ -1,4 +1,4 @@
-import { Box, DialogTitle, Typography, Button } from "@mui/material";
+import { Box, DialogTitle, Typography, Button, Checkbox } from "@mui/material";
 import TypeItem from "../../TypeItem/TypeItem";
 import getField from "@/serverFunctions/getField";
 import getJob from "@/serverFunctions/getJob";
@@ -9,10 +9,12 @@ import ModalType from "./ModalType";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
 import FormButton from "@/modules/FormButton/FormButton";
 import AssignItem from "./AssignItem";
+import { useState } from "react";
 
 export default function AssignFieldJob() {
   const [mergeFieldJob, setMergeFieldJob] = useQueryState("mergeFieldJob");
   const { fieldId, jobId } = mergeFieldJob;
+  const [keepFields, setKeepFields] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const [disabled, setDisabled] = useFormButtonState("assignItem");
   const { data, isLoading } = useQuery({
@@ -58,6 +60,20 @@ export default function AssignFieldJob() {
       <Box
         sx={{
           display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          mb: 1,
+        }}
+      >
+        <Typography>Would you like to keep the fields?</Typography>
+        <Checkbox
+          value={keepFields}
+          onChange={(e) => setKeepFields(e.target.checked)}
+        />
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
           justifyContent: "center",
           gap: 2,
         }}
@@ -66,7 +82,7 @@ export default function AssignFieldJob() {
           sx={{ color: "green" }}
           state="assignItem"
           onClick={() => {
-            mutate({ jobId, fieldId });
+            mutate({ jobId, fieldId, keepFields });
             setDisabled(true);
           }}
         >
