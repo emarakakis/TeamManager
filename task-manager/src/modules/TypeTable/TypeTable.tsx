@@ -19,7 +19,7 @@ export default function TypeTable({
 }) {
   return (
     <Grid sx={tableSx}>
-      <Grid container sx={{ minHeight: "100%", minWidth: "100%" }}>
+      <Grid container>
         <Grid
           container
           sx={{
@@ -51,23 +51,24 @@ export default function TypeTable({
       </Grid>
       <Grid
         sx={{
-          display: "block",
+          display: "flex",
           padding: "5px",
-          mt: 1,
           width: "100%",
+          height: "100%",
+          mt: "4px",
           borderRadius: "16px",
           backgroundColor: "lightGray",
-          maxWidth: "2000px",
-          maxHeight: "320px",
+          maxHeight: "300px",
           overflowX: "auto",
-          overfloxY: "auto",
+          overflowY: "auto",
           whiteSpace: "nowrap",
           scrollbarWidth: "thin",
         }}
       >
         <Box
           sx={{
-            height: "320px",
+            height: "100%",
+            width: "100%",
           }}
         >
           <TableHeader columnNames={columnNames} />

@@ -1,6 +1,6 @@
 "use client";
 
-import { Container, Button, Typography } from "@mui/material";
+import { Container, Button, Typography, Box } from "@mui/material";
 import { useForm, FormProvider } from "react-hook-form";
 import { Employee, employeeDefault } from "@/types/employee";
 import EmployeeInfo from "@/modules/EmployeeForm/EmployeeForm";
@@ -38,9 +38,16 @@ export default function Page() {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Container sx={{ justifyContent: "center" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "75vh",
+          }}
+        >
           <EmployeeInfo />
-        </Container>
+        </Box>
       </form>
     </FormProvider>
   );

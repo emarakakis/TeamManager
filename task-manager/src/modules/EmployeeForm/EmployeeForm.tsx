@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, TextField, Grid, Container, Typography } from "@mui/material";
+import { TextField, Grid, Typography, Box } from "@mui/material";
 
 import SelectControl from "../SelectControl/SelectControl";
 import { useFormContext } from "react-hook-form";
@@ -15,12 +15,15 @@ export default function EmployeeForm() {
   } = useFormContext<Employee>();
 
   return (
-    <Container
+    <Box
       sx={{
-        border: "2px solid gray",
-        borderRadius: "15px",
-        width: "0.5",
+        bgcolor: "#f5f5f5",
+        width: "0.3",
+
+        display: "grid",
         justifyContent: "center",
+        borderRadius: "16px",
+        boxShadow: "1px 1px 16px #c9c9c9, -1px 1px 16px #c9c9c9",
       }}
     >
       <Grid
@@ -39,10 +42,15 @@ export default function EmployeeForm() {
           <TextField label="Name" {...register("name")} />
           <TextField label="Surname" {...register("surname")} />
         </Grid>
-        <Grid
-          container
-          sx={{ justifyContent: "center", marginTop: 2, marginBottom: 2 }}
-          spacing={1}
+        <Box
+          sx={{
+            display: "grid",
+            justifyContent: "center",
+            marginTop: 2,
+            marginBottom: 2,
+            gridTemplateColumns: "2fr 1fr",
+            gap: 1,
+          }}
         >
           <TextField label="Phone-Number" {...register("phoneNumber")} />
           <SelectControl<Employee>
@@ -54,14 +62,21 @@ export default function EmployeeForm() {
             ]}
             name="sex"
           />
-        </Grid>
-        <Grid
-          container
-          sx={{ justifyContent: "center", marginTop: 2, marginBottom: 2 }}
-          spacing={1}
+        </Box>
+        <Box
+          sx={{
+            justifyContent: "center",
+            marginTop: 2,
+            marginBottom: 2,
+            width: "100%",
+          }}
         >
-          <TextField label="email" {...register("email")} />
-        </Grid>
+          <TextField
+            label="Email"
+            sx={{ width: "100%" }}
+            {...register("email")}
+          />
+        </Box>
         <Grid
           container
           sx={{ justifyContent: "center", marginTop: 2, marginBottom: 2 }}
@@ -69,6 +84,6 @@ export default function EmployeeForm() {
           <FormButton state="employee">Submit</FormButton>
         </Grid>
       </Grid>
-    </Container>
+    </Box>
   );
 }

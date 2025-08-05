@@ -6,7 +6,14 @@ export default function TableHeader({
   columnNames: string[];
 }) {
   return (
-    <Grid sx={{ display: "grid", gridTemplateColumns: "14fr 1fr", gap: "5px" }}>
+    <Grid
+      sx={{
+        display: "grid",
+        gridTemplateColumns: "14fr 1fr",
+        gap: "5px",
+        mr: "4px",
+      }}
+    >
       <Grid
         sx={{
           display: "grid",
@@ -15,7 +22,6 @@ export default function TableHeader({
           justifyContent: "center",
           borderRadius: "16px",
           width: "100%",
-          minWidth: `${columnNames.length * 170}px`,
           background: "white",
         }}
       >
@@ -25,8 +31,10 @@ export default function TableHeader({
           </Grid>
         ))}
       </Grid>
-      <Grid sx={{ display: "flex", justifyContent: "center" }}>
-        <Typography>Options</Typography>
+      <Grid sx={{ display: "flex", justifyContent: "end", width: "100%" }}>
+        <Typography sx={{ display: "flex", justifyContent: "flex-start" }}>
+          Options
+        </Typography>
       </Grid>
     </Grid>
   );
