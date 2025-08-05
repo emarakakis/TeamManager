@@ -110,7 +110,19 @@ export default function EditItemDrawer() {
       open={open}
       slotProps={slotProps}
     >
-      {isLoading && <Box>Loading...</Box>}
+      {isLoading && (
+        <Box
+          sx={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          Loading...
+        </Box>
+      )}
       {!isLoading && (
         <FormProvider {...methods}>
           <form

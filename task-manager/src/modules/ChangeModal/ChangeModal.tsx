@@ -65,7 +65,7 @@ export default function ChangeModal() {
       } else {
         const item = await getItemFunction(changeType, changeItemId);
         return item
-          ? [...(unAssignedItems as ChangeType[]), item]
+          ? [...(unAssignedItems as ChangeType[]), item as ChangeType]
           : unAssignedItems;
       }
     },
@@ -114,74 +114,88 @@ export default function ChangeModal() {
       <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
         Change Item
       </DialogTitle>
-      <DialogContent>
-        <DialogContentText
-          sx={{ display: "flex", justifyContent: "center", mb: 2 }}
+      {isLoading && (
+        <Box
+          sx={{
+            display: "flex",
+            padding: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
-          Select the value you want to change to
-        </DialogContentText>
-        <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(
-              (data: { id: number } | { jobId: number; fieldId: number }) => {
-                if ("jobId" in data) {
-                  mutateFieldJobFields({
-                    newId: {
-                      jobId: data.jobId,
-                      fieldId: data.fieldId,
-                    },
-                    previousId: { ...changeItemId },
-                  });
-                  setDisabled(true);
-                } else {
-                  mutateEmployeeJobFields({
-                    employeeJobId: employeeJobId,
-                    type: changeType,
-                    itemId: data.id,
-                  });
-                  setDisabled(true);
-                }
-              }
-            )}
+          Loading...
+        </Box>
+      )}
+      {!isLoading && (
+        <DialogContent>
+          <DialogContentText
+            sx={{ display: "flex", justifyContent: "center", mb: 2 }}
           >
-            {changeType !== "fieldJob" && (
-              <ChangeField
-                watchString="id"
-                data={data! as ChangeType[]}
-                id={Number(changeItemId)}
-              />
-            )}
-            {changeType === "fieldJob" && (
-              <Grid
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "48% 48%",
-                  gap: 3,
+            Select the value you want to change to
+          </DialogContentText>
+          <FormProvider {...methods}>
+            <form
+              onSubmit={methods.handleSubmit(
+                (data: { id: number } | { jobId: number; fieldId: number }) => {
+                  if ("jobId" in data) {
+                    mutateFieldJobFields({
+                      newId: {
+                        jobId: data.jobId,
+                        fieldId: data.fieldId,
+                      },
+                      previousId: { ...changeItemId },
+                    });
+                    setDisabled(true);
+                  } else {
+                    mutateEmployeeJobFields({
+                      employeeJobId: employeeJobId,
+                      type: changeType,
+                      itemId: data.id,
+                    });
+                    setDisabled(true);
+                  }
+                }
+              )}
+            >
+              {changeType !== "fieldJob" && (
+                <ChangeField
+                  watchString="id"
+                  data={data! as ChangeType[]}
+                  id={Number(changeItemId)}
+                />
+              )}
+              {changeType === "fieldJob" && (
+                <Grid
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: "48% 48%",
+                    gap: 3,
 
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                }}
-              >
-                <ChangeField
-                  watchString="jobId"
-                  data={(data as FieldJobConcat).jobs}
-                  id={Number(changeItemId.jobId)}
-                />
-                <ChangeField
-                  watchString="fieldId"
-                  data={(data as FieldJobConcat).fields}
-                  id={Number(changeItemId.jobId)}
-                />
-              </Grid>
-            )}
-            <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-              <FormButton state="change" sx={{ color: "green" }}>
-                Submit
-              </FormButton>
-            </Box>
-          </form>
-        </FormProvider>
-      </DialogContent>
+                    justifyContent: "center",
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <ChangeField
+                    watchString="jobId"
+                    data={(data as FieldJobConcat).jobs}
+                    id={Number(changeItemId.jobId)}
+                  />
+                  <ChangeField
+                    watchString="fieldId"
+                    data={(data as FieldJobConcat).fields}
+                    id={Number(changeItemId.jobId)}
+                  />
+                </Grid>
+              )}
+              <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+                <FormButton state="change" sx={{ color: "green" }}>
+                  Submit
+                </FormButton>
+              </Box>
+            </form>
+          </FormProvider>
+        </DialogContent>
+      )}
     </Dialog>
   );
 }
