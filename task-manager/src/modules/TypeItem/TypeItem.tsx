@@ -34,6 +34,8 @@ export default function TypeItem<T extends TypeItemProps>({
         display: "grid",
         gridTemplateColumns: "14fr 1fr",
         mt: 1,
+        mr: "4px",
+        width: "100%",
         gap: "5px",
       }}
     >
@@ -45,9 +47,6 @@ export default function TypeItem<T extends TypeItemProps>({
           justifyContent: "center",
           borderRadius: "16px",
           background: index % 2 === 0 ? "#1976d2" : "white",
-          minWidth: `${dataLength * 180}px`,
-          minHeight: "40px",
-          width: "100%",
         }}
       >
         {items.map(([_, value], index) => {
@@ -66,8 +65,6 @@ export default function TypeItem<T extends TypeItemProps>({
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100%",
-          width: "100%",
           borderRadius: "16px",
         }}
       >

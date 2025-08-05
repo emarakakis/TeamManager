@@ -20,15 +20,17 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <QueryClientProvider client={client}>
-          <NavigationHeader>
-            <ThemeProvider theme={theme}>
-              <Box sx={{ width: 1 }}>{children}</Box>
-              <EditItemDrawer />
-              <ActionModal />
-              <ChangeModal />
-              <DuplicateModal />
-            </ThemeProvider>
-          </NavigationHeader>
+          <Box sx={{ height: "100vh", width: "100%" }}>
+            <NavigationHeader>
+              <ThemeProvider theme={theme}>
+                <Box sx={{ width: "100%", height: "100%" }}>{children}</Box>
+                <EditItemDrawer />
+                <ActionModal />
+                <ChangeModal />
+                <DuplicateModal />
+              </ThemeProvider>
+            </NavigationHeader>
+          </Box>
         </QueryClientProvider>
       </body>
     </html>

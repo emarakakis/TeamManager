@@ -12,6 +12,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import FormButton from "../FormButton/FormButton";
 import duplicateItems from "@/serverFunctions/duplicateItems";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
+import { useEffect } from "react";
 
 export default function DuplicateModal() {
   const [duplicateItem, setDuplicateItem] = useQueryState("duplicateItem");
@@ -33,9 +34,9 @@ export default function DuplicateModal() {
     },
   });
 
-  if (isLoading) {
-    return <Box>Loading...</Box>;
-  }
+  useEffect(() => {
+    setDisabled(false);
+  }, [data]);
 
   const items = Object.entries(data ?? {}).filter(
     ([k, v]) =>
@@ -47,40 +48,88 @@ export default function DuplicateModal() {
       open={!!type}
       onClose={() => {
         setDuplicateItem(null);
-        setDisabled(false);
+      }}
+      slotProps={{
+        paper: {
+          sx: {
+            minWidth: "400px",
+          },
+        },
       }}
     >
       <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
         Duplicate Item
       </DialogTitle>
-      <DialogContent
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          flexDirection: "column",
-        }}
-      >
-        <DialogContentText>Duplicate the following {type}?</DialogContentText>
-        <Box>
-          {items.map(([k, v]) => (
-            <Typography key={k}>
-              {k} = {v}
-            </Typography>
-          ))}
+      {isLoading && (
+        <Box
+          sx={{
+            display: "flex",
+            padding: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          Loading...
         </Box>
-        <Box sx={{ justifyContent: "center", display: "flex" }}>
-          <FormButton
-            state="duplicate"
-            sx={{ color: "green" }}
-            onClick={() => {
-              mutate();
-              setDisabled(true);
+      )}
+      {!isLoading && (
+        <DialogContent
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+          }}
+        >
+          <DialogContentText
+            sx={{ display: "flex", justifyContent: "center", mb: 1 }}
+          >
+            Duplicate the following {type}?
+          </DialogContentText>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateRows: `repeat(${items.length},1fr)`,
+              backgroundColor: "#e8e8e8",
+              padding: "10px",
+              borderRadius: "16px",
+              gap: 1,
             }}
           >
-            Submit
-          </FormButton>
-        </Box>
-      </DialogContent>
+            {items.map(([k, v]) => (
+              <Box
+                key={k}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: "15px",
+                  backgroundColor: "white",
+                  padding: "10px",
+                  borderRadius: "16px",
+                }}
+              >
+                <Typography sx={{ display: "flex", justifyContent: "start" }}>
+                  {k}
+                </Typography>
+                <Typography>{v}</Typography>
+              </Box>
+            ))}
+          </Box>
+          <Box sx={{ justifyContent: "center", display: "flex" }}>
+            <FormButton
+              state="duplicate"
+              sx={{ color: "green" }}
+              onClick={() => {
+                mutate();
+                setDisabled(true);
+              }}
+            >
+              Submit
+            </FormButton>
+          </Box>
+        </DialogContent>
+      )}
     </Dialog>
   );
 }

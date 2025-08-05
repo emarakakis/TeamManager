@@ -15,7 +15,7 @@ export default function FormButton({
   const type = !!props.onClick ? "button" : "submit";
   const [disabled, setDisabled] = useFormButtonState(state);
   return (
-    <Box sx={{ width: "200px", display: "flex", justifyContent: "center" }}>
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Button
         type={type}
         sx={{ display: "flex" }}
