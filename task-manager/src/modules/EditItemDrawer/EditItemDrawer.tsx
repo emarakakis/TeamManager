@@ -24,7 +24,6 @@ import putFieldJob from "@/serverFunctions/putFieldJob";
 import EditFieldJob from "./EditFieldJob";
 import FormButton from "../FormButton/FormButton";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
-import { boolean } from "drizzle-orm/gel-core";
 
 type EditItemType =
   | EmployeeReturn
@@ -111,7 +110,19 @@ export default function EditItemDrawer() {
       open={open}
       slotProps={slotProps}
     >
-      {isLoading && <Box>Loading...</Box>}
+      {isLoading && (
+        <Box
+          sx={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          Loading...
+        </Box>
+      )}
       {!isLoading && (
         <FormProvider {...methods}>
           <form
@@ -120,30 +131,40 @@ export default function EditItemDrawer() {
               setDisabled(true);
             })}
           >
-            {dataType === "employee" && data && <EditEmployee />}
-            {dataType === "field" && data && (
-              <EditField data={data as FieldDataReturn} />
-            )}
-            {dataType === "job" && data && <EditJob data={data as JobReturn} />}
-            {dataType === "fieldJob" && data && (
-              <EditFieldJob data={data as FieldJobReturn} />
-            )}
-
-            <Grid
-              container
-              spacing={5}
-              sx={{ mt: 2, justifyContent: "center" }}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
-              <FormButton state="editItem">Submit</FormButton>
-              <Button
-                sx={{ color: "red" }}
-                onClick={() => {
-                  setEditDataBatch(null);
-                }}
+              {dataType === "employee" && data && <EditEmployee />}
+              {dataType === "field" && data && (
+                <EditField data={data as FieldDataReturn} />
+              )}
+              {dataType === "job" && data && (
+                <EditJob data={data as JobReturn} />
+              )}
+              {dataType === "fieldJob" && data && (
+                <EditFieldJob data={data as FieldJobReturn} />
+              )}
+
+              <Grid
+                spacing={5}
+                sx={{ mt: 2, display: "flex", justifyContent: "center" }}
               >
-                Cancel
-              </Button>
-            </Grid>
+                <FormButton state="editItem">Submit</FormButton>
+                <Button
+                  sx={{ color: "red" }}
+                  onClick={() => {
+                    setEditDataBatch(null);
+                  }}
+                >
+                  Cancel
+                </Button>
+              </Grid>
+            </Box>
           </form>
         </FormProvider>
       )}

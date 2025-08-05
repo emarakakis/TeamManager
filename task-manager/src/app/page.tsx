@@ -16,8 +16,7 @@ export default function Home() {
         display: "grid",
         gridTemplateColumns: "repeat(2,1fr)",
         gridTemplateRows: "repeat(2,1fr)",
-        mt: 1,
-        gap: 2.8,
+        gap: 2,
         width: "100%",
         height: "100%",
       }}

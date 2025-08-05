@@ -13,10 +13,16 @@ export default function EditJob({ data }: { data: JobReturn }) {
       >
         Edit Job
       </Typography>
-      <Grid container sx={{ justifyContent: "center" }}>
-        <TextField label="Job Name" {...register("name")} />
-      </Grid>
-      <Grid container direction="column" sx={{ justifyContent: "center" }}>
+      <Grid
+        container
+        direction="column"
+        sx={{
+          justifyContent: "center",
+          backgroundColor: "#e8e8e8",
+          borderRadius: "16px",
+          padding: "4px",
+        }}
+      >
         <Typography sx={{ display: "flex", justifyContent: "center" }}>
           Profession
         </Typography>
@@ -40,7 +46,14 @@ export default function EditJob({ data }: { data: JobReturn }) {
       <Grid
         container
         direction="column"
-        sx={{ display: "flex", justifyContent: "center" }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          backgroundColor: "#e8e8e8",
+          borderRadius: "16px",
+          my: "4px",
+          padding: "4px",
+        }}
       >
         <Typography sx={{ display: "flex", justifyContent: "center" }}>
           Area
@@ -60,6 +73,9 @@ export default function EditJob({ data }: { data: JobReturn }) {
             { key: "production", value: "production", label: "Production" },
           ]}
         />
+      </Grid>
+      <Grid container sx={{ justifyContent: "center", mt: "8px" }}>
+        <TextField label="Job Name" {...register("name")} />
       </Grid>
     </Grid>
   );

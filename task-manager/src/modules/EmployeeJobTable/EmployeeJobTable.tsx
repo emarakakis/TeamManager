@@ -4,11 +4,19 @@ import { EmployeeJob, EmployeeJobReturn } from "@/types/EmployeeJob";
 import { Box, Grid, List, ListItem, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import Row from "./Row";
+import { useQueryBatch } from "@/app/hooks/query-state-hook";
+import qs from "qs";
 
 export default function EmployeeJobTable() {
+  const [searchBatch, setSearchBatch] = useQueryBatch([
+    "job",
+    "field",
+    "employee",
+  ]);
+  console.log(searchBatch);
   const { data, isLoading } = useQuery<EmployeeJobReturn[]>({
-    queryKey: ["employeeJobs"],
-    queryFn: getEmployeeJobs,
+    queryKey: ["employeeJobs", qs.stringify(searchBatch)],
+    queryFn: () => getEmployeeJobs(searchBatch),
   });
 
   if (isLoading) {

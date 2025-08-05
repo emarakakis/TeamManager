@@ -1,4 +1,11 @@
-import { Box, DialogTitle, Typography, Button } from "@mui/material";
+import {
+  Box,
+  DialogTitle,
+  Typography,
+  Button,
+  Checkbox,
+  FormControlLabel,
+} from "@mui/material";
 
 import { useQueryState } from "@/app/hooks/query-state-hook";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -12,9 +19,11 @@ import FormButton from "@/modules/FormButton/FormButton";
 import { EmployeeReturn } from "@/types/employee";
 import { FieldJobReturn } from "@/types/FieldJob";
 import AssignItem from "./AssignItem";
+import { useState } from "react";
 
 export default function AssignEmployeeJob() {
   const [employeeJob, setEmployeeJob] = useQueryState("employeeJob");
+  const [keepFields, setKeepFields] = useState<boolean>(false);
   const { fieldId, jobId, employeeId } = { ...employeeJob };
   const queryClient = useQueryClient();
   const [disabled, setDisabled] = useFormButtonState("assignItem");
@@ -46,7 +55,13 @@ export default function AssignEmployeeJob() {
   const allowedKeys = ["id", "assigned", "sex", "phoneNumber"];
   const { employee, fieldJob } = { ...data };
   return (
-    <Box sx={{ display: "grid", justifyContent: "center" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+    >
       <ModalType
         title="Employee Job Creation"
         contentText="Are you sure you want to merge?"
@@ -66,6 +81,20 @@ export default function AssignEmployeeJob() {
       <Box
         sx={{
           display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          mb: 1,
+        }}
+      >
+        <Typography>Would you like to keep the FieldJob?</Typography>
+        <Checkbox
+          value={keepFields}
+          onChange={(e) => setKeepFields(e.target.checked)}
+        />
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
           justifyContent: "center",
           gap: 2,
         }}
@@ -74,7 +103,7 @@ export default function AssignEmployeeJob() {
           state="assignItem"
           sx={{ color: "green" }}
           onClick={() => {
-            mutate({ jobId, fieldId, employeeId });
+            mutate({ jobId, fieldId, employeeId, keepFields });
             setDisabled(true);
           }}
         >

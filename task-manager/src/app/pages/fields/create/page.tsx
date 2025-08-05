@@ -9,6 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
+import { Box } from "@mui/material";
 export default function Page() {
   const methods = useForm<FieldData>();
 
@@ -16,6 +17,10 @@ export default function Page() {
   const { handleSubmit } = methods;
   const router = useRouter();
   const [disabled, setDisabled] = useFormButtonState("field");
+
+  React.useEffect(() => {
+    setDisabled(false);
+  }, [router]);
 
   const { mutate } = useMutation({
     mutationKey: ["fields"],
@@ -34,7 +39,16 @@ export default function Page() {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FieldForm />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "75vh",
+          }}
+        >
+          <FieldForm />
+        </Box>
       </form>
     </FormProvider>
   );

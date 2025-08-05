@@ -1,6 +1,6 @@
 "use client";
 
-import { Container, Button, Typography } from "@mui/material";
+import { Container, Button, Typography, Box } from "@mui/material";
 import { useForm, FormProvider } from "react-hook-form";
 import { Employee, employeeDefault } from "@/types/employee";
 import EmployeeInfo from "@/modules/EmployeeForm/EmployeeForm";
@@ -9,6 +9,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import postEmployee from "@/serverFunctions/postEmployee";
 import { useRouter } from "next/navigation";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
+import { useEffect } from "react";
 
 export default function Page() {
   const router = useRouter();
@@ -22,6 +23,9 @@ export default function Page() {
       await queryClient.invalidateQueries({ queryKey: ["employees"] });
     },
   });
+  useEffect(() => {
+    setDisabled(false);
+  }, [router]);
 
   const methods = useForm<Employee>({ defaultValues: employeeDefault });
   const { handleSubmit } = methods;
@@ -34,9 +38,16 @@ export default function Page() {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Container sx={{ justifyContent: "center" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "75vh",
+          }}
+        >
           <EmployeeInfo />
-        </Container>
+        </Box>
       </form>
     </FormProvider>
   );
