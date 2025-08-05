@@ -8,6 +8,7 @@ import postJob from "@/serverFunctions/postJob";
 import { useRouter } from "next/navigation";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
 import { useEffect } from "react";
+import { Box } from "@mui/material";
 
 export default function Page() {
   const router = useRouter();
@@ -35,7 +36,16 @@ export default function Page() {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <JobForm />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "75vh",
+          }}
+        >
+          <JobForm />
+        </Box>
       </form>
     </FormProvider>
   );
