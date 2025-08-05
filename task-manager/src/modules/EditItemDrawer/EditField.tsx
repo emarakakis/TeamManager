@@ -6,14 +6,33 @@ import { Grid, Typography, TextField } from "@mui/material";
 export default function EditField({ data }: { data: FieldDataReturn }) {
   const { register, control } = useFormContext<FieldDataReturn>();
   return (
-    <Grid>
-      <Typography
-        sx={{ justifyContent: "center", display: "flex" }}
-        variant="h2"
+    <Grid
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "100%",
+      }}
+    >
+      <Grid sx={{ my: 1 }}>
+        <Typography
+          sx={{ justifyContent: "center", display: "flex" }}
+          variant="h2"
+        >
+          Edit Field
+        </Typography>
+      </Grid>
+      <Grid
+        sx={{
+          my: 1,
+          backgroundColor: "#e8e8e8",
+          borderRadius: "16px",
+          padding: "4px",
+        }}
       >
-        Edit Field
-      </Typography>
-      <Grid>
+        <Typography sx={{ justifyContent: "center", display: "flex" }}>
+          Select Area
+        </Typography>
         <RadioSelect<Exclude<FieldDataReturn, "id">>
           name="area"
           control={control}
@@ -26,7 +45,7 @@ export default function EditField({ data }: { data: FieldDataReturn }) {
           ]}
         />
       </Grid>
-      <Grid container sx={{ justifyContent: "center" }}>
+      <Grid container sx={{ justifyContent: "center", my: 1 }}>
         <TextField label="Name of Field" type="text" {...register("name")} />
       </Grid>
     </Grid>
