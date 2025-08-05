@@ -49,6 +49,13 @@ export default function DuplicateModal() {
         setDuplicateItem(null);
         setDisabled(false);
       }}
+      slotProps={{
+        paper: {
+          sx: {
+            minWidth: "400px",
+          },
+        },
+      }}
     >
       <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
         Duplicate Item
@@ -60,12 +67,38 @@ export default function DuplicateModal() {
           flexDirection: "column",
         }}
       >
-        <DialogContentText>Duplicate the following {type}?</DialogContentText>
-        <Box>
+        <DialogContentText
+          sx={{ display: "flex", justifyContent: "center", mb: 1 }}
+        >
+          Duplicate the following {type}?
+        </DialogContentText>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateRows: `repeat(${items.length},1fr)`,
+            backgroundColor: "#e8e8e8",
+            padding: "10px",
+            borderRadius: "16px",
+            gap: 1,
+          }}
+        >
           {items.map(([k, v]) => (
-            <Typography key={k}>
-              {k} = {v}
-            </Typography>
+            <Box
+              key={k}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: "15px",
+                backgroundColor: "white",
+                padding: "10px",
+                borderRadius: "16px",
+              }}
+            >
+              <Typography sx={{ display: "flex", justifyContent: "start" }}>
+                {k}
+              </Typography>
+              <Typography>{v}</Typography>
+            </Box>
           ))}
         </Box>
         <Box sx={{ justifyContent: "center", display: "flex" }}>
