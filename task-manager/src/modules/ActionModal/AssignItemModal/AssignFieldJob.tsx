@@ -82,7 +82,7 @@ export default function AssignFieldJob() {
           sx={{ color: "green" }}
           state="assignItem"
           onClick={() => {
-            mutate({ jobId, fieldId, keepFields });
+            mutate({ fieldJobId: { jobId, fieldId }, keepFields });
             setDisabled(true);
           }}
         >

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { db, fieldJobsTable } from "../../../../db";
 import { and, like } from "drizzle-orm";
-import { FieldDataReturn } from "@/types/FieldData";
 import { FieldJobReturn } from "@/types/FieldJob";
 
 const columns = ["fieldName", "jobName", "profession", "area", "assigned"];
@@ -20,15 +19,13 @@ export async function GET(req: Request) {
 
     const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
-    searchParams.entries().forEach(([key, value]) => {});
     const result = await db
       .select()
       .from(fieldJobsTable)
       .where(whereClause)
       .all();
 
-    console.log(result);
-    return NextResponse.json({ success: true, data: result });
+    return NextResponse.json({ success: true, fieldJobs: result });
   } catch (error) {
     throw error;
   }

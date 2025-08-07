@@ -1,18 +1,12 @@
-import deleteField from "./deleteField";
+import { FieldJobId } from "@/types/FieldJob";
 import deleteFieldJob from "./deleteFieldJob";
 import getJob from "./getJob";
 import postFieldJob from "./postFieldJob";
 import putJob from "./putJob";
 
 export default async function changeFieldJob(data: {
-  newId: {
-    jobId: number;
-    fieldId: number;
-  };
-  previousId: {
-    jobId: number;
-    fieldId: number;
-  };
+  newId: FieldJobId;
+  previousId: FieldJobId;
 }) {
   const { newId, previousId } = data;
 
@@ -20,16 +14,10 @@ export default async function changeFieldJob(data: {
     return;
 
   await deleteFieldJob({ id: previousId });
-
-  const id = {
-    jobId: newId.jobId.toString(),
-    fieldId: newId.fieldId.toString(),
-  };
-  await postFieldJob(id);
+  await postFieldJob({ fieldJobId: newId, keepFields: false });
 
   if (newId.jobId !== previousId.jobId) {
     const job = await getJob(previousId.jobId);
-    const { jobId, ...rest } = job;
-    await putJob({ ...rest, assigned: 0 });
+    await putJob({ ...job, assigned: 0 });
   }
 }

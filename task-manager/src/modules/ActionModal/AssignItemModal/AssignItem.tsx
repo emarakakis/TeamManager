@@ -1,6 +1,8 @@
 import { EmployeeReturn } from "@/types/employee";
 import { Box, DialogTitle, Typography, Button } from "@mui/material";
 import { FieldJobReturn } from "@/types/FieldJob";
+import { FieldDataReturn } from "@/types/FieldData";
+import { JobReturn } from "@/types/Job";
 
 const employeeFields = ["name", "surname", "email"];
 const fieldJobFields = ["fieldName", "jobName", "profession", "area"];
@@ -10,7 +12,7 @@ const fieldFields = ["name", "area"];
 export default function AssignItem({
   data,
 }: {
-  data: EmployeeReturn | FieldJobReturn;
+  data: EmployeeReturn | FieldJobReturn | FieldDataReturn | JobReturn;
 }) {
   const items = Object.entries(data);
   const [name, validItems] = getItemData(items);

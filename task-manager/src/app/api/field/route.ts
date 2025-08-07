@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db, fieldTable } from "../../../../db";
 import { stat } from "fs";
-import { FieldData, FieldDataReturn } from "@/types/FieldData";
+import { FieldDataCreate, FieldDataReturn } from "@/types/FieldData";
 import { eq } from "drizzle-orm";
 
 export async function POST(request: Request) {
@@ -18,6 +18,7 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   try {
     const field = await request.json();
+    console.log("Field: ", field);
     const result = await db
       .update(fieldTable)
       .set(field)
@@ -56,7 +57,7 @@ export async function GET(request: Request) {
       .from(fieldTable)
       .where(eq(fieldTable.id, Number(id)));
     if (result.length > 0) {
-      return NextResponse.json({ success: true, data: result[0] });
+      return NextResponse.json({ success: true, field: result[0] });
     } else return NextResponse.json({ success: false });
   } catch (error) {
     throw error;

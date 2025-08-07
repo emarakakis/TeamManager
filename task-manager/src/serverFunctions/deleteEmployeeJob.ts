@@ -10,7 +10,6 @@ export default async function deleteEmployeeJob(input: {
   fields: Record<string, boolean>;
 }) {
   const { deleteItem, fields } = input;
-  console.log(fields);
   fields.fieldJob = !!fields.fieldJob || !!fields.job || !!fields.field;
   const deleteFields = Object.entries(fields).filter(([key, value]) => value);
   const unAssignFields = Object.entries(fields).filter(

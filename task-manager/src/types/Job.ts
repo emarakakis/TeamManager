@@ -1,5 +1,3 @@
-import { FieldData } from "./FieldData";
-
 export type JobCreate = {
   name: string;
   area: string;

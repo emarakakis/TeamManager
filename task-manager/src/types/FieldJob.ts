@@ -5,7 +5,9 @@ export type FieldJob = {
   jobFieldArea: string;
 };
 
-export type FieldJobReturn = {
+export type FieldJobId = {
   jobId: number;
   fieldId: number;
-} & FieldJob;
+};
+
+export type FieldJobReturn = FieldJobId & FieldJob;

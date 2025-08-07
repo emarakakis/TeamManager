@@ -38,7 +38,7 @@ export async function GET(req: Request) {
       .where(eq(jobTable.id, Number(id)));
 
     if (result.length > 0) {
-      return NextResponse.json({ success: true, data: result[0] });
+      return NextResponse.json({ success: true, job: result[0] });
     } else {
       return NextResponse.json({ success: false });
     }

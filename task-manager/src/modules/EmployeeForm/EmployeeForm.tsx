@@ -4,7 +4,7 @@ import { TextField, Grid, Typography, Box } from "@mui/material";
 
 import SelectControl from "../SelectControl/SelectControl";
 import { useFormContext } from "react-hook-form";
-import { Employee } from "@/types/employee";
+import { EmployeeCreate } from "@/types/employee";
 import FormButton from "../FormButton/FormButton";
 
 export default function EmployeeForm() {
@@ -12,7 +12,7 @@ export default function EmployeeForm() {
     register,
     control,
     formState: { errors },
-  } = useFormContext<Employee>();
+  } = useFormContext<EmployeeCreate>();
 
   return (
     <Box
@@ -53,7 +53,7 @@ export default function EmployeeForm() {
           }}
         >
           <TextField label="Phone-Number" {...register("phoneNumber")} />
-          <SelectControl<Employee>
+          <SelectControl<EmployeeCreate>
             control={control}
             options={[
               { key: "male", value: "Male" },

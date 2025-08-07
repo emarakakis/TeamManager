@@ -9,18 +9,18 @@ import {
 } from "../../../../db";
 import { and, eq, ilike, like } from "drizzle-orm";
 import qs from "qs";
-import { Employee, EmployeeReturn } from "@/types/employee";
+import { EmployeeCreate, EmployeeReturn } from "@/types/employee";
 import { JobCreate, JobReturn } from "@/types/Job";
-import { FieldData, FieldDataReturn } from "@/types/FieldData";
+import { FieldDataCreate, FieldDataReturn } from "@/types/FieldData";
 
 export async function GET(req: Request) {
   try {
     const url = new URL(req.url);
     const { employee, job, field } = qs.parse(url.searchParams.toString());
     const whereClause = generateWhereClause(
-      employee as Employee,
+      employee as EmployeeCreate,
       job as JobCreate,
-      field as FieldData
+      field as FieldDataCreate
     );
 
     const result = await db
@@ -50,7 +50,7 @@ export async function GET(req: Request) {
         employeeTable,
         eq(employeeJobTable.employeeId, employeeTable.id)
       )
-      .innerJoin(fieldTable, eq(fieldTable.id, employeeJobTable.jobId))
+      .innerJoin(fieldTable, eq(fieldTable.id, employeeJobTable.fieldId))
       .innerJoin(jobTable, eq(jobTable.id, employeeJobTable.jobId))
       .where(whereClause)
       .all();
@@ -61,9 +61,9 @@ export async function GET(req: Request) {
 }
 
 function generateWhereClause(
-  employee: Employee,
+  employee: EmployeeCreate,
   job: JobCreate,
-  field: FieldData
+  field: FieldDataCreate
 ) {
   const condition = [];
 
