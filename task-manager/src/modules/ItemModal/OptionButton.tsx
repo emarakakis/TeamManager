@@ -63,7 +63,7 @@ export default function OptionButton<T extends ModalItem>({
         ? { jobId: d.jobId, fieldId: d.fieldId }
         : { id: d.id, area: d.area };
 
-    setAssignItem(qs.stringify(item));
+    setAssignItem(item);
     setAnchorEl(null);
   }
 
@@ -123,15 +123,13 @@ export default function OptionButton<T extends ModalItem>({
           {type !== "employeeJob" && (
             <MenuItem
               onClick={() => {
-                setDuplicateItem(
-                  qs.stringify({
-                    type: type,
-                    id:
-                      "jobId" in data
-                        ? { jobId: data.jobId, fieldId: data.fieldId }
-                        : data.id,
-                  })
-                );
+                setDuplicateItem({
+                  type: type,
+                  id:
+                    "jobId" in data
+                      ? { jobId: data.jobId, fieldId: data.fieldId }
+                      : data.id,
+                });
                 setAnchorEl(null);
               }}
             >

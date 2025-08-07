@@ -1,5 +1,3 @@
-import { useQueryState } from "@/app/hooks/query-state-hook";
-import { useQuery } from "@tanstack/react-query";
 import { ChangeType } from "./ChangeModal";
 import ChangeTable from "./ChangeTable";
 

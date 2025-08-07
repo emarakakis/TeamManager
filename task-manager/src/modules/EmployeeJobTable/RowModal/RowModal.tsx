@@ -12,9 +12,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Box, Menu } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import RedoRoundedIcon from "@mui/icons-material/RedoRounded";
-import { useQueryBatch, useQueryState } from "@/app/hooks/query-state-hook";
+import { useQueryBatch } from "@/app/hooks/query-state-hook";
 import qs from "qs";
-import { EmployeeJobId } from "@/types/EmployeeJob";
 
 export default function RowModal({
   type,

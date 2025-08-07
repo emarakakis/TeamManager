@@ -17,11 +17,10 @@ export default function ChangeItem<
   return (
     <MenuItem
       onClick={() => {
-        const str = qs.stringify({
+        setChangeItem({
           changeItemId: data,
           changeType: "fieldJob",
         });
-        setChangeItem(str);
         setAnchorEl(null);
       }}
     >

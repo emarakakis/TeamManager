@@ -3,7 +3,6 @@
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useCallback } from "react";
 import qs from "qs";
-import { stat } from "fs";
 
 export type ObjectType = {
   [key: string]: any;
@@ -54,7 +53,6 @@ export function useQueryBatch<T extends ObjectType>(params: string[]) {
 export function useQueryState<T extends ObjectType>(param: string) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const path = usePathname();
 
   const getState = useCallback(() => {
     const state = searchParams.get(param);
@@ -63,17 +61,16 @@ export function useQueryState<T extends ObjectType>(param: string) {
   }, [param, searchParams]);
 
   const setState = useCallback(
-    (val: string | null) => {
+    (val: T | null) => {
       const newParams = new URLSearchParams(searchParams.toString());
       if (!val) {
         newParams.delete(param);
       } else {
         const str = searchParams.get(param);
         const prevObject = str ? { ...qs.parse(str) } : {};
-        let valueObject = qs.parse(val);
 
         const newObject = Object.fromEntries(
-          Object.entries({ ...prevObject, ...valueObject }).filter(
+          Object.entries({ ...prevObject, ...val }).filter(
             ([_, value]) => value !== null && value !== null && value !== ""
           )
         );

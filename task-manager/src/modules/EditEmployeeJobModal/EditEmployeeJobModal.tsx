@@ -8,10 +8,10 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import { EmployeeJob, EmployeeJobReturn } from "@/types/EmployeeJob";
+import { EmployeeJobReturn } from "@/types/EmployeeJob";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { useQueryBatch, useQueryState } from "@/app/hooks/query-state-hook";
+import { useQueryBatch } from "@/app/hooks/query-state-hook";
 import qs from "qs";
 
 export default function EditEmployeeJobModal({

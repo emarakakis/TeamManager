@@ -1,4 +1,4 @@
-import { useQueryBatch, useQueryState } from "@/app/hooks/query-state-hook";
+import { useQueryBatch } from "@/app/hooks/query-state-hook";
 import {
   Box,
   Grid,
