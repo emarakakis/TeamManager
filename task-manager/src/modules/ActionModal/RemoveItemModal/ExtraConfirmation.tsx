@@ -2,29 +2,22 @@ import { Checkbox, DialogContent, FormControlLabel, Grid } from "@mui/material";
 import { useState } from "react";
 import RemoveButtons from "./RemoveButtons";
 import { useFormContext } from "react-hook-form";
+import { EmployeeJobDeleteFields } from "@/types/EmployeeJob";
+import { FieldJobDeleteFields } from "@/types/FieldJob";
+import { DeleteFields } from "./types";
 
-export type EmployeeFields = {
-  employee: boolean;
-} & FieldJobFields;
-
-type FieldJobFields = {
-  job: boolean;
-  field: boolean;
-};
-
-const employeeJobFields = ["employee", "fieldJob"];
-const fieldJobFields = ["job", "field"];
+const employeeJobFields: Array<keyof EmployeeJobDeleteFields | "fieldJob"> = [
+  "employee",
+  "fieldJob",
+];
+const fieldJobFields: Array<keyof FieldJobDeleteFields> = ["job", "field"];
 
 export default function ExtraConfirmation({ type }: { type: string }) {
   const [deleteFields, setDeleteFields] = useState<boolean>(false);
 
-  const { register, setValue, watch, reset } = useFormContext<
-    EmployeeFields | FieldJobFields | { fieldJob: boolean }
-  >();
+  const { register, setValue, watch, reset } = useFormContext<DeleteFields>();
   let fields = type === "employeeJob" ? employeeJobFields : fieldJobFields;
   if (watch("fieldJob")) fields = [...fields, ...fieldJobFields];
-
-  console.log(watch("job"), watch("field"));
 
   return (
     <DialogContent sx={{ display: "flex", justifyContent: "center" }}>
@@ -54,9 +47,9 @@ export default function ExtraConfirmation({ type }: { type: string }) {
                     sx={{ justifyContent: "center" }}
                     control={
                       <Checkbox
-                        {...register(value as keyof EmployeeFields)}
+                        {...register(value)}
                         onChange={(e) => {
-                          register(value as keyof EmployeeFields).onChange(e);
+                          register(value).onChange(e);
                           if (value === "fieldJob") {
                             setValue("job", false);
                             setValue("field", false);

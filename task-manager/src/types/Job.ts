@@ -9,4 +9,9 @@ export type JobReturn = {
   assigned: number;
 } & JobCreate;
 
+export type JobAssignFields = keyof Pick<
+  JobReturn,
+  "name" | "area" | "profession"
+>;
+
 type Profession = "intern" | "junior" | "intermediate" | "senior";

@@ -5,6 +5,8 @@ export type FieldDataCreate = {
   area: FieldArea;
 };
 
+export type FieldAssignFields = keyof Pick<FieldDataReturn, "name" | "area">;
+
 export type FieldDataReturn = {
   id: number;
 } & FieldDataCreate;

@@ -1,5 +1,6 @@
 import { EmployeeReturn } from "./employee";
 import { FieldDataReturn } from "./FieldData";
+import { FieldJobDeleteFields } from "./FieldJob";
 import { JobReturn } from "./Job";
 
 export type EmployeeJobId = {
@@ -17,3 +18,7 @@ export type EmployeeJob = {
 export type EmployeeJobReturn = {
   id: number;
 } & EmployeeJob;
+
+export type EmployeeJobDeleteFields = {
+  employee: boolean;
+} & FieldJobDeleteFields;

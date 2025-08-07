@@ -23,7 +23,7 @@ export async function POST(req: Request) {
       .select({
         jobId: jobTable.id,
         fieldId: fieldTable.id,
-        jobFieldArea: fieldTable.area,
+        area: fieldTable.area,
         fieldName: fieldTable.name,
         jobName: jobTable.name,
         profession: jobTable.profession,

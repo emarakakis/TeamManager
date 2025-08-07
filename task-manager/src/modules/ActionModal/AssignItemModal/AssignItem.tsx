@@ -1,21 +1,27 @@
-import { EmployeeReturn } from "@/types/employee";
-import { Box, DialogTitle, Typography, Button } from "@mui/material";
-import { FieldJobReturn } from "@/types/FieldJob";
-import { FieldDataReturn } from "@/types/FieldData";
-import { JobReturn } from "@/types/Job";
+import { EmployeeAssignFields, EmployeeReturn } from "@/types/employee";
+import { Box, Typography } from "@mui/material";
+import { FieldJobAssignFields, FieldJobReturn } from "@/types/FieldJob";
+import { FieldAssignFields, FieldDataReturn } from "@/types/FieldData";
+import { JobAssignFields, JobReturn } from "@/types/Job";
 
-const employeeFields = ["name", "surname", "email"];
-const fieldJobFields = ["fieldName", "jobName", "profession", "area"];
-const jobFields = ["name", "area", "profession"];
-const fieldFields = ["name", "area"];
+const employeeFields: EmployeeAssignFields[] = ["name", "surname", "email"];
+const fieldJobFields: FieldJobAssignFields[] = [
+  "fieldName",
+  "jobName",
+  "profession",
+  "area",
+];
+const jobFields: JobAssignFields[] = ["name", "area", "profession"];
+const fieldFields: FieldAssignFields[] = ["name", "area"];
 
-export default function AssignItem({
-  data,
-}: {
-  data: EmployeeReturn | FieldJobReturn | FieldDataReturn | JobReturn;
-}) {
-  const items = Object.entries(data);
-  const [name, validItems] = getItemData(items);
+type AssignItemData =
+  | EmployeeReturn
+  | FieldJobReturn
+  | FieldDataReturn
+  | JobReturn;
+
+export default function AssignItem({ data }: { data: AssignItemData }) {
+  const [name, validItems] = getItemData(data);
   console.log(validItems);
   const length = validItems?.length;
   return (
@@ -51,17 +57,33 @@ export default function AssignItem({
   );
 }
 
-function getItemData(
-  data: Array<[string, any]>
-): [string, Array<[string, any]>] {
-  if (data.some(([key]) => key === "email"))
-    return ["Employee", data.filter(([key]) => employeeFields.includes(key))];
-  else if (
-    data.some(([key]) => key === "jobId") &&
-    data.some(([key]) => key === "fieldId")
-  )
-    return ["FieldJob", data.filter(([key]) => fieldJobFields.includes(key))];
-  else if (data.some(([key]) => key === "profession"))
-    return ["Job", data.filter(([key]) => jobFields.includes(key))];
-  else return ["Field", data.filter(([key]) => fieldFields.includes(key))];
+function getItemData(data: AssignItemData): [string, Array<[string, any]>] {
+  if ("email" in data)
+    return [
+      "Employee",
+      Object.entries(data).filter(([key]) => {
+        employeeFields.includes(key as EmployeeAssignFields);
+      }),
+    ];
+  else if ("jobId" in data && "fieldId" in data)
+    return [
+      "FieldJob",
+      Object.entries(data).filter(([key]) =>
+        fieldJobFields.includes(key as FieldJobAssignFields)
+      ),
+    ];
+  else if ("profession" in data && !("jobId" in data))
+    return [
+      "Job",
+      Object.entries(data).filter(([key]) =>
+        jobFields.includes(key as JobAssignFields)
+      ),
+    ];
+  else
+    return [
+      "Field",
+      Object.entries(data).filter(([key]) =>
+        fieldFields.includes(key as FieldAssignFields)
+      ),
+    ];
 }

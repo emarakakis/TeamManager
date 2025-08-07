@@ -12,13 +12,7 @@ import deleteEmployee from "@/serverFunctions/deleteEmployee";
 import { useMutation } from "@tanstack/react-query";
 import { FormProvider, useForm } from "react-hook-form";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
-
-export type DeleteFields = {
-  field: boolean;
-  job: boolean;
-  fieldJob?: boolean;
-  employee?: boolean;
-};
+import { DeleteFields } from "./types";
 
 export function RemoveItemModal() {
   const [dataTypeObject, setDataType] = useQueryBatch(["dataType"]);
@@ -70,7 +64,6 @@ export function RemoveItemModal() {
 
   function onSubmit(fields?: DeleteFields) {
     if (dataType === "employeeJob") {
-      console.log("Why?");
       if (Object.entries(fields as Object).length == 0) {
         fields = { employee: false, field: false, job: false, fieldJob: false };
       }

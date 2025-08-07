@@ -83,7 +83,7 @@ export async function GET(request: Request) {
           field: {
             id: fieldJobsTable.fieldId,
             name: fieldJobsTable.fieldName,
-            area: fieldJobsTable.jobFieldArea,
+            area: fieldJobsTable.area,
           },
           job: {
             id: fieldJobsTable.jobId,

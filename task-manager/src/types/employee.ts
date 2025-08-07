@@ -11,6 +11,11 @@ export type EmployeeReturn = {
   assigned: number;
 } & EmployeeCreate;
 
+export type EmployeeAssignFields = keyof Pick<
+  EmployeeReturn,
+  "email" | "name" | "surname"
+>;
+
 export const employeeDefault = {
   name: "",
   surname: "",
