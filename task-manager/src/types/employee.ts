@@ -1,4 +1,4 @@
-export type Employee = {
+export type EmployeeCreate = {
   name: string;
   surname: string;
   phoneNumber: string;
@@ -9,7 +9,12 @@ export type Employee = {
 export type EmployeeReturn = {
   id: number;
   assigned: number;
-} & Employee;
+} & EmployeeCreate;
+
+export type EmployeeAssignFields = keyof Pick<
+  EmployeeReturn,
+  "email" | "name" | "surname"
+>;
 
 export const employeeDefault = {
   name: "",

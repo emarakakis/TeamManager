@@ -4,8 +4,6 @@ import { JobReturn } from "@/types/Job";
 import getEmployees from "./getEmployees";
 import getFields from "./getFields";
 import getJobs from "./getJobs";
-import getFieldJobs from "./getFieldJobs";
-import { FieldJob } from "@/types/FieldJob";
 
 export type FieldJobConcat = { fields: FieldDataReturn[]; jobs: JobReturn[] };
 type ChangeDataTypes =

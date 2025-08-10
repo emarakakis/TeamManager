@@ -1,16 +1,8 @@
-import {
-  Box,
-  DialogTitle,
-  Typography,
-  Button,
-  Checkbox,
-  FormControlLabel,
-} from "@mui/material";
+import { Box, DialogTitle, Typography, Button, Checkbox } from "@mui/material";
 
 import { useQueryState } from "@/app/hooks/query-state-hook";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ModalType from "./ModalType";
-import TypeItem from "../../TypeItem/TypeItem";
 import getEmployee from "@/serverFunctions/getEmployee";
 import getFieldJob from "@/serverFunctions/getFieldJob";
 import postEmployeeJob from "@/serverFunctions/postEmployeeJob";
@@ -23,6 +15,7 @@ import { useState } from "react";
 
 export default function AssignEmployeeJob() {
   const [employeeJob, setEmployeeJob] = useQueryState("employeeJob");
+  console.log(employeeJob);
   const [keepFields, setKeepFields] = useState<boolean>(false);
   const { fieldId, jobId, employeeId } = { ...employeeJob };
   const queryClient = useQueryClient();
@@ -52,7 +45,6 @@ export default function AssignEmployeeJob() {
   if (isLoading) {
     return <DialogTitle>Loading...</DialogTitle>;
   }
-  const allowedKeys = ["id", "assigned", "sex", "phoneNumber"];
   const { employee, fieldJob } = { ...data };
   return (
     <Box

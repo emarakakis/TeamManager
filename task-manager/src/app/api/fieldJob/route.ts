@@ -7,6 +7,8 @@ export async function POST(req: Request) {
     const data = await req.json();
     const { jobId, fieldId } = { ...data };
 
+    console.log("I am here.");
+
     if (!jobId || !fieldId || isNaN(+fieldId)) {
       return NextResponse.json(
         { success: false, error: "Invalid input" },
@@ -21,7 +23,7 @@ export async function POST(req: Request) {
       .select({
         jobId: jobTable.id,
         fieldId: fieldTable.id,
-        jobFieldArea: fieldTable.area,
+        area: fieldTable.area,
         fieldName: fieldTable.name,
         jobName: jobTable.name,
         profession: jobTable.profession,
@@ -70,7 +72,7 @@ export async function GET(req: Request) {
       );
 
     if (result.length > 0) {
-      return NextResponse.json({ success: true, data: result[0] });
+      return NextResponse.json({ success: true, fieldJob: result[0] });
     } else {
       return NextResponse.json({ success: false });
     }
@@ -94,7 +96,6 @@ export async function PUT(req: Request) {
             eq(fieldJobsTable.jobId, Number(fieldJob.jobId))
           )
         );
-      console.log(result);
       return NextResponse.json({ success: true });
     } else {
       const result = await db

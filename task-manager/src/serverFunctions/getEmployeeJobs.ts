@@ -1,7 +1,7 @@
 import { SearchFields } from "@/modules/Search/EmployeeJobSearch";
-import { Employee } from "@/types/employee";
+import { EmployeeCreate } from "@/types/employee";
 import { EmployeeJob, EmployeeJobReturn } from "@/types/EmployeeJob";
-import { FieldData } from "@/types/FieldData";
+import { FieldDataCreate } from "@/types/FieldData";
 import { JobReturn } from "@/types/Job";
 import axios from "axios";
 import qs from "qs";

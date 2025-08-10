@@ -1,6 +1,6 @@
 "use client";
 
-import { FieldData } from "@/types/FieldData";
+import { FieldDataCreate } from "@/types/FieldData";
 import * as React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import FieldForm from "@/modules/FieldForm/FieldForm";
@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
 import { Box } from "@mui/material";
 export default function Page() {
-  const methods = useForm<FieldData>();
+  const methods = useForm<FieldDataCreate>();
 
   const queryClient = useQueryClient();
   const { handleSubmit } = methods;
@@ -31,7 +31,7 @@ export default function Page() {
     },
   });
 
-  function onSubmit(data: FieldData) {
+  function onSubmit(data: FieldDataCreate) {
     mutate(data);
     setDisabled(true);
   }

@@ -2,7 +2,7 @@
 
 import { Container, Button, Typography, Box } from "@mui/material";
 import { useForm, FormProvider } from "react-hook-form";
-import { Employee, employeeDefault } from "@/types/employee";
+import { EmployeeCreate, employeeDefault } from "@/types/employee";
 import EmployeeInfo from "@/modules/EmployeeForm/EmployeeForm";
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
@@ -27,10 +27,10 @@ export default function Page() {
     setDisabled(false);
   }, [router]);
 
-  const methods = useForm<Employee>({ defaultValues: employeeDefault });
+  const methods = useForm<EmployeeCreate>({ defaultValues: employeeDefault });
   const { handleSubmit } = methods;
 
-  function onSubmit(data: Employee) {
+  function onSubmit(data: EmployeeCreate) {
     mutate(data);
     setDisabled(true);
   }

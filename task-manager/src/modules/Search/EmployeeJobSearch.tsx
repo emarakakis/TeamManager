@@ -1,8 +1,8 @@
 import { FormControlLabel, Grid, MenuItem, Select } from "@mui/material";
 import { useState } from "react";
 import Search from "./Search";
-import { Employee } from "@/types/employee";
-import { FieldData } from "@/types/FieldData";
+import { EmployeeCreate } from "@/types/employee";
+import { FieldDataCreate } from "@/types/FieldData";
 import { JobCreate } from "@/types/Job";
 
 const selectOptions = [
@@ -12,8 +12,8 @@ const selectOptions = [
 ];
 
 export type SearchFields = {
-  employee?: Partial<Employee>;
-  field?: Partial<FieldData>;
+  employee?: Partial<EmployeeCreate>;
+  field?: Partial<FieldDataCreate>;
   job?: Partial<JobCreate>;
 };
 

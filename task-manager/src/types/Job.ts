@@ -1,5 +1,3 @@
-import { FieldData } from "./FieldData";
-
 export type JobCreate = {
   name: string;
   area: string;
@@ -10,5 +8,10 @@ export type JobReturn = {
   id: number;
   assigned: number;
 } & JobCreate;
+
+export type JobAssignFields = keyof Pick<
+  JobReturn,
+  "name" | "area" | "profession"
+>;
 
 type Profession = "intern" | "junior" | "intermediate" | "senior";

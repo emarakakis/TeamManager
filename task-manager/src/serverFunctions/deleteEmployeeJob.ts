@@ -10,18 +10,15 @@ export default async function deleteEmployeeJob(input: {
   fields: Record<string, boolean>;
 }) {
   const { deleteItem, fields } = input;
-  console.log(fields);
   fields.fieldJob = !!fields.fieldJob || !!fields.job || !!fields.field;
   const deleteFields = Object.entries(fields).filter(([key, value]) => value);
   const unAssignFields = Object.entries(fields).filter(
     ([key, value]) => !value && key !== "field"
   );
   const createNewJob = !fields.fieldJob && !fields.job;
-  console.log(unAssignFields);
-
   const query = qs.stringify(deleteItem);
-  await axios.delete(`/api/employeeJob?${query}`);
 
+  await axios.delete(`/api/employeeJob?${query}`);
   deleteFields.forEach(async ([k, v]) => {
     let q = "";
     if (k === "fieldJob") {
@@ -48,13 +45,12 @@ export default async function deleteEmployeeJob(input: {
     const returnData = item.data;
 
     if (k === "job" && createNewJob) {
-      const { id, ...duplicateData } = returnData.data;
-      console.log(duplicateData);
+      const { id, ...duplicateData } = returnData.job;
       duplicateData.assigned = 0;
-      const newJob = await axios.post(`/api/job`, duplicateData);
+      await axios.post(`/api/job`, duplicateData);
     } else {
       const newItem = { ...returnData.data, assigned: 0 };
-      const unAssignItem = await axios.put(`/api/${k}`, newItem);
+      await axios.put(`/api/${k}`, newItem);
     }
   });
 }

@@ -1,11 +1,11 @@
 import { useFormContext } from "react-hook-form";
 import { Grid, Box, TextField, Button, Typography } from "@mui/material";
 import RadioSelect from "./RadioSelect";
-import { FieldData } from "@/types/FieldData";
+import { FieldDataCreate } from "@/types/FieldData";
 import FormButton from "../FormButton/FormButton";
 
 export default function FieldForm() {
-  const { register, control } = useFormContext<FieldData>();
+  const { register, control } = useFormContext<FieldDataCreate>();
 
   return (
     <Box
@@ -37,7 +37,7 @@ export default function FieldForm() {
         }}
       >
         <Grid container sx={{ justifyContent: "center", my: 1 }}>
-          <RadioSelect<FieldData>
+          <RadioSelect<FieldDataCreate>
             name="area"
             control={control}
             row={true}

@@ -2,10 +2,22 @@ export type FieldJob = {
   fieldName: string;
   jobName: string;
   profession: string;
-  jobFieldArea: string;
+  area: string;
 };
 
-export type FieldJobReturn = {
+export type FieldJobId = {
   jobId: number;
   fieldId: number;
-} & FieldJob;
+};
+
+export type FieldJobAssignFields = keyof Pick<
+  FieldJobReturn,
+  "fieldName" | "jobName" | "profession" | "area"
+>;
+
+export type FieldJobDeleteFields = {
+  job: boolean;
+  field: boolean;
+};
+
+export type FieldJobReturn = FieldJobId & FieldJob;

@@ -1,21 +1,21 @@
 import axios from "axios";
 import getJob from "./getJob";
 import postJob from "./postJob";
+import { FieldJobId } from "@/types/FieldJob";
 
 export default async function postFieldJob(data: {
-  jobId: string;
-  fieldId: string;
+  fieldJobId: FieldJobId;
   keepFields: boolean;
 }) {
-  const { keepFields, ...ids } = data;
+  const { keepFields, fieldJobId } = data;
 
   if (keepFields) {
-    const job = await getJob(Number(ids.jobId));
+    const job = await getJob(fieldJobId.jobId);
     const { id, ...rest } = job;
-    const jobCreate = await postJob(rest);
+    await postJob(rest);
   }
 
-  const result = await axios.post("/api/fieldJob", ids);
+  const result = await axios.post("/api/fieldJob", fieldJobId);
 
   const ret = result.data;
   if (!ret.success) {

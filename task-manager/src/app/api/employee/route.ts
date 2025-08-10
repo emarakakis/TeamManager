@@ -1,4 +1,4 @@
-import { Employee } from "@/types/employee";
+import { EmployeeCreate } from "@/types/employee";
 import { db, employeeTable } from "../../../../db";
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
@@ -29,7 +29,7 @@ export async function GET(req: Request) {
       .from(employeeTable)
       .where(eq(employeeTable.id, Number(id)));
     if (result.length > 0) {
-      return NextResponse.json({ success: true, data: result[0] });
+      return NextResponse.json({ success: true, employee: result[0] });
     } else {
       return NextResponse.json({ success: false });
     }

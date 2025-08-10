@@ -7,14 +7,15 @@ export default async function getFieldJobs(fieldJobQuery: ObjectType) {
   fieldJobQuery["assigned"] = 0;
 
   const query = qs.stringify(fieldJobQuery);
-  const result = await axios.get<{ data: FieldJobReturn[]; success: boolean }>(
-    `/api/fieldJobs?${query}`
-  );
+  const result = await axios.get<{
+    fieldJobs: FieldJobReturn[];
+    success: boolean;
+  }>(`/api/fieldJobs?${query}`);
   const data = result.data;
 
   if (!data.success) {
     throw new Error("Something went wrong when getting FieldJobs");
   }
 
-  return data.data;
+  return data.fieldJobs;
 }

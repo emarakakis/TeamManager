@@ -8,26 +8,28 @@ import postFieldJob from "./postFieldJob";
 import postJob from "./postJob";
 
 export default async function duplicateItems(
-  id: number | { jobId: string; fieldId: string },
+  id: number | { jobId: number; fieldId: number },
   type: string
 ): Promise<void> {
-  if (type === "employee") {
+  if (type === "employee" && typeof id !== "object") {
     const { id: emplId, ...employee } = await getEmployee(id);
     return await postEmployee(employee);
-  } else if (type === "field") {
-    const { id: fldId, ...field } = await getField(Number(id));
-    console.log(field);
+  } else if (type === "field" && typeof id !== "object") {
+    const { id: fldId, ...field } = await getField(id);
     return await postField(field);
-  } else if (type === "job") {
-    const { id: jbId, ...job } = await getJob(Number(id));
+  } else if (type === "job" && typeof id !== "object") {
+    const { id: jbId, ...job } = await getJob(id);
     return await postJob(job);
-  } else if (type === "fieldJob") {
-    const { jobId, fieldId } = id as { jobId: string; fieldId: string };
-    const { id: jbId, ...job } = await getJob(Number(jobId));
+  } else if (type === "fieldJob" && typeof id === "object") {
+    const { jobId, fieldId } = id;
+    const { id: jbId, ...job } = await getJob(jobId);
     const newId = await postJob(job);
     return await postFieldJob({
-      jobId: newId,
-      fieldId: fieldId,
+      fieldJobId: {
+        jobId: newId,
+        fieldId: fieldId,
+      },
+      keepFields: false,
     });
   } else {
     throw new Error("Wtf");

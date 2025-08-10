@@ -1,6 +1,6 @@
-import { Employee } from "@/types/employee";
+import { EmployeeCreate } from "@/types/employee";
 import axios from "axios";
 
-export default async function postEmployee(employee: Employee) {
+export default async function postEmployee(employee: EmployeeCreate) {
   const result = await axios.post("/api/employee", employee);
 }

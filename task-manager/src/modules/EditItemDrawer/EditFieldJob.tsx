@@ -40,9 +40,9 @@ export default function EditFieldJob({ data }: { data: FieldJobReturn }) {
         </Typography>
         <Grid sx={{ display: "flex", justifyContent: "center" }}>
           <RadioSelect<FieldJobReturn>
-            name="jobFieldArea"
+            name="area"
             control={control}
-            defaultValue={!!data.jobFieldArea ? data.jobFieldArea : undefined}
+            defaultValue={!!data.area ? data.area : undefined}
             row={true}
             radios={[
               {

@@ -14,8 +14,7 @@ export default async function postEmployeeJob(employeeJob: {
     const { id: discard, ...rest } = await getJob(employeeJob.jobId);
     const jobId = await postJob(rest);
     await postFieldJob({
-      jobId,
-      fieldId: employeeJob.fieldId.toString(),
+      fieldJobId: { jobId, fieldId: employeeJob.fieldId },
       keepFields: false,
     });
   }

@@ -28,13 +28,13 @@ export default function Search({
     typeObject[field] = val;
 
     setInternalValue("");
-    setSearchType(qs.stringify(typeObject));
+    setSearchType(typeObject);
   }
 
   function handleDeleteCondition(key: string) {
     const typeObject = { ...searchType };
     typeObject[key] = null;
-    setSearchType(qs.stringify(typeObject));
+    setSearchType(typeObject);
   }
 
   const conditions = Object.entries(searchType);

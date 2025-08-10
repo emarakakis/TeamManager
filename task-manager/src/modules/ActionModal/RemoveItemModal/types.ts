@@ -1,11 +1,7 @@
-export type EmployeeFields = {
-  employee: boolean;
-  job: boolean;
-  field: boolean;
-  fieldJob: boolean;
-};
+import { EmployeeJobDeleteFields } from "@/types/EmployeeJob";
+import { FieldJobDeleteFields } from "@/types/FieldJob";
 
-export type FieldJobFields = {
-  job: boolean;
-  field: boolean;
-};
+export type DeleteFields =
+  | { fieldJob: boolean }
+  | EmployeeJobDeleteFields
+  | FieldJobDeleteFields;

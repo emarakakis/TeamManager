@@ -1,7 +1,7 @@
-import { FieldData } from "@/types/FieldData";
+import { FieldDataCreate } from "@/types/FieldData";
 import axios from "axios";
 
-export default async function putField(field: FieldData) {
+export default async function putField(field: FieldDataCreate) {
   const res = await axios.put(`/api/field`, field);
   const data = await res.data;
 

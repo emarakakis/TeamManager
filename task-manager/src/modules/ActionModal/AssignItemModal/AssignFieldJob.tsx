@@ -1,5 +1,4 @@
 import { Box, DialogTitle, Typography, Button, Checkbox } from "@mui/material";
-import TypeItem from "../../TypeItem/TypeItem";
 import getField from "@/serverFunctions/getField";
 import getJob from "@/serverFunctions/getJob";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
@@ -82,7 +81,7 @@ export default function AssignFieldJob() {
           sx={{ color: "green" }}
           state="assignItem"
           onClick={() => {
-            mutate({ jobId, fieldId, keepFields });
+            mutate({ fieldJobId: { jobId, fieldId }, keepFields });
             setDisabled(true);
           }}
         >
