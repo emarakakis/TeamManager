@@ -26,7 +26,6 @@ export default function TypeItem<T extends TypeItemProps>({
       key !== "id" && key !== "jobId" && key !== "fieldId" && key !== "assigned"
   );
   const dataLength = items.length;
-  const itemSize = 12 / dataLength;
 
   return (
     <Grid

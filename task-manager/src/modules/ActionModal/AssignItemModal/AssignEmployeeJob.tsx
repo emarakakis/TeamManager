@@ -45,7 +45,6 @@ export default function AssignEmployeeJob() {
   if (isLoading) {
     return <DialogTitle>Loading...</DialogTitle>;
   }
-  const allowedKeys = ["id", "assigned", "sex", "phoneNumber"];
   const { employee, fieldJob } = { ...data };
   return (
     <Box

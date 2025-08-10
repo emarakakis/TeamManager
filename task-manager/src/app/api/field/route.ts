@@ -50,13 +50,13 @@ export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
     const id = url.searchParams.get("id");
-    console.log(id);
 
     const result = await db
       .select()
       .from(fieldTable)
       .where(eq(fieldTable.id, Number(id)));
     if (result.length > 0) {
+      console.log(result[0]);
       return NextResponse.json({ success: true, field: result[0] });
     } else return NextResponse.json({ success: false });
   } catch (error) {
