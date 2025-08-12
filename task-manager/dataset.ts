@@ -95,3 +95,12 @@ export const characteristics: CharacteristicsCreate[] = [
   { category: "experience", name: "Technical Expertise" },
   { category: "experience", name: "Mentorship" },
 ];
+
+export const employeeChars = [
+  { employeeId: 1, charId: 1 },
+  { employeeId: 1, charId: 2 },
+  { employeeId: 1, charId: 3 },
+  { employeeId: 2, charId: 1 },
+  { employeeId: 2, charId: 2 },
+  { employeeId: 2, charId: 3 },
+];

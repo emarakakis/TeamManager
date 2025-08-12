@@ -1,6 +1,13 @@
 // setup-db.ts (ή όπου κάνεις το insert)
-import { db, employeeTable, initializeDB, fieldTable, charTable } from "./db";
-import { characteristics, employees, fields } from "./dataset";
+import {
+  db,
+  employeeTable,
+  initializeDB,
+  fieldTable,
+  charTable,
+  employeeCharTable,
+} from "./db";
+import { characteristics, employeeChars, employees, fields } from "./dataset";
 
 async function createDb() {
   await initializeDB();
@@ -15,6 +22,10 @@ async function createDb() {
 
   for (const c of characteristics) {
     await db.insert(charTable).values(c);
+  }
+
+  for (const ec of employeeChars) {
+    await db.insert(employeeCharTable).values(ec);
   }
 
   const allEmployees = await db.select().from(employeeTable).all();
