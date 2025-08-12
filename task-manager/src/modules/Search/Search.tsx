@@ -17,7 +17,6 @@ export default function Search({
 }) {
   const [searchType, setSearchType] = useQueryState(type);
   const [intenalValue, setInternalValue] = useState<string>("");
-
   const { getValues, control } = useForm<{ category: string }>();
 
   function handleSearch() {
