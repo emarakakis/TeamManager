@@ -1,14 +1,16 @@
-import { CharacteristicsCreate } from "@/types/Characteristics";
-import { Box, Grid, IconButton, Typography } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { CharacteristicsReturn } from "@/types/Characteristics";
+import { Box, Typography } from "@mui/material";
+
+import DeleteCharButton from "./DeleteCharButton";
 
 export default function CharRow({
   data,
   index,
 }: {
   index: number;
-  data: CharacteristicsCreate;
+  data: CharacteristicsReturn;
 }) {
+  const { id, ...characteristic } = data;
   return (
     <Box
       sx={{
@@ -21,11 +23,9 @@ export default function CharRow({
         borderRadius: "4px",
       }}
     >
-      <Typography>{data.category}</Typography>
-      <Typography>{data.name}</Typography>
-      <IconButton sx={{ display: "flex", alignContent: "center" }}>
-        <DeleteIcon />
-      </IconButton>
+      <Typography>{characteristic.category}</Typography>
+      <Typography>{characteristic.name}</Typography>
+      <DeleteCharButton id={id} />
     </Box>
   );
 }

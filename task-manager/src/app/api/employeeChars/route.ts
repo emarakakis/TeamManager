@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { charTable, db, employeeCharTable } from "../../../../db";
 import { NextResponse } from "next/server";
 
