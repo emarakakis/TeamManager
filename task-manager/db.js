@@ -7,8 +7,6 @@ import {
   primaryKey,
 } from "drizzle-orm/sqlite-core";
 import Database from "better-sqlite3";
-import { varchar } from "drizzle-orm/mysql-core";
-import { boolean } from "drizzle-orm/gel-core";
 
 const sqlite = new Database("sqlite.db");
 
@@ -22,9 +20,14 @@ export const employeeTable = sqliteTable("employees", {
   assigned: integer("assigned").default(0),
 });
 
+export const charTable = sqliteTable("characteristics", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  category: text("category").notNull(),
+  name: text("name").notNull(),
+});
+
 export const fieldTable = sqliteTable("fields", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  // charTable: integer('id').primaryKey().notNull(),
   name: text("name").notNull(),
   area: text("area").notNull(),
 });
@@ -49,13 +52,22 @@ export const fieldJobsTable = sqliteTable(
   {
     fieldId: integer("fieldId").notNull(),
     jobId: integer("jobId").notNull(),
-    jobFieldArea: text("jobFieldArea").notNull(),
+    area: text("area").notNull(),
     fieldName: text("fieldName").notNull(),
     jobName: text("jobName").notNull(),
     profession: text("profession").notNull(),
     assigned: integer("assigned").default(0),
   },
   (table) => [primaryKey({ columns: [table.fieldId, table.jobId] })]
+);
+
+export const employeeCharTable = sqliteTable(
+  "employeeChars",
+  {
+    employeeId: integer("employeeId"),
+    charId: integer("charId"),
+  },
+  (table) => [primaryKey({ columns: [table.employeeId, table.charId] })]
 );
 
 export const db = drizzle(sqlite, {
@@ -65,6 +77,7 @@ export const db = drizzle(sqlite, {
     jobTable,
     fieldJobsTable,
     employeeJobTable,
+    charTable,
   },
 });
 
@@ -103,7 +116,7 @@ export async function initializeDB() {
       jobId INTEGER,
       fieldName TEXT NOT NULL,
       jobName TEXT NOT NULL,
-      jobFieldArea TEXT NOT NULL,
+      area TEXT NOT NULL,
       profession TEXT NOT NULL,
       assigned INTEGER,
       PRIMARY KEY (fieldId, jobId)
@@ -115,6 +128,18 @@ export async function initializeDB() {
       employeeId INTEGER,
       jobId INTEGER,
       fieldId INTEGER
+    );
+    DROP TABLE IF EXISTS characteristics;
+    CREATE TABLE IF NOT EXISTS characteristics (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      category TEXT NOT NULL,
+      name TEXT NOT NULL
+      );
+    DROP TABLE IF EXISTS employeeChars;
+    CREATE TABLE IF NOT EXISTS employeeChars (
+      employeeId INTEGER NOT NULL,
+      charId INTEGER NOT NULL,
+      PRIMARY KEY (employeeId, charId)
     );
   `);
 }
