@@ -165,7 +165,12 @@ export default function OptionButton<T extends ModalItem>({
             />
           )}
           {type === "employee" && "email" in data && (
-            <MenuItem onClick={() => setEmployeeChar({ id: data.id })}>
+            <MenuItem
+              onClick={() => {
+                setEmployeeChar({ id: data.id });
+                setAnchorEl(null);
+              }}
+            >
               <ListItemIcon>
                 <SubjectIcon sx={{ color: "pink" }} />
               </ListItemIcon>
