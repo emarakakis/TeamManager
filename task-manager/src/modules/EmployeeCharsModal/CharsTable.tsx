@@ -1,7 +1,9 @@
 import { Box, Button, Typography } from "@mui/material";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
+import AddCharModal from "./AddCharModal";
 
 export default function CharsTable({ children }: { children: ReactNode }) {
+  const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null);
   return (
     <Box
       sx={{
@@ -23,7 +25,11 @@ export default function CharsTable({ children }: { children: ReactNode }) {
       >
         <Typography>View, Add and Edit Characteristics</Typography>
 
-        <Button variant="outlined" sx={{ borderColor: "gray", color: "gray" }}>
+        <Button
+          variant="outlined"
+          sx={{ borderColor: "gray", color: "gray" }}
+          onClick={(e) => setAnchorElement(e.currentTarget)}
+        >
           Add +
         </Button>
       </Box>
@@ -43,6 +49,10 @@ export default function CharsTable({ children }: { children: ReactNode }) {
       >
         {children}
       </Box>
+      <AddCharModal
+        anchorEl={anchorElement}
+        setAnchorElement={setAnchorElement}
+      />
     </Box>
   );
 }
