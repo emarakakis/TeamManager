@@ -15,8 +15,8 @@ export default function EmployeeCharsModal() {
   const open = !!id;
 
   const { data: characteristics } = useQuery<CharacteristicsReturn[]>({
-    queryKey: ["employee", "characteristics", id],
-    queryFn: () => getEmployeeChars(id),
+    queryKey: ["employee", "characteristics", "view", id],
+    queryFn: () => getEmployeeChars(id, "view"),
   });
 
   const { data: employeeInfo } = useQuery<EmployeeReturn>({
@@ -51,7 +51,7 @@ export default function EmployeeCharsModal() {
                 sx={{ display: "flex", justifyContent: "center" }}
                 key={index}
               >
-                <CharRow data={item} index={index} />
+                <CharRow data={item} index={index} type={"view"} />
               </Box>
             ))}
           {!hasChars && (

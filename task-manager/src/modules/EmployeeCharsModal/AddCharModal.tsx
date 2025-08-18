@@ -1,5 +1,11 @@
-import { Box, Popover, Typography } from "@mui/material";
+import { useQueryState } from "@/app/hooks/query-state-hook";
+import getEmployeeChars from "@/serverFunctions/getEmployeeChars";
+import { CharacteristicsReturn } from "@/types/Characteristics";
+import { Box, Button, Popover, Typography } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction } from "react";
+import CharRow from "./CharRow";
+import { FormProvider, useForm } from "react-hook-form";
 
 export default function AddCharModal({
   anchorEl,
@@ -8,6 +14,24 @@ export default function AddCharModal({
   anchorEl: HTMLElement | null;
   setAnchorElement: Dispatch<SetStateAction<HTMLElement | null>>;
 }) {
+  const [employeeChar] = useQueryState("employeeChar");
+  const { id } = employeeChar;
+  const { data: chars } = useQuery<CharacteristicsReturn[]>({
+    queryKey: ["employee", "characteristics", "add", id],
+    queryFn: () => getEmployeeChars(id, "add"),
+  });
+
+  const methods = useForm<{ values: number[] }>({
+    defaultValues: {
+      values: new Array<number>(),
+    },
+  });
+
+  function onSubmit(input: { values: number[] }) {
+    const { values } = input;
+    console.log(values);
+  }
+
   return (
     <Popover
       open={!!anchorEl}
@@ -29,10 +53,38 @@ export default function AddCharModal({
         }}
       >
         <Box>
-          <Typography sx={{ display: "flex", justifyContent: "center" }}>
+          <Typography sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
             Add following Characteristics to Employee
           </Typography>
-          <Box></Box>
+          <FormProvider {...methods}>
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
+              <Box
+                sx={{
+                  display: "grid",
+                  backgroundColor: "lightslategray",
+                  borderRadius: "16px",
+                  gap: "5px",
+                  padding: 2,
+                  maxHeight: "150px",
+                  overflow: "auto",
+                }}
+              >
+                {chars?.map((item, index) => (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      width: "100%",
+                    }}
+                    key={index}
+                  >
+                    <CharRow data={item} index={index} type={"add"} />
+                  </Box>
+                ))}
+              </Box>
+              <Button type="submit">Submit</Button>
+            </form>
+          </FormProvider>
         </Box>
       </Box>
     </Popover>
