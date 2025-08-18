@@ -35,3 +35,23 @@ export async function GET(req: Request) {
     throw error;
   }
 }
+
+export async function PUT(req: Request) {
+  console.log("I am in!");
+  try {
+    const data = await req.json();
+    const { employeeId, characteristics } = data;
+
+    const insertValues = characteristics.map((char: number) => ({
+      charId: char,
+      employeeId: employeeId,
+    }));
+
+    await db.insert(employeeCharTable).values(insertValues);
+
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.log("ERROR");
+    throw err;
+  }
+}

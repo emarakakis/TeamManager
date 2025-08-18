@@ -2,10 +2,11 @@ import { useQueryState } from "@/app/hooks/query-state-hook";
 import getEmployeeChars from "@/serverFunctions/getEmployeeChars";
 import { CharacteristicsReturn } from "@/types/Characteristics";
 import { Box, Button, Popover, Typography } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Dispatch, SetStateAction } from "react";
 import CharRow from "./CharRow";
 import { FormProvider, useForm } from "react-hook-form";
+import putEmployeeChars from "@/serverFunctions/putEmployeeChars";
 
 export default function AddCharModal({
   anchorEl,
@@ -27,10 +28,29 @@ export default function AddCharModal({
     },
   });
 
+  const { reset, handleSubmit } = methods;
+
   function onSubmit(input: { values: number[] }) {
     const { values } = input;
-    console.log(values);
+    mutate({ characteristics: values, employeeId: id });
+    reset({ values: [] });
   }
+
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationKey: ["add", "characteristic", id],
+    mutationFn: putEmployeeChars,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["employee", "characteristics", "view", id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["employee", "characteristics", "add", id],
+      });
+      setAnchorElement(null);
+    },
+  });
 
   return (
     <Popover

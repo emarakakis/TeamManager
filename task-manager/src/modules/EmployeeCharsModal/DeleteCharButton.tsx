@@ -15,7 +15,10 @@ export default function DeleteCharButton({ id }: { id: number }) {
     mutationFn: deleteEmployeeChar,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["employee", "characteristics", employeeId],
+        queryKey: ["employee", "characteristics", "view", employeeId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["employee", "characteristics", "add", employeeId],
       });
     },
   });
