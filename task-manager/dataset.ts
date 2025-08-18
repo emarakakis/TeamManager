@@ -1,7 +1,8 @@
-import {Employee} from './src/types/employee'
-import { FieldData } from './src/types/FieldData';
+import { CharacteristicsCreate } from "./src/types/Characteristics";
+import { EmployeeCreate } from "./src/types/employee";
+import { FieldDataCreate } from "./src/types/FieldData";
 
-export const employees: Employee[] = [
+export const employees: EmployeeCreate[] = [
   {
     name: "John",
     surname: "Doe",
@@ -39,7 +40,7 @@ export const employees: Employee[] = [
   },
 ];
 
-export const fields: FieldData[] = [
+export const fields: FieldDataCreate[] = [
   {
     name: "Gameplay Programming",
     area: "development",
@@ -79,5 +80,27 @@ export const fields: FieldData[] = [
   {
     name: "Project Management",
     area: "production",
-  }
-]
+  },
+];
+
+export const characteristics: CharacteristicsCreate[] = [
+  { category: "skill", name: "Leadership" },
+  { category: "skill", name: "Communication" },
+  { category: "skill", name: "Problem Solving" },
+  { category: "skill", name: "Time Management" },
+  { category: "personality", name: "Team Player" },
+  { category: "personality", name: "Proactive" },
+  { category: "personality", name: "Adaptable" },
+  { category: "experience", name: "Project Management" },
+  { category: "experience", name: "Technical Expertise" },
+  { category: "experience", name: "Mentorship" },
+];
+
+export const employeeChars = [
+  { employeeId: 1, charId: 1 },
+  { employeeId: 1, charId: 2 },
+  { employeeId: 1, charId: 3 },
+  { employeeId: 2, charId: 1 },
+  { employeeId: 2, charId: 2 },
+  { employeeId: 2, charId: 3 },
+];

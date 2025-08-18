@@ -9,6 +9,7 @@ import EditItemDrawer from "@/modules/EditItemDrawer/EditItemDrawer";
 import ActionModal from "@/modules/ActionModal/ActionModal";
 import ChangeModal from "@/modules/ChangeModal/ChangeModal";
 import DuplicateModal from "@/modules/DuplicateModal/DuplicateModal";
+import EmployeeCharsModal from "@/modules/EmployeeCharsModal/EmployeeCharsModal";
 
 export default function RootLayout({
   children,
@@ -28,6 +29,7 @@ export default function RootLayout({
                 <ActionModal />
                 <ChangeModal />
                 <DuplicateModal />
+                <EmployeeCharsModal />
               </ThemeProvider>
             </NavigationHeader>
           </Box>
