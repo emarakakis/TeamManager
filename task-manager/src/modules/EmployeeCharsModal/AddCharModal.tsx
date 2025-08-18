@@ -3,10 +3,13 @@ import getEmployeeChars from "@/serverFunctions/getEmployeeChars";
 import { CharacteristicsReturn } from "@/types/Characteristics";
 import { Box, Button, Popover, Typography } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import CharRow from "./CharRow";
 import { FormProvider, useForm } from "react-hook-form";
 import putEmployeeChars from "@/serverFunctions/putEmployeeChars";
+import FormButton from "../FormButton/FormButton";
+import { useFormButtonState } from "@/app/hooks/form-button-hook";
+import { characteristics } from "../../../dataset";
 
 export default function AddCharModal({
   anchorEl,
@@ -29,14 +32,19 @@ export default function AddCharModal({
   });
 
   const { reset, handleSubmit } = methods;
+  const [disable, setDisable] = useFormButtonState("addChar");
 
   function onSubmit(input: { values: number[] }) {
     const { values } = input;
     mutate({ characteristics: values, employeeId: id });
     reset({ values: [] });
+    setDisable(true);
   }
 
   const queryClient = useQueryClient();
+  const hasValues = chars && chars.length > 0;
+
+  console.log(hasValues);
 
   const { mutate } = useMutation({
     mutationKey: ["add", "characteristic", id],
@@ -49,6 +57,7 @@ export default function AddCharModal({
         queryKey: ["employee", "characteristics", "add", id],
       });
       setAnchorElement(null);
+      setTimeout(() => setDisable(false), 100);
     },
   });
 
@@ -89,20 +98,36 @@ export default function AddCharModal({
                   overflow: "auto",
                 }}
               >
-                {chars?.map((item, index) => (
+                {hasValues &&
+                  chars?.map((item, index) => (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        width: "100%",
+                      }}
+                      key={index}
+                    >
+                      <CharRow data={item} index={index} type={"add"} />
+                    </Box>
+                  ))}
+                {!hasValues && (
                   <Box
                     sx={{
+                      width: "100%",
+                      height: "150px",
                       display: "flex",
                       justifyContent: "center",
-                      width: "100%",
+                      alignItems: "center",
                     }}
-                    key={index}
                   >
-                    <CharRow data={item} index={index} type={"add"} />
+                    No Characteristics to Add
                   </Box>
-                ))}
+                )}
               </Box>
-              <Button type="submit">Submit</Button>
+              <FormButton sx={{ mt: 2 }} state="addChar">
+                Submit
+              </FormButton>
             </form>
           </FormProvider>
         </Box>
