@@ -1,5 +1,5 @@
 import { Box, Dialog } from "@mui/material";
-import ModalType from "../ActionModal/AssignItemModal/ModalType";
+import ModalType from "../ModalType/ModalType";
 import { useQueryState } from "@/app/hooks/query-state-hook";
 import { useQuery } from "@tanstack/react-query";
 import { CharacteristicsReturn } from "@/types/Characteristics";
@@ -31,44 +31,38 @@ export default function EmployeeCharsModal() {
   const hasChars = characteristics && characteristics.length > 0;
 
   return (
-    <Dialog
-      open={open}
-      onClose={() => setEmployeeChar(null)}
+    <ModalType
+      value={id}
+      setValue={setEmployeeChar}
+      title="Employee Characteristics"
+      contentText={`Employee Characteristics of ${employeeInfo?.name} ${employeeInfo?.surname}`}
       slotProps={{
         paper: {
           sx: { paperProps },
         },
       }}
     >
-      <ModalType
-        title="Employee Characteristics"
-        contentText={`Employee Characteristics of ${employeeInfo?.name} ${employeeInfo?.surname}`}
-      >
-        <CharsTable>
-          {hasChars &&
-            characteristics?.map((item, index) => (
-              <Box
-                sx={{ display: "flex", justifyContent: "center" }}
-                key={index}
-              >
-                <CharRow data={item} index={index} type={"view"} />
-              </Box>
-            ))}
-          {!hasChars && (
-            <Box
-              sx={{
-                display: "flex",
-                alignContent: "center",
-                justifyContent: "center",
-                width: "100%",
-                height: "100%",
-              }}
-            >
-              No Characteristics for this Employee.
+      <CharsTable>
+        {hasChars &&
+          characteristics?.map((item, index) => (
+            <Box sx={{ display: "flex", justifyContent: "center" }} key={index}>
+              <CharRow data={item} index={index} type={"view"} />
             </Box>
-          )}
-        </CharsTable>
-      </ModalType>
-    </Dialog>
+          ))}
+        {!hasChars && (
+          <Box
+            sx={{
+              display: "flex",
+              alignContent: "center",
+              justifyContent: "center",
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            No Characteristics for this Employee.
+          </Box>
+        )}
+      </CharsTable>
+    </ModalType>
   );
 }

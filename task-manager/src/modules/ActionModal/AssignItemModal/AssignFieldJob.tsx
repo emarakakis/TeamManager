@@ -4,7 +4,7 @@ import getJob from "@/serverFunctions/getJob";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useQueryState } from "@/app/hooks/query-state-hook";
 import postFieldJob from "@/serverFunctions/postFieldJob";
-import ModalType from "./ModalType";
+import ModalType from "../../ModalType/ModalType";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
 import FormButton from "@/modules/FormButton/FormButton";
 import AssignItem from "./AssignItem";
@@ -40,22 +40,18 @@ export default function AssignFieldJob() {
   const { field, job } = { ...data };
   return (
     <Box sx={{ display: "grid", justifyContent: "center" }}>
-      <ModalType
-        title="Field Job Creation"
-        contentText="Are you sure you want to merge?"
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          justifyContent: "center",
+          gap: 5,
+        }}
       >
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            justifyContent: "center",
-            gap: 5,
-          }}
-        >
-          <AssignItem data={field!} />
-          <AssignItem data={job!} />
-        </Box>
-      </ModalType>
+        <AssignItem data={field!} />
+        <AssignItem data={job!} />
+      </Box>
+
       <Box
         sx={{
           display: "flex",

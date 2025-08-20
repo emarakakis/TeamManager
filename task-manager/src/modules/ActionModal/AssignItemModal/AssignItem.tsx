@@ -3,6 +3,7 @@ import { Box, Typography } from "@mui/material";
 import { FieldJobAssignFields, FieldJobReturn } from "@/types/FieldJob";
 import { FieldAssignFields, FieldDataReturn } from "@/types/FieldData";
 import { JobAssignFields, JobReturn } from "@/types/Job";
+import { useEffect } from "react";
 
 const employeeFields: EmployeeAssignFields[] = ["name", "surname", "email"];
 const fieldJobFields: FieldJobAssignFields[] = [
@@ -22,7 +23,7 @@ type AssignItemData =
 
 export default function AssignItem({ data }: { data: AssignItemData }) {
   const [name, validItems] = getItemData(data);
-  console.log(validItems);
+  console.log(name, validItems);
   const length = validItems?.length;
   return (
     <Box
@@ -58,14 +59,14 @@ export default function AssignItem({ data }: { data: AssignItemData }) {
 }
 
 function getItemData(data: AssignItemData): [string, Array<[string, any]>] {
-  if ("email" in data)
+  if ("email" in data) {
     return [
       "Employee",
-      Object.entries(data).filter(([key]) => {
-        employeeFields.includes(key as EmployeeAssignFields);
-      }),
+      Object.entries(data).filter(([key]) =>
+        employeeFields.includes(key as EmployeeAssignFields)
+      ),
     ];
-  else if ("jobId" in data && "fieldId" in data)
+  } else if ("jobId" in data && "fieldId" in data)
     return [
       "FieldJob",
       Object.entries(data).filter(([key]) =>

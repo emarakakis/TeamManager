@@ -2,7 +2,7 @@ import { Box, DialogTitle, Typography, Button, Checkbox } from "@mui/material";
 
 import { useQueryState } from "@/app/hooks/query-state-hook";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import ModalType from "./ModalType";
+import ModalType from "../../ModalType/ModalType";
 import getEmployee from "@/serverFunctions/getEmployee";
 import getFieldJob from "@/serverFunctions/getFieldJob";
 import postEmployeeJob from "@/serverFunctions/postEmployeeJob";
@@ -43,9 +43,10 @@ export default function AssignEmployeeJob() {
     },
   });
   if (isLoading) {
-    return <DialogTitle>Loading...</DialogTitle>;
+    return <Box>Loading...</Box>;
   }
   const { employee, fieldJob } = { ...data };
+  console.log("Employee : ", employee);
   return (
     <Box
       sx={{
@@ -54,22 +55,17 @@ export default function AssignEmployeeJob() {
         justifyContent: "center",
       }}
     >
-      <ModalType
-        title="Employee Job Creation"
-        contentText="Are you sure you want to merge?"
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          justifyContent: "center",
+          gap: 5,
+        }}
       >
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            justifyContent: "center",
-            gap: 5,
-          }}
-        >
-          <AssignItem data={employee!} />
-          <AssignItem data={fieldJob!} />
-        </Box>
-      </ModalType>
+        <AssignItem data={employee!} />
+        <AssignItem data={fieldJob!} />
+      </Box>
       <Box
         sx={{
           display: "flex",
