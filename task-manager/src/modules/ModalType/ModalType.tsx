@@ -31,7 +31,7 @@ export default function ModalType({
 }: ModalTypeProps) {
   const open = !!value;
   return (
-    <Dialog open={open} {...props}>
+    <Dialog open={open} onClose={() => setValue(null)} {...props}>
       <Box sx={{ position: "absolute", top: 8, right: 8 }}>
         <IconButton
           sx={{ display: "flex", justifyContent: "end" }}

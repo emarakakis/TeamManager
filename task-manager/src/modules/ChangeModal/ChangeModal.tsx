@@ -23,6 +23,7 @@ import FormButton from "../FormButton/FormButton";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
 import ChangeField from "./ChangeField";
 import changeFieldJob from "@/serverFunctions/changeFieldJob";
+import ModalType from "../ModalType/ModalType";
 
 export type ChangeType = EmployeeReturn | FieldDataReturn | JobReturn;
 export type ChangeTypeArray = Array<ChangeType> | FieldJobConcat;
@@ -110,10 +111,12 @@ export default function ChangeModal() {
   if (isLoading && open) return <Box>Loading...</Box>;
 
   return (
-    <Dialog open={open} onClose={() => setChangeBatch(null)}>
-      <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
-        Change Item
-      </DialogTitle>
+    <ModalType
+      title="Change Item"
+      contentText="Select the value you want to change to"
+      value={changeItemId}
+      setValue={setChangeBatch}
+    >
       {isLoading && (
         <Box
           sx={{
@@ -128,11 +131,6 @@ export default function ChangeModal() {
       )}
       {!isLoading && (
         <DialogContent>
-          <DialogContentText
-            sx={{ display: "flex", justifyContent: "center", mb: 2 }}
-          >
-            Select the value you want to change to
-          </DialogContentText>
           <FormProvider {...methods}>
             <form
               onSubmit={methods.handleSubmit(
@@ -196,6 +194,6 @@ export default function ChangeModal() {
           </FormProvider>
         </DialogContent>
       )}
-    </Dialog>
+    </ModalType>
   );
 }
