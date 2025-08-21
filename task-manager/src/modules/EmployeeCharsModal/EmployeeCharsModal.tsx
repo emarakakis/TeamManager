@@ -8,11 +8,11 @@ import CharsTable from "./CharsTable";
 import CharRow from "./CharRow";
 import { EmployeeReturn } from "@/types/employee";
 import getEmployee from "@/serverFunctions/getEmployee";
+import { useState } from "react";
 
 export default function EmployeeCharsModal() {
   const [employeeChar, setEmployeeChar] = useQueryState("employeeChar");
   const { id } = employeeChar;
-  const open = !!id;
 
   const { data: characteristics } = useQuery<CharacteristicsReturn[]>({
     queryKey: ["employee", "characteristics", "view", id],
