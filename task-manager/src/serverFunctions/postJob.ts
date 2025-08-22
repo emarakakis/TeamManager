@@ -8,7 +8,6 @@ export default async function postJob(job: JobCreate) {
   if (!data.success) {
     throw new Error("Error while creating a Job");
   }
-  console.log(data.id);
 
   return data.id;
 }

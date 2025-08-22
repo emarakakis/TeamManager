@@ -6,7 +6,6 @@ import {
 } from "@/types/Characteristics";
 import {
   Box,
-  Button,
   FormControlLabel,
   Popover,
   Switch,
@@ -20,6 +19,9 @@ import { FormProvider, useForm } from "react-hook-form";
 import putEmployeeChars from "@/serverFunctions/putEmployeeChars";
 import FormButton from "../FormButton/FormButton";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
+import postEmployeeJob from "@/serverFunctions/postEmployeeJob";
+import postCharacteristic from "@/serverFunctions/postEmployeeChar";
+import { characteristics } from "../../../dataset";
 
 export default function AddCharModal({
   anchorEl,
@@ -44,13 +46,13 @@ export default function AddCharModal({
   function onSubmit(input: { values: number[] } | CharacteristicsCreate) {
     if (!toggle && "name" in input) {
       const { category, name } = input;
-      console.log(category, name);
+      mutate({ category, name });
     } else if (toggle && "values" in input) {
       const { values } = input;
-      mutate({ characteristics: values, employeeId: id });
-      reset({ values: [] });
-      setDisable(true);
+      mutate(values);
     }
+    reset({ values: [] });
+    setDisable(true);
   }
 
   const queryClient = useQueryClient();
@@ -58,7 +60,18 @@ export default function AddCharModal({
 
   const { mutate } = useMutation({
     mutationKey: ["add", "characteristic", id],
-    mutationFn: putEmployeeChars,
+    mutationFn: async (data: number[] | CharacteristicsCreate) => {
+      if (!toggle && "name" in data) {
+        const { name, category } = data;
+        const newChar = await postCharacteristic({ name, category });
+        const characteristics: number[] = [newChar.id];
+        return putEmployeeChars({
+          characteristics,
+          employeeId: id,
+        });
+      }
+      putEmployeeChars({ characteristics: data as number[], employeeId: id });
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["employee", "characteristics", "view", id],

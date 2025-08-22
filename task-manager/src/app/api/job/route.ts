@@ -17,7 +17,6 @@ export async function DELETE(req: Request) {
   try {
     const url = new URL(req.url);
     const id = url.searchParams.get("id");
-    console.log(id);
 
     const result = await db.delete(jobTable).where(eq(jobTable.id, Number(id)));
 

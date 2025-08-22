@@ -1,82 +1,89 @@
-import { forwardRef, useState, ChangeEvent } from "react"
-import { Control, Controller, FieldValues, Path } from "react-hook-form"
-import { Select, SelectChangeEvent, MenuItem } from "@mui/material"
+import { forwardRef, useState, ChangeEvent } from "react";
+import { Control, Controller, FieldValues, Path } from "react-hook-form";
+import { Select, SelectChangeEvent, MenuItem } from "@mui/material";
 
 export type Option = {
-    key: string
-    value: string
-}
+  key: string;
+  value: string;
+};
 
 type SelectProps<T extends FieldValues> = {
-    name: Path<T>
-    options: Option[]
-    control: Control<T>
-    onChange?: (event: SelectChangeEvent) => void
-    defaultValue?: string
-}
+  name: Path<T>;
+  options: Option[];
+  control: Control<T>;
+  onChange?: (event: SelectChangeEvent) => void;
+  defaultValue?: string;
+};
 
 type SelectPureProps = {
-    options: Option[]
-    onChange: (event: SelectChangeEvent) => void
-    defaultValue?: string | undefined
-    value : string
-}
+  options: Option[];
+  onChange: (event: SelectChangeEvent) => void;
+  defaultValue?: string | undefined;
+  value: string;
+};
 
+const SelectPure = forwardRef<HTMLDivElement, SelectPureProps>(
+  ({ options, onChange, value, defaultValue, ...props }, ref) => {
+    const [selected, setSelected] = useState<string>(defaultValue || "");
 
+    function handleChange(event: SelectChangeEvent) {
+      if ("nativeEvent" in event) {
+        const value = event.target.value;
+        setSelected(value as string);
+        onChange(event);
+      } else {
+        const option = event.target;
+        setSelected(option.value as string);
+        onChange(event);
+      }
+    }
 
-const SelectPure = forwardRef<HTMLDivElement, SelectPureProps>(({options, onChange, value, defaultValue, ...props}, ref) => {
-    const [selected, setSelected] = useState<string>(defaultValue || "")
-
-    function handleChange(event: SelectChangeEvent){
-        if ("nativeEvent" in event) {
-            const value = event.target.value;
-            console.log("mple")
-            setSelected(value as string);
-            onChange(event);
-        } else {
-            const option = event.target
-            setSelected(option.value as string)
-            onChange(event)
-        }
-}
-  
-
-    return <Select sx={{width:"100%", minWidth:"100%", maxWidth:"100%", fontSize:'14px'}}
+    return (
+      <Select
+        sx={{
+          width: "100%",
+          minWidth: "100%",
+          maxWidth: "100%",
+          fontSize: "14px",
+        }}
         {...props}
         onChange={(event) => handleChange(event)}
-        ref = {ref}
-        value = {value ?? ""}
-    >
+        ref={ref}
+        value={value ?? ""}
+      >
         {options.map((s, i) => {
-            return <MenuItem value={s.key} key={i}>{s.value}</MenuItem>
+          return (
+            <MenuItem value={s.key} key={i}>
+              {s.value}
+            </MenuItem>
+          );
         })}
-    </Select>
-
-})
-
+      </Select>
+    );
+  }
+);
 
 export default function SelectControl<T extends FieldValues>({
-    name,
-    options,
-    control,
-    ...props
-}: SelectProps<T>
-){
-    return (
-        <Controller 
-            name = {name}
-            control={control}
-            render={({field}) => {
-                return (<SelectPure
-                    {...field}
-                    {...props}
-                    options={options}
-                    onChange={field.onChange}
-                    value={field.value}
-                />)
-
-            }}
-        />
-    )
-
+  name,
+  options,
+  control,
+  ...props
+}: SelectProps<T>) {
+  return (
+    <Controller
+      name={name}
+      control={control}
+      render={({ field }) => {
+        return (
+          <SelectPure
+            {...field}
+            {...props}
+            options={options}
+            onChange={field.onChange}
+            value={field.value}
+          />
+        );
+      }}
+    />
+  );
 }

@@ -15,7 +15,6 @@ export async function POST(req: Request) {
     });
     return NextResponse.json({ success: 200 });
   } catch (error) {
-    console.log("Something went wrong with addition!");
     throw error;
   }
 }

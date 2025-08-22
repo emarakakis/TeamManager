@@ -51,14 +51,12 @@ export default async function deleteFieldJob(input: {
     try {
       const str = `${key}Id`;
       const itemId = id[str as keyof FieldJobId];
-      console.log(key, itemId);
       const getItem = await axios.get(`/api/${key}?id=${itemId}`);
       const oldItemData = getItem.data;
       if (!oldItemData.success) {
         throw new Error(`Something went wrong when getting: ${key}`);
       }
       const oldItem = oldItemData.field;
-      console.log(oldItem);
       const newItem = { ...oldItem, assigned: 0 };
       const putItem = await axios.put(`api/${key}`, newItem);
       const putItemData = putItem.data;

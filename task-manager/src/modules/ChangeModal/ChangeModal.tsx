@@ -34,7 +34,6 @@ export default function ChangeModal() {
     "employeeJobId",
   ]);
   const [disabled, setDisabled] = useFormButtonState("change");
-  console.log(disabled);
   const { changeItem, employeeJobId } = { ...changeBatch };
   const { changeType, changeItemId } = { ...changeItem };
   const queryClient = useQueryClient();
@@ -75,7 +74,6 @@ export default function ChangeModal() {
     mutationKey: ["change", changeType],
     mutationFn: putEmployeeJob,
     onSuccess: async () => {
-      console.log("success");
       await queryClient.invalidateQueries({ queryKey: ["employeeJobs"] });
       setChangeBatch(null);
     },
@@ -85,7 +83,6 @@ export default function ChangeModal() {
     mutationKey: ["change", changeType],
     mutationFn: changeFieldJob,
     onSuccess: async () => {
-      console.log("success");
       await queryClient.invalidateQueries({ queryKey: ["fieldJobs"] });
       await queryClient.invalidateQueries({ queryKey: ["jobs"] });
       setChangeBatch(null);

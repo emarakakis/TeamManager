@@ -15,11 +15,10 @@ import { useState } from "react";
 
 export default function AssignEmployeeJob() {
   const [employeeJob, setEmployeeJob] = useQueryState("employeeJob");
-  console.log(employeeJob);
   const [keepFields, setKeepFields] = useState<boolean>(false);
   const { fieldId, jobId, employeeId } = { ...employeeJob };
   const queryClient = useQueryClient();
-  const [disabled, setDisabled] = useFormButtonState("assignItem");
+  const [_, setDisabled] = useFormButtonState("assignItem");
   const { data, isLoading } = useQuery<{
     employee: EmployeeReturn;
     fieldJob: FieldJobReturn;
@@ -46,7 +45,6 @@ export default function AssignEmployeeJob() {
     return <Box>Loading...</Box>;
   }
   const { employee, fieldJob } = { ...data };
-  console.log("Employee : ", employee);
   return (
     <Box
       sx={{

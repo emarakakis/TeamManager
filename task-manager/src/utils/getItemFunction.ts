@@ -22,9 +22,8 @@ export default async function getItemFunction(
   type: string,
   id: number | EmployeeJobId | FieldJobId
 ): Promise<ItemType> {
-  console.log(id);
   if (type === "employee") {
-    return await getEmployee(id);
+    return await getEmployee(id as number);
   } else if (type === "field") {
     return await getField(id as number);
   } else if (type === "job") {

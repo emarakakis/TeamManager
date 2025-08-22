@@ -37,7 +37,6 @@ export async function GET(req: Request) {
 }
 
 export async function PUT(req: Request) {
-  console.log("I am in!");
   try {
     const data = await req.json();
     const { employeeId, characteristics } = data;
@@ -51,7 +50,6 @@ export async function PUT(req: Request) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.log("ERROR");
     throw err;
   }
 }

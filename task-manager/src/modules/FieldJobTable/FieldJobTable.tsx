@@ -21,8 +21,6 @@ export default function FieldJobTable() {
     queryFn: () => getFieldJobs(fieldJob),
   });
 
-  console.log(data);
-
   return (
     <TypeTable
       type="fieldJob"

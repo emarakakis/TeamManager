@@ -23,7 +23,6 @@ type AssignItemData =
 
 export default function AssignItem({ data }: { data: AssignItemData }) {
   const [name, validItems] = getItemData(data);
-  console.log(name, validItems);
   const length = validItems?.length;
   return (
     <Box
