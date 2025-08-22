@@ -7,7 +7,7 @@ export default function AssignItemModal() {
     "mergeFieldJob",
     "employeeJob",
   ]);
-  const { mergeFieldJob, employeeJob } = assignItemBatch;
+  const { mergeFieldJob } = assignItemBatch;
   const isFieldJob = mergeFieldJob && Object.entries(mergeFieldJob).length > 0;
   return isFieldJob ? <AssignFieldJob /> : <AssignEmployeeJob />;
 }

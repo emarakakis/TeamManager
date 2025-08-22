@@ -5,22 +5,9 @@ import { useFormButtonState } from "@/app/hooks/form-button-hook";
 import { useEffect } from "react";
 import ModalType from "../ModalType/ModalType";
 
-const deletePaperProps = {
+const slotProps = {
   paper: {
     sx: {
-      width: 350,
-      height: "250px",
-      padding: 3,
-      borderRadius: 3,
-    },
-  },
-};
-
-const mergePaperProps = {
-  paper: {
-    sx: {
-      width: 2000,
-      height: 450,
       padding: 3,
       borderRadius: 3,
     },
@@ -81,8 +68,7 @@ export default function ActionModal() {
       contentText={contentText}
       setValue={setValue}
       value={value}
-      sx={{ width: 1 }}
-      slotProps={!!deleteItem ? deletePaperProps : mergePaperProps}
+      slotProps={slotProps}
     >
       {!!deleteItem && !!dataType && <RemoveItemModal />}
       {!deleteItem && <AssignItemModal />}

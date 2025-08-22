@@ -1,4 +1,4 @@
-import { Grid, DialogTitle, DialogContentText } from "@mui/material";
+import { Grid, DialogTitle, DialogContentText, Box } from "@mui/material";
 
 import ExtraConfirmation from "./ExtraConfirmation";
 import { useQueryBatch } from "@/app/hooks/query-state-hook";
@@ -15,7 +15,6 @@ import { useFormButtonState } from "@/app/hooks/form-button-hook";
 import { DeleteFields } from "./types";
 
 export function RemoveItemModal() {
-  const [dataTypeObject, setDataType] = useQueryBatch(["dataType"]);
   const [editDataBatch, setEditDataBatch] = useQueryBatch([
     "deleteItem",
     "dataType",

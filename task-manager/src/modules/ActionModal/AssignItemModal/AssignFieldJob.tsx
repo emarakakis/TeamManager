@@ -35,7 +35,7 @@ export default function AssignFieldJob() {
     },
   });
   if (isLoading) {
-    return <DialogTitle>Loading...</DialogTitle>;
+    return <Box>Loading...</Box>;
   }
   const { field, job } = { ...data };
   return (
@@ -45,7 +45,7 @@ export default function AssignFieldJob() {
           display: "grid",
           gridTemplateColumns: "repeat(2, 1fr)",
           justifyContent: "center",
-          gap: 5,
+          gap: 2,
         }}
       >
         <AssignItem data={field!} />
@@ -57,7 +57,7 @@ export default function AssignFieldJob() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          mb: 1,
+          my: 2,
         }}
       >
         <Typography>Would you like to keep the Job?</Typography>
@@ -83,10 +83,7 @@ export default function AssignFieldJob() {
         >
           Yes
         </FormButton>
-        <Button
-          sx={{ color: "red", width: "200px" }}
-          onClick={() => setMergeFieldJob(null)}
-        >
+        <Button sx={{ color: "red" }} onClick={() => setMergeFieldJob(null)}>
           No
         </Button>
       </Box>
