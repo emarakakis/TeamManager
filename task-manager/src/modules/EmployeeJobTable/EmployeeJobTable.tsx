@@ -13,7 +13,6 @@ export default function EmployeeJobTable() {
     "field",
     "employee",
   ]);
-  console.log(searchBatch);
   const { data, isLoading } = useQuery<EmployeeJobReturn[]>({
     queryKey: ["employeeJobs", qs.stringify(searchBatch)],
     queryFn: () => getEmployeeJobs(searchBatch),

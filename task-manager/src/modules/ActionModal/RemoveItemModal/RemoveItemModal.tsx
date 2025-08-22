@@ -82,33 +82,11 @@ export function RemoveItemModal() {
     setDisabled(true);
   }
 
-  let content =
-    dataType === "employee"
-      ? "Employee"
-      : dataType === "field"
-      ? "Field"
-      : dataType === "job"
-      ? "Job"
-      : dataType === "fieldJob"
-      ? "FieldJob"
-      : "EmployeeJob";
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid>
-          <Grid container sx={{ justifyContent: "center" }}>
-            <DialogTitle>Delete Item</DialogTitle>
-          </Grid>
-          <Grid container sx={{ justifyContent: "center" }}>
-            <DialogContentText>
-              Are you sure you want to delete the {!!content && content}?
-            </DialogContentText>
-          </Grid>
-          <Grid container sx={{ justifyContent: "center" }}>
-            {!needFurtherConfirmation && <RemoveButtons />}
-            {needFurtherConfirmation && <ExtraConfirmation type={dataType} />}
-          </Grid>
-        </Grid>
+        {!needFurtherConfirmation && <RemoveButtons />}
+        {needFurtherConfirmation && <ExtraConfirmation type={dataType} />}
       </form>
     </FormProvider>
   );

@@ -13,6 +13,7 @@ import FormButton from "../FormButton/FormButton";
 import duplicateItems from "@/serverFunctions/duplicateItems";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
 import { useEffect } from "react";
+import ModalType from "../ModalType/ModalType";
 
 export default function DuplicateModal() {
   const [duplicateItem, setDuplicateItem] = useQueryState("duplicateItem");
@@ -44,11 +45,11 @@ export default function DuplicateModal() {
   );
 
   return (
-    <Dialog
-      open={!!type}
-      onClose={() => {
-        setDuplicateItem(null);
-      }}
+    <ModalType
+      value={type}
+      setValue={setDuplicateItem}
+      title="Duplicate Item"
+      contentText={`Duplicate the following ${type}?`}
       slotProps={{
         paper: {
           sx: {
@@ -57,9 +58,6 @@ export default function DuplicateModal() {
         },
       }}
     >
-      <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
-        Duplicate Item
-      </DialogTitle>
       {isLoading && (
         <Box
           sx={{
@@ -75,18 +73,7 @@ export default function DuplicateModal() {
         </Box>
       )}
       {!isLoading && (
-        <DialogContent
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-          }}
-        >
-          <DialogContentText
-            sx={{ display: "flex", justifyContent: "center", mb: 1 }}
-          >
-            Duplicate the following {type}?
-          </DialogContentText>
+        <Box>
           <Box
             sx={{
               display: "grid",
@@ -128,8 +115,8 @@ export default function DuplicateModal() {
               Submit
             </FormButton>
           </Box>
-        </DialogContent>
+        </Box>
       )}
-    </Dialog>
+    </ModalType>
   );
 }

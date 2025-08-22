@@ -18,7 +18,6 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   try {
     const field = await request.json();
-    console.log("Field: ", field);
     const result = await db
       .update(fieldTable)
       .set(field)
@@ -34,8 +33,6 @@ export async function DELETE(request: Request) {
   try {
     const url = new URL(request.url);
     const id = url.searchParams.get("id");
-
-    console.log(id);
 
     const result = await db
       .delete(fieldTable)
@@ -56,7 +53,6 @@ export async function GET(request: Request) {
       .from(fieldTable)
       .where(eq(fieldTable.id, Number(id)));
     if (result.length > 0) {
-      console.log(result[0]);
       return NextResponse.json({ success: true, field: result[0] });
     } else return NextResponse.json({ success: false });
   } catch (error) {

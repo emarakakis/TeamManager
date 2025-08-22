@@ -51,6 +51,7 @@ export default function EditEmployeeJobModal({
                 deleteItem: qs.stringify(employeeJobIds),
                 dataType: "employeeJob",
               });
+              setAnchorEl(null);
             }}
           >
             <ListItemIcon>

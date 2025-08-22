@@ -34,8 +34,6 @@ export default async function putEmployeeJob(info: {
   if (!data.success) {
     throw new Error("Something went wrong when updating an employeeJob");
   }
-
-  console.log("Ended Put");
 }
 
 async function updateEmployee(oldId: number, newId: number) {
