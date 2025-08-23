@@ -2,7 +2,6 @@ import { Box, DialogTitle, Typography, Button, Checkbox } from "@mui/material";
 
 import { useQueryState } from "@/app/hooks/query-state-hook";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import ModalType from "../../ModalType/ModalType";
 import getEmployee from "@/serverFunctions/getEmployee";
 import getFieldJob from "@/serverFunctions/getFieldJob";
 import postEmployeeJob from "@/serverFunctions/postEmployeeJob";
@@ -58,7 +57,7 @@ export default function AssignEmployeeJob() {
           display: "grid",
           gridTemplateColumns: "repeat(2, 1fr)",
           justifyContent: "center",
-          gap: 5,
+          gap: 2,
         }}
       >
         <AssignItem data={employee!} />
@@ -69,7 +68,7 @@ export default function AssignEmployeeJob() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          mb: 1,
+          my: 2,
         }}
       >
         <Typography>Would you like to keep the FieldJob?</Typography>
@@ -95,10 +94,7 @@ export default function AssignEmployeeJob() {
         >
           Yes
         </FormButton>
-        <Button
-          sx={{ color: "red", width: "200px" }}
-          onClick={() => setEmployeeJob(null)}
-        >
+        <Button sx={{ color: "red" }} onClick={() => setEmployeeJob(null)}>
           No
         </Button>
       </Box>

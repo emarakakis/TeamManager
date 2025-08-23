@@ -3,7 +3,6 @@ import { Box, Typography } from "@mui/material";
 import { FieldJobAssignFields, FieldJobReturn } from "@/types/FieldJob";
 import { FieldAssignFields, FieldDataReturn } from "@/types/FieldData";
 import { JobAssignFields, JobReturn } from "@/types/Job";
-import { useEffect } from "react";
 
 const employeeFields: EmployeeAssignFields[] = ["name", "surname", "email"];
 const fieldJobFields: FieldJobAssignFields[] = [
@@ -31,7 +30,7 @@ export default function AssignItem({ data }: { data: AssignItemData }) {
         flexDirection: "column",
         backgroundColor: "#f5f5f5",
         borderRadius: "16px",
-        padding: 2,
+        padding: 1.5,
         rowGap: 2,
         width: "90%",
         height: "90%",
@@ -49,7 +48,15 @@ export default function AssignItem({ data }: { data: AssignItemData }) {
         {name}
       </Typography>
       {validItems!.map(([k, value], index) => (
-        <Typography key={index}>
+        <Typography
+          key={index}
+          sx={{
+            overflow: "hidden",
+            maxWidth: "200px",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+          }}
+        >
           {k}:{value as string}
         </Typography>
       ))}

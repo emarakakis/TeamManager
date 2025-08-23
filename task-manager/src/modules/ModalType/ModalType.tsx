@@ -8,6 +8,7 @@ import {
   DialogTitle,
   Grid,
   IconButton,
+  Typography,
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -40,15 +41,13 @@ export default function ModalType({
           <CloseIcon />
         </IconButton>
       </Box>
-      <DialogContent>
-        <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
-          {title}
-        </DialogTitle>
-        <DialogContentText sx={{ display: "flex", justifyContent: "center" }}>
-          {contentText}
-        </DialogContentText>
-        <DialogContent>{children}</DialogContent>
-      </DialogContent>
+      <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>
+        {title}
+      </DialogTitle>
+      <DialogContentText sx={{ display: "flex", justifyContent: "center" }}>
+        {contentText}
+      </DialogContentText>
+      <DialogContent>{children}</DialogContent>
     </Dialog>
   );
 }

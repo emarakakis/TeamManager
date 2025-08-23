@@ -1,5 +1,5 @@
 import axios from "axios";
-import { DeleteFields } from "@/modules/ActionModal/RemoveItemModal/types";
+import { DeleteFields } from "@/modules/RemoveItemModal/types";
 
 type FieldJobDeleteFields = Omit<DeleteFields, "fieldJob" | "employeeJob">;
 type FieldJobId = {
