@@ -3,7 +3,6 @@ import { Box, Typography } from "@mui/material";
 import { FieldJobAssignFields, FieldJobReturn } from "@/types/FieldJob";
 import { FieldAssignFields, FieldDataReturn } from "@/types/FieldData";
 import { JobAssignFields, JobReturn } from "@/types/Job";
-import { useEffect } from "react";
 
 const employeeFields: EmployeeAssignFields[] = ["name", "surname", "email"];
 const fieldJobFields: FieldJobAssignFields[] = [

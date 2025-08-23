@@ -13,6 +13,17 @@ import { useMutation } from "@tanstack/react-query";
 import { FormProvider, useForm } from "react-hook-form";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
 import { DeleteFields } from "./types";
+import ModalType from "../ModalType/ModalType";
+import { useEffect } from "react";
+
+const slotProps = {
+  paper: {
+    sx: {
+      padding: 3,
+      borderRadius: 3,
+    },
+  },
+};
 
 export function RemoveItemModal() {
   const [editDataBatch, setEditDataBatch] = useQueryBatch([
@@ -23,6 +34,12 @@ export function RemoveItemModal() {
   const needFurtherConfirmation =
     dataType === "fieldJob" || dataType === "employeeJob";
   const [disabled, setDisabled] = useFormButtonState("deleteItem");
+  const open = !!dataType && !!deleteItem;
+  useEffect(() => {
+    if (!open) {
+      setDisabled(false);
+    }
+  }, [open]);
 
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
@@ -81,12 +98,31 @@ export function RemoveItemModal() {
     setDisabled(true);
   }
 
+  let type =
+    dataType === "employee"
+      ? "Employee"
+      : dataType === "field"
+      ? "Field"
+      : dataType === "job"
+      ? "Job"
+      : dataType === "fieldJob"
+      ? "FieldJob"
+      : "EmployeeJob";
+
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {!needFurtherConfirmation && <RemoveButtons />}
-        {needFurtherConfirmation && <ExtraConfirmation type={dataType} />}
-      </form>
-    </FormProvider>
+    <ModalType
+      title={"Delete Item"}
+      contentText={`Are you sure you want to delete ${type}?`}
+      setValue={setEditDataBatch}
+      value={deleteItem}
+      slotProps={slotProps}
+    >
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {!needFurtherConfirmation && <RemoveButtons />}
+          {needFurtherConfirmation && <ExtraConfirmation type={dataType} />}
+        </form>
+      </FormProvider>
+    </ModalType>
   );
 }

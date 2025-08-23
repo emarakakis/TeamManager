@@ -4,7 +4,6 @@ import getJob from "@/serverFunctions/getJob";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useQueryState } from "@/app/hooks/query-state-hook";
 import postFieldJob from "@/serverFunctions/postFieldJob";
-import ModalType from "../../ModalType/ModalType";
 import { useFormButtonState } from "@/app/hooks/form-button-hook";
 import FormButton from "@/modules/FormButton/FormButton";
 import AssignItem from "./AssignItem";

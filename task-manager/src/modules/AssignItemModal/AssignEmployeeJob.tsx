@@ -2,7 +2,6 @@ import { Box, DialogTitle, Typography, Button, Checkbox } from "@mui/material";
 
 import { useQueryState } from "@/app/hooks/query-state-hook";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import ModalType from "../../ModalType/ModalType";
 import getEmployee from "@/serverFunctions/getEmployee";
 import getFieldJob from "@/serverFunctions/getFieldJob";
 import postEmployeeJob from "@/serverFunctions/postEmployeeJob";
