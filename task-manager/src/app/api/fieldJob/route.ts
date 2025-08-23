@@ -7,18 +7,12 @@ export async function POST(req: Request) {
     const data = await req.json();
     const { jobId, fieldId } = { ...data };
 
-    console.log("I am here.");
-
     if (!jobId || !fieldId || isNaN(+fieldId)) {
       return NextResponse.json(
         { success: false, error: "Invalid input" },
         { status: 400 }
       );
     }
-
-    const res1 = await db.select().from(fieldJobsTable);
-    console.log(1, res1);
-
     const result = await db
       .select({
         jobId: jobTable.id,
@@ -42,9 +36,6 @@ export async function POST(req: Request) {
         .where(eq(jobTable.id, Number(fieldJob.jobId)));
 
       const ins = await db.insert(fieldJobsTable).values(fieldJob);
-
-      const res2 = await db.select().from(fieldJobsTable);
-      console.log(2, res2);
 
       return NextResponse.json({ success: true });
     } else {
@@ -86,7 +77,6 @@ export async function PUT(req: Request) {
     const fieldJob = await req.json();
 
     if (fieldJob.type && fieldJob.type === "assignAction") {
-      console.log(fieldJob.assigned);
       const result = await db
         .update(fieldJobsTable)
         .set({ assigned: fieldJob.assigned })

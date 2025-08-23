@@ -22,7 +22,6 @@ type AssignItemData =
 
 export default function AssignItem({ data }: { data: AssignItemData }) {
   const [name, validItems] = getItemData(data);
-  console.log(validItems);
   const length = validItems?.length;
   return (
     <Box
@@ -31,7 +30,7 @@ export default function AssignItem({ data }: { data: AssignItemData }) {
         flexDirection: "column",
         backgroundColor: "#f5f5f5",
         borderRadius: "16px",
-        padding: 2,
+        padding: 1.5,
         rowGap: 2,
         width: "90%",
         height: "90%",
@@ -49,7 +48,15 @@ export default function AssignItem({ data }: { data: AssignItemData }) {
         {name}
       </Typography>
       {validItems!.map(([k, value], index) => (
-        <Typography key={index}>
+        <Typography
+          key={index}
+          sx={{
+            overflow: "hidden",
+            maxWidth: "200px",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+          }}
+        >
           {k}:{value as string}
         </Typography>
       ))}
@@ -58,14 +65,14 @@ export default function AssignItem({ data }: { data: AssignItemData }) {
 }
 
 function getItemData(data: AssignItemData): [string, Array<[string, any]>] {
-  if ("email" in data)
+  if ("email" in data) {
     return [
       "Employee",
-      Object.entries(data).filter(([key]) => {
-        employeeFields.includes(key as EmployeeAssignFields);
-      }),
+      Object.entries(data).filter(([key]) =>
+        employeeFields.includes(key as EmployeeAssignFields)
+      ),
     ];
-  else if ("jobId" in data && "fieldId" in data)
+  } else if ("jobId" in data && "fieldId" in data)
     return [
       "FieldJob",
       Object.entries(data).filter(([key]) =>

@@ -2,7 +2,6 @@ import { Box, DialogTitle, Typography, Button, Checkbox } from "@mui/material";
 
 import { useQueryState } from "@/app/hooks/query-state-hook";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import ModalType from "./ModalType";
 import getEmployee from "@/serverFunctions/getEmployee";
 import getFieldJob from "@/serverFunctions/getFieldJob";
 import postEmployeeJob from "@/serverFunctions/postEmployeeJob";
@@ -15,11 +14,10 @@ import { useState } from "react";
 
 export default function AssignEmployeeJob() {
   const [employeeJob, setEmployeeJob] = useQueryState("employeeJob");
-  console.log(employeeJob);
   const [keepFields, setKeepFields] = useState<boolean>(false);
   const { fieldId, jobId, employeeId } = { ...employeeJob };
   const queryClient = useQueryClient();
-  const [disabled, setDisabled] = useFormButtonState("assignItem");
+  const [_, setDisabled] = useFormButtonState("assignItem");
   const { data, isLoading } = useQuery<{
     employee: EmployeeReturn;
     fieldJob: FieldJobReturn;
@@ -43,7 +41,7 @@ export default function AssignEmployeeJob() {
     },
   });
   if (isLoading) {
-    return <DialogTitle>Loading...</DialogTitle>;
+    return <Box>Loading...</Box>;
   }
   const { employee, fieldJob } = { ...data };
   return (
@@ -54,28 +52,23 @@ export default function AssignEmployeeJob() {
         justifyContent: "center",
       }}
     >
-      <ModalType
-        title="Employee Job Creation"
-        contentText="Are you sure you want to merge?"
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          justifyContent: "center",
+          gap: 2,
+        }}
       >
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
-            justifyContent: "center",
-            gap: 5,
-          }}
-        >
-          <AssignItem data={employee!} />
-          <AssignItem data={fieldJob!} />
-        </Box>
-      </ModalType>
+        <AssignItem data={employee!} />
+        <AssignItem data={fieldJob!} />
+      </Box>
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          mb: 1,
+          my: 2,
         }}
       >
         <Typography>Would you like to keep the FieldJob?</Typography>
@@ -101,10 +94,7 @@ export default function AssignEmployeeJob() {
         >
           Yes
         </FormButton>
-        <Button
-          sx={{ color: "red", width: "200px" }}
-          onClick={() => setEmployeeJob(null)}
-        >
+        <Button sx={{ color: "red" }} onClick={() => setEmployeeJob(null)}>
           No
         </Button>
       </Box>

@@ -9,7 +9,6 @@ export async function GET(req: Request) {
   try {
     const url = new URL(req.url);
     const query = url.searchParams;
-    query.forEach((value, key) => console.log(key, value));
 
     const conditions = [];
     for (const [key, value] of query.entries()) {
@@ -24,7 +23,6 @@ export async function GET(req: Request) {
     const result = await db.select().from(fieldTable).where(whereClause);
     return NextResponse.json({ fields: result, success: true });
   } catch (error) {
-    console.log("Error when getting Fields.");
     throw error;
   }
 }

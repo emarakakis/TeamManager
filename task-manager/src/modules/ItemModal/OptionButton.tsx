@@ -15,7 +15,7 @@ import { Dispatch, SetStateAction, MouseEvent } from "react";
 import { useQueryBatch, useQueryState } from "@/app/hooks/query-state-hook";
 import { ModalItem } from "./ItemModal";
 import { JobReturn } from "@/types/Job";
-import qs from "qs";
+import SubjectIcon from "@mui/icons-material/Subject";
 import { FieldJobReturn } from "@/types/FieldJob";
 import ChangeItem from "./ChangeItem";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -40,6 +40,7 @@ export default function OptionButton<T extends ModalItem>({
   ]);
   const [assignItem, setAssignItem] = useQueryState("assignItem");
   const [duplicateItem, setDuplicateItem] = useQueryState("duplicateItem");
+  const [employeeChar, setEmployeeChar] = useQueryState("employeeChar");
 
   function handleClick(event: MouseEvent<HTMLElement>) {
     setAnchorEl(event?.currentTarget);
@@ -162,6 +163,19 @@ export default function OptionButton<T extends ModalItem>({
               }
               setAnchorEl={setAnchorEl}
             />
+          )}
+          {type === "employee" && "email" in data && (
+            <MenuItem
+              onClick={() => {
+                setEmployeeChar({ id: data.id });
+                setAnchorEl(null);
+              }}
+            >
+              <ListItemIcon>
+                <SubjectIcon sx={{ color: "pink" }} />
+              </ListItemIcon>
+              <ListItemText>Characteristics</ListItemText>
+            </MenuItem>
           )}
         </MenuList>
       </Menu>

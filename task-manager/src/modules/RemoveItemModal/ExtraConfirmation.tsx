@@ -1,4 +1,10 @@
-import { Checkbox, DialogContent, FormControlLabel, Grid } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  DialogContent,
+  FormControlLabel,
+  Grid,
+} from "@mui/material";
 import { useState } from "react";
 import RemoveButtons from "./RemoveButtons";
 import { useFormContext } from "react-hook-form";
@@ -20,33 +26,43 @@ export default function ExtraConfirmation({ type }: { type: string }) {
   if (watch("fieldJob")) fields = [...fields, ...fieldJobFields];
 
   return (
-    <DialogContent sx={{ display: "flex", justifyContent: "center" }}>
-      <Grid container direction="column" sx={{ justifyContent: "center" }}>
-        <DialogContent>
-          <FormControlLabel
-            sx={{ justifyContent: "center" }}
-            control={
-              <Checkbox
-                value={deleteFields}
-                onChange={(event, checked) => {
-                  setDeleteFields(checked);
-                  if (type === "employeeJob")
-                    reset({ fieldJob: false, employee: false });
-                  if (type === "fieldJob") reset({ field: false, job: false });
-                }}
-              />
-            }
-            label="Would you like to Delete Some Fields?"
-          />
+    <Box>
+      <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", mb: 1 }}>
+        <FormControlLabel
+          sx={{ display: "flex", justifyContent: "flex-start", height: "50px" }}
+          control={
+            <Checkbox
+              value={deleteFields}
+              onChange={(event, checked) => {
+                setDeleteFields(checked);
+                if (type === "employeeJob")
+                  reset({ fieldJob: false, employee: false });
+                if (type === "fieldJob") reset({ field: false, job: false });
+              }}
+            />
+          }
+          label="Delete Fields"
+        />
+        <Box>
           {deleteFields && (
-            <Grid container>
+            <Box
+              sx={{
+                display: "grid",
+                justifyContent: "end",
+                gridTemplateRows: `repeat(${fields.length}, 1fr)`,
+                overflowY: "scroll",
+                height: "50px",
+                maxHeight: "50px",
+              }}
+            >
               {fields.map((value, index) => {
                 return (
                   <FormControlLabel
                     key={index}
-                    sx={{ justifyContent: "center" }}
+                    sx={{ justifyContent: "start", height: "20px" }}
                     control={
                       <Checkbox
+                        sx={{ height: "20px" }}
                         {...register(value)}
                         onChange={(e) => {
                           register(value).onChange(e);
@@ -61,11 +77,11 @@ export default function ExtraConfirmation({ type }: { type: string }) {
                   />
                 );
               })}
-            </Grid>
+            </Box>
           )}
-          <RemoveButtons />
-        </DialogContent>
-      </Grid>
-    </DialogContent>
+        </Box>
+      </Box>
+      <RemoveButtons />
+    </Box>
   );
 }

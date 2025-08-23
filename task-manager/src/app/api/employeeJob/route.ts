@@ -57,7 +57,6 @@ export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
     const id = url.searchParams.get("id");
-    console.log(id);
     if (id) {
       const result = await db
         .select()
@@ -126,7 +125,6 @@ export async function PUT(request: Request) {
     const info = await request.json();
 
     const { employeeJobId, itemId, type } = { ...info };
-    console.log("I am sure this is fucked: ", info);
     if (!allowedTypes.includes(type)) {
       return NextResponse.json(
         { success: false, error: "Invalid type" },
@@ -134,15 +132,10 @@ export async function PUT(request: Request) {
       );
     }
 
-    const before = await db.select().from(employeeJobTable);
-    console.log("Before: ", before);
     const result = await db
       .update(employeeJobTable)
       .set({ [`${type}Id`]: itemId })
       .where(eq(employeeJobTable.id, Number(employeeJobId)));
-
-    const after = await db.select().from(employeeJobTable);
-    console.log("After: ", after);
 
     return NextResponse.json({ success: true });
   } catch (error) {

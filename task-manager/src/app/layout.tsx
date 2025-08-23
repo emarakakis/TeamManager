@@ -6,9 +6,11 @@ import { theme } from "./theme";
 import { Box } from "@mui/material";
 import NavigationHeader from "@/modules/NavigationHeader/NavigationHeader";
 import EditItemDrawer from "@/modules/EditItemDrawer/EditItemDrawer";
-import ActionModal from "@/modules/ActionModal/ActionModal";
 import ChangeModal from "@/modules/ChangeModal/ChangeModal";
 import DuplicateModal from "@/modules/DuplicateModal/DuplicateModal";
+import EmployeeCharsModal from "@/modules/EmployeeCharsModal/EmployeeCharsModal";
+import AssignItemModal from "@/modules/AssignItemModal/AssignItemModal";
+import { RemoveItemModal } from "@/modules/RemoveItemModal/RemoveItemModal";
 
 export default function RootLayout({
   children,
@@ -25,9 +27,11 @@ export default function RootLayout({
               <ThemeProvider theme={theme}>
                 <Box sx={{ width: "100%", height: "100%" }}>{children}</Box>
                 <EditItemDrawer />
-                <ActionModal />
                 <ChangeModal />
                 <DuplicateModal />
+                <EmployeeCharsModal />
+                <AssignItemModal />
+                <RemoveItemModal />
               </ThemeProvider>
             </NavigationHeader>
           </Box>

@@ -10,13 +10,13 @@ export default function RemoveButtons() {
   ]);
 
   return (
-    <DialogContent sx={{ display: "flex", justifyContent: "center" }}>
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
       <FormButton state="deleteItem">Yes</FormButton>
-      <Box sx={{ width: "200px", display: "flex", justifyContent: "center" }}>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Button sx={{ color: "red" }} onClick={() => setEditDataBatch(null)}>
           No
         </Button>
       </Box>
-    </DialogContent>
+    </Box>
   );
 }
